@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthComponent } from './features/auth/auth.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export enum RouteNames {
   AUTH = 'auth',
@@ -17,10 +17,6 @@ export const routes: Routes = [
   },
   {
     path: RouteNames.AUTH,
-    component: AuthComponent,
-  },
-  {
-    path: RouteNames.AUTH,
     loadComponent: () =>
       import('./features/auth/auth.component').then((m) => m.AuthComponent),
   },
@@ -30,11 +26,13 @@ export const routes: Routes = [
       import('./features/profile/profile.component').then(
         (m) => m.ProfileComponent
       ),
+    canActivate: [authGuard],
   },
   {
     path: RouteNames.USERS,
     loadComponent: () =>
       import('./features/users/users.component').then((m) => m.UsersComponent),
+    canActivate: [authGuard],
   },
   {
     path: RouteNames.CHAT_LIST,
@@ -42,6 +40,7 @@ export const routes: Routes = [
       import('./features/chat-list/chat-list.component').then(
         (m) => m.ChatListComponent
       ),
+    canActivate: [authGuard],
   },
   {
     path: RouteNames.CHAT_DETAILS,
@@ -49,5 +48,6 @@ export const routes: Routes = [
       import('./features/chat-details/chat-details.component').then(
         (m) => m.ChatDetailsComponent
       ),
+    canActivate: [authGuard],
   },
 ];

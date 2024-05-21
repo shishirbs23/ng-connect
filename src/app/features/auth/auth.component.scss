@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    button {
+        img {
+            width: 22px;
+            vertical-align: middle;
+        }
+        span {
+            font-size: 16px;
+            color: #1c1c4d;
+            margin-left: 10px;
+        }
+    }
+}
