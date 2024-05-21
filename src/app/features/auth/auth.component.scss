@@ -1,18 +1,50 @@
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  gap: 30px;
 
-    button {
-        img {
-            width: 22px;
-            vertical-align: middle;
-        }
-        span {
-            font-size: 16px;
-            color: #1c1c4d;
-            margin-left: 10px;
-        }
+  .manual-auth-section {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+
+  .auth-section {
+    .hint-text {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: 500;
+
+      &.signin {
+
+      }
+
+      &.signup {
+
+      }
     }
+  }
+
+  .connect-with {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  button {
+    height: 40px;
+    width: 200px;
+  
+    img {
+      width: 20px;
+      vertical-align: middle;
+    }
+  
+    span {
+      color: #1c1c4d;
+      margin-left: 10px;
+    }
+  }
 }

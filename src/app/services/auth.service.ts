@@ -7,8 +7,13 @@ import {
   onAuthStateChanged,
   signInWithPopup,
   GoogleAuthProvider,
+  FacebookAuthProvider,
+  AuthProvider,
+  GithubAuthProvider,
+  TwitterAuthProvider,
 } from 'firebase/auth';
 import { RouteNames } from '../app.routes';
+import { AuthProviders } from '../enums/auth-provider.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +36,7 @@ export class AuthService {
       });
   }
 
-  signInUser(email: string, password: string) {
+  signInWithEmailPassword(email: string, password: string) {
     return signInWithEmailAndPassword(this.auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -59,12 +64,19 @@ export class AuthService {
     });
   }
 
-  signInWithGoogle() {
-    const provider = new GoogleAuthProvider();
+  signInWithProvider(authProvider: String) {
+    let provider: AuthProvider = new GoogleAuthProvider();
+
+    if (authProvider == AuthProviders.GOOGLE) {
+      provider = new GoogleAuthProvider();
+    } else if (authProvider == AuthProviders.FACEBOOK) {
+      provider = new FacebookAuthProvider();
+    } else if (authProvider == AuthProviders.GITHUB) {
+      provider = new GithubAuthProvider();
+    }
 
     signInWithPopup(this.auth, provider).then(
       (res: any) => {
-        console.log(res.user['accessToken']);
         localStorage.setItem('token', res.user['accessToken']);
         this.router.navigateByUrl(RouteNames.PROFILE);
       },

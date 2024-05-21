@@ -1,8 +1,47 @@
 <div class="container">
+  <div class="manual-auth-section">
+    <div class="auth-section">
+      <div class="hint-text signin">Already an user?</div>
+
+      <app-auth-button
+        btnLabel="Sign In"
+        btnIconPath="assets/icons/sign_in.png"
+      ></app-auth-button>
+    </div>
+
+    <div class="auth-section">
+      <div class="hint-text signup">Not registered?</div>
+
+      <app-auth-button
+        btnLabel="Sign Up"
+        btnIconPath="assets/icons/sign_up.png"
+      ></app-auth-button>
+    </div>
+  </div>
+
+  <div class="connect-with">Or, Connect with</div>
+
   <div>
-    <button mat-fab extended color="light" (click)="signInWithGoogle()">
-      <img src="assets/icons/google_logo.svg" />
-      <span> Sign in with Google </span>
-    </button>
+    <app-auth-button
+      btnLabel="Google"
+      btnIconPath="assets/icons/google_logo.svg"
+      (onPressed)="connectWithAuthProvider(authProviders.GOOGLE)"
+    ></app-auth-button>
+  </div>
+
+  <div>
+    <app-auth-button
+      btnLabel="Facebook"
+      btnIconPath="assets/icons/facebook_logo.svg"
+      (onPressed)="connectWithAuthProvider(authProviders.FACEBOOK)"
+    ></app-auth-button>
+  </div>
+
+  <div>
+    <app-auth-button
+      btnLabel="Github"
+      btnIconPath="assets/icons/github_logo.png"
+      (onPressed)="connectWithAuthProvider(authProviders.GITHUB)"
+    ></app-auth-button>
   </div>
 </div>
