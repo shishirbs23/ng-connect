@@ -2,10 +2,10 @@ import { Component, inject } from '@angular/core';
 
 // Components
 import { AuthButtonComponent } from './auth-button/auth-button.component';
+import { AuthDialogComponent } from './auth-dialog/auth-dialog.component';
 
 // Angular Material
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
 
 // Services
 import { AuthService } from '../../services/auth.service';
@@ -15,22 +15,23 @@ import { RouteNames } from '../../app.routes';
 import { Router } from '@angular/router';
 
 // Enums
-import { AuthProviders } from '../../enums/auth-provider.enum';
-
-declare const window: any;
+import { AuthProvider } from '../../enums/auth-provider.enum';
+import { AuthMode } from '../../enums/auth-mode.enum';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [AuthButtonComponent, MatButtonModule, MatIconModule],
+  imports: [AuthButtonComponent],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
 })
 export class AuthComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
+  private dialog = inject(MatDialog);
 
-  authProviders = AuthProviders;
+  authProviders = AuthProvider;
+  authMode = AuthMode;
 
   ngOnInit() {
     this.checkUserToken();
@@ -42,6 +43,21 @@ export class AuthComponent {
     if (token) {
       this.router.navigateByUrl(RouteNames.PROFILE);
     }
+  }
+
+  openAuthDialog(mode: string) {
+    console.log(mode);
+
+    const dialogRef = this.dialog.open(AuthDialogComponent, {
+      width: '400px',
+      data: {
+        mode,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(result);
+    });
   }
 
   connectWithAuthProvider(authProvider: string) {

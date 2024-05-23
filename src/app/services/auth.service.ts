@@ -10,10 +10,9 @@ import {
   FacebookAuthProvider,
   AuthProvider,
   GithubAuthProvider,
-  TwitterAuthProvider,
 } from 'firebase/auth';
 import { RouteNames } from '../app.routes';
-import { AuthProviders } from '../enums/auth-provider.enum';
+import { AuthProvider as AProvider } from '../enums/auth-provider.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -67,11 +66,11 @@ export class AuthService {
   signInWithProvider(authProvider: String) {
     let provider: AuthProvider = new GoogleAuthProvider();
 
-    if (authProvider == AuthProviders.GOOGLE) {
+    if (authProvider == AProvider.GOOGLE) {
       provider = new GoogleAuthProvider();
-    } else if (authProvider == AuthProviders.FACEBOOK) {
+    } else if (authProvider == AProvider.FACEBOOK) {
       provider = new FacebookAuthProvider();
-    } else if (authProvider == AuthProviders.GITHUB) {
+    } else if (authProvider == AProvider.GITHUB) {
       provider = new GithubAuthProvider();
     }
 

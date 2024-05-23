@@ -6,6 +6,7 @@
       <app-auth-button
         btnLabel="Sign In"
         btnIconPath="assets/icons/sign_in.png"
+        (onPressed)="openAuthDialog(authMode.SIGNIN)"
       ></app-auth-button>
     </div>
 
@@ -15,6 +16,7 @@
       <app-auth-button
         btnLabel="Sign Up"
         btnIconPath="assets/icons/sign_up.png"
+        (onPressed)="openAuthDialog(authMode.SIGNUP)"
       ></app-auth-button>
     </div>
   </div>
