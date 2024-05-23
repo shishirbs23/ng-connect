@@ -33,18 +33,6 @@ export class AuthComponent {
   authProviders = AuthProvider;
   authMode = AuthMode;
 
-  ngOnInit() {
-    this.checkUserToken();
-  }
-
-  checkUserToken() {
-    const token: String = localStorage.getItem('token') ?? '';
-
-    if (token) {
-      this.router.navigateByUrl(RouteNames.PROFILE);
-    }
-  }
-
   openAuthDialog(mode: string) {
     console.log(mode);
 

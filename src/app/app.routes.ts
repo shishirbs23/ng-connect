@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { CommonService } from './core/services/common.service';
+import { loggedInGuard } from './core/guards/loggedIn.guard';
 
 export enum RouteNames {
   AUTH = 'auth',
@@ -13,16 +15,13 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: RouteNames.AUTH,
+    redirectTo: () => CommonService.redirectToRoute(),
   },
   {
     path: RouteNames.AUTH,
     loadComponent: () =>
       import('./features/auth/auth.component').then((m) => m.AuthComponent),
-    /* redirectTo: () => {
-      const token: String = localStorage.getItem('token') ?? '';
-      return token ? '/profile' : '/auth';
-    }, */
+    canActivate: [loggedInGuard]
   },
   {
     path: RouteNames.PROFILE,
