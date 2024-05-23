@@ -19,6 +19,10 @@ export const routes: Routes = [
     path: RouteNames.AUTH,
     loadComponent: () =>
       import('./features/auth/auth.component').then((m) => m.AuthComponent),
+    /* redirectTo: () => {
+      const token: String = localStorage.getItem('token') ?? '';
+      return token ? '/profile' : '/auth';
+    }, */
   },
   {
     path: RouteNames.PROFILE,
