@@ -29,6 +29,7 @@ import { HasExtraSpaceValidator } from '../validators/has-extra-space.validator'
 import { MaxLengthValidator } from '../validators/max-length.validator';
 import { MinLengthValidator } from '../validators/min-length.validator';
 import { PasswordStrengthValidator } from '../validators/password-strength.validator';
+import { PasswordMatchValidator } from '../validators/password-match.validator';
 
 // Contants
 import { ENTITY } from '../../utils/constants/entity';
@@ -48,7 +49,7 @@ export class FormService {
 
   formEventSubscription: Subscription = new Subscription();
 
-  prepareAuthForm(formFields: any[]) {
+  prepareAuthForm(formFields: any[], isSignUpForm: boolean) {
     formFields.map((field) => {
       let validators = [];
 
@@ -85,18 +86,21 @@ export class FormService {
       const control = new FormControl('', validators);
       this.form.addControl(field.name, control);
     });
+
+    isSignUpForm && this.form.addValidators(PasswordMatchValidator);
   }
 
   watchFormEvents() {
     this.formEventSubscription = this.form.events.subscribe((event) => {
       if (event instanceof StatusChangeEvent && event.status == 'INVALID') {
         const controls = [this.form.controls];
+        const formErrors = this.form.errors;
+
+        let errors: string[] = [];
 
         for (const control of controls) {
           for (const [name, prop] of Object.entries(control)) {
             if (prop.errors) {
-              let errors: string[] = [];
-
               if (prop.errors['required']) {
                 errors.push('<li>This field is required</li>');
               }
@@ -153,6 +157,16 @@ export class FormService {
             }
           }
         }
+
+        if (formErrors) {
+          if (formErrors['misMatchPasswords']) {
+            if (!this.formErrors[ENTITY.CONFIRM_PASSWORD]) {
+              this.formErrors[ENTITY.CONFIRM_PASSWORD] = '';
+            }
+
+            this.formErrors[ENTITY.CONFIRM_PASSWORD] += formErrors['misMatchPasswords'];
+          }
+        }
       }
     });
   }
@@ -172,7 +186,10 @@ export class FormService {
 
       if (docSnapData) {
         this.formFields = (docSnapData['fields'] ?? []) as FormField[];
-        this.prepareAuthForm(this.formFields);
+        this.prepareAuthForm(
+          this.formFields,
+          data.mode == this.authMode.SIGNUP
+        );
         this.isFormLoading = false;
       } else {
         this.isFormLoading = false;
