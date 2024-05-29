@@ -3,32 +3,11 @@
 </h2>
 <mat-dialog-content>
   @defer (when !formService.isFormLoading) {
-  <form
-    [formGroup]="formService.form"
-    (ngSubmit)="onAuthFormSubmit()"
-    autocomplete="off"
-  >
-    @for (field of formService.formFields; track field.id) { @switch
-    (field.type) { @case (fieldTypes.DROPDOWN) {
-    <app-select [field]="field"></app-select>
-    } @case (fieldTypes.DATE) {
-    <app-datepicker [field]="field"></app-datepicker>
-    } @default {
-    <app-input [field]="field"></app-input>
-    } } }
-  </form>
+  <app-form (submitForm)="onAuthFormSubmit($event)"></app-form>
   } @if (formService.isFormLoading) {
   <div class="flex justify-content-center align-items-center gap-20px">
     <span> Loading form ... </span>
     <mat-spinner color="h-35px w-35px"></mat-spinner>
   </div>
   }
-  <mat-dialog-actions class="mt-20px">
-    <button mat-button mat-dialog-close (click)="formService.finishWatching()">
-      Close
-    </button>
-    <button mat-button [disabled]="formService.form.invalid">
-      {{ headerTitle }}
-    </button>
-  </mat-dialog-actions>
 </mat-dialog-content>

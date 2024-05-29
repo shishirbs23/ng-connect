@@ -3,20 +3,13 @@ import { Component, Inject, inject } from '@angular/core';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 
 // Components
-import { AppInputComponent } from '../../../core/components/app-input/app-input.component';
-import { AppSelectComponent } from '../../../core/components/app-select/app-select.component';
-import { AppDatepickerComponent } from '../../../core/components/app-datepicker/app-datepicker.component';
+import { AppFormComponent } from '../../../core/components/app-form/app-form.component';
 
 // Forms
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 // Enums & Constants
 import { AuthMode } from '../../../utils/enums/auth-mode.enum';
@@ -28,9 +21,6 @@ import { FormService } from '../../../core/services/form.service';
 // Models
 import { FieldType } from '../../../utils/enums/field-type.enum';
 
-// Pipes
-import { InputTypePipe } from '../../../core/pipes/input-type.pipe';
-
 @Component({
   selector: 'app-auth-dialog',
   standalone: true,
@@ -40,16 +30,8 @@ import { InputTypePipe } from '../../../core/pipes/input-type.pipe';
     ReactiveFormsModule,
     MatButtonModule,
     MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
     MatProgressSpinnerModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    InputTypePipe,
-    AppInputComponent,
-    AppSelectComponent,
-    AppDatepickerComponent,
+    AppFormComponent,
   ],
 })
 export class AuthDialogComponent {
@@ -69,7 +51,9 @@ export class AuthDialogComponent {
     this.formService.watchFormEvents();
   }
 
-  onAuthFormSubmit() {}
+  onAuthFormSubmit(event: FormGroup<any>) {
+    console.log(event);
+  }
 
   ngOnDestroy() {
     this.formService.finishWatching();
