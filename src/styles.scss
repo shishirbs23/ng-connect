@@ -109,7 +109,7 @@ body {
   text-align: center;
 }
 
-@for $i from 0 through 30 {
+@for $i from 0 through 1000 {
   @if $i >=1 and $i <=10 {
     .top-#{$i * 10} {
       top: #{$i * 10}+ "%" !important;
@@ -277,4 +277,9 @@ body {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+.mat-mdc-form-field-hint-wrapper, .mat-mdc-form-field-error-wrapper {
+  position: relative !important;
+  margin-top: -30px;
 }
