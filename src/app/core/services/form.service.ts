@@ -28,6 +28,7 @@ import { LeadingAlphabeticValidator } from '../validators/leading-alphabetic.val
 import { HasExtraSpaceValidator } from '../validators/has-extra-space.validator';
 import { MaxLengthValidator } from '../validators/max-length.validator';
 import { MinLengthValidator } from '../validators/min-length.validator';
+import { PasswordStrengthValidator } from '../validators/password-strength.validator';
 
 // Contants
 import { ENTITY } from '../../utils/constants/entity';
@@ -64,7 +65,7 @@ export class FormService {
           [FieldType.TEXT, FieldType.EMAIL, FieldType.PASSWORD] as string[]
         ).includes(field.type)
       ) {
-        if (field.name == ENTITY.DISPLAY_NAME) {
+        if (field.name === ENTITY.DISPLAY_NAME) {
           validators.push(LeadingAlphabeticValidator);
           validators.push(HasExtraSpaceValidator);
           validators.push(MaxLengthValidator);
@@ -72,6 +73,10 @@ export class FormService {
         } else {
           validators.push(Validators.maxLength(field.maxLength));
           validators.push(Validators.minLength(field.minLength));
+
+          if (field.name === ENTITY.PASSWORD) {
+            validators.push(PasswordStrengthValidator);
+          }
         }
       } else if (field.name == ENTITY.DATE_OF_BIRTH) {
         validators.push(MinimumAgeValidator);
@@ -136,6 +141,12 @@ export class FormService {
 
               if (prop.errors['hasExtraSpace']) {
                 errors.push(`<li>Contains extra spaces</li>`);
+              }
+
+              if (prop.errors['passwordStrength']) {
+                for (const message of prop.errors['passwordStrength']) {
+                  errors.push(message);
+                }
               }
 
               this.formErrors[name] = errors.join('');
