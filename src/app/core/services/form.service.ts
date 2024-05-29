@@ -95,11 +95,6 @@ export class FormService {
               }
 
               this.formErrors[name] = errors.join('');
-
-              if (name == 'dob') {
-                console.log(`${name} has errors`);
-                console.log(this.formErrors[name]);
-              }
             }
           }
         }
