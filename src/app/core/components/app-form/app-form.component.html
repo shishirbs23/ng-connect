@@ -1,0 +1,22 @@
+<form
+  [formGroup]="formService.form"
+  (ngSubmit)="submitForm.emit(formService.form)"
+  autocomplete="off"
+>
+  @for (field of formService.formFields; track field.id) { @switch (field.type)
+  { @case (fieldTypes.DROPDOWN) {
+  <app-select [field]="field"></app-select>
+  } @case (fieldTypes.DATE) {
+  <app-datepicker [field]="field"></app-datepicker>
+  } @default {
+  <app-input [field]="field"></app-input>
+  } } }
+  <mat-dialog-actions class="mt-20px justify-content-end">
+    <button mat-button mat-dialog-close (click)="formService.finishWatching()">
+      Close
+    </button>
+    <button mat-button [disabled]="formService.form.invalid" type="submit">
+      Sign Up
+    </button>
+  </mat-dialog-actions>
+</form>
