@@ -9,7 +9,7 @@ import { FieldType } from '../../utils/enums/field-type.enum';
 })
 export class InputTypePipe implements PipeTransform {
   transform(fieldType: string): string {
-    let inputType: string = 'text';
+    let inputType!: string;
 
     if (fieldType == FieldType.TEXT) {
       inputType = 'text';

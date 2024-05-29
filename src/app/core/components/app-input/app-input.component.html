@@ -13,6 +13,14 @@
       [formControlName]="field().name"
       [type]="field().type | inputType"
     />
+    @if (shouldShowEye) {
+    <mat-icon matSuffix (click)="toggleInput()">
+      <img
+        class="mr-10px"
+        [src]="isVisible ? visibleIconPath : invisibleIconPath"
+      />
+    </mat-icon>
+    }
     <mat-error [innerHTML]="formService.formErrors[field().name]"></mat-error>
   </mat-form-field>
 </div>
