@@ -53,4 +53,6 @@ export class AppDatepickerComponent {
     value: '',
     values: [],
   });
+  minDate = new Date(1900, 0, 1);
+  maxDate = new Date();
 }
