@@ -10,10 +10,6 @@ import { MatDialog } from '@angular/material/dialog';
 // Services
 import { AuthService } from '../../services/auth.service';
 
-// Routing
-import { RouteNames } from '../../app.routes';
-import { Router } from '@angular/router';
-
 // Enums
 import { AuthProvider } from '../../utils/enums/auth-provider.enum';
 import { AuthMode } from '../../utils/enums/auth-mode.enum';
@@ -27,7 +23,6 @@ import { AuthMode } from '../../utils/enums/auth-mode.enum';
 })
 export class AuthComponent {
   private authService = inject(AuthService);
-  private router = inject(Router);
   private dialog = inject(MatDialog);
 
   authProviders = AuthProvider;
