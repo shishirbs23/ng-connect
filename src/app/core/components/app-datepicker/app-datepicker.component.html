@@ -1,1 +1,15 @@
-<p>app-datepicker works!</p>
+<div [formGroup]="formService.form">
+  <mat-form-field
+    class="w-100 mt-30px"
+    appearance="outline"
+    floatLabel="always"
+  >
+    <mat-label>
+      {{ field().label }}
+    </mat-label>
+    <input matInput [matDatepicker]="picker" [formControlName]="field().name" />
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error [innerHTML]="formService.formErrors[field().name]"></mat-error>
+  </mat-form-field>
+</div>

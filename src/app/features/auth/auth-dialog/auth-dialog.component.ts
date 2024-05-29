@@ -13,6 +13,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 // Components
 import { AppInputComponent } from '../../../core/components/app-input/app-input.component';
 import { AppSelectComponent } from '../../../core/components/app-select/app-select.component';
+import { AppDatepickerComponent } from '../../../core/components/app-datepicker/app-datepicker.component';
 
 // Forms
 import { ReactiveFormsModule } from '@angular/forms';
@@ -48,6 +49,7 @@ import { InputTypePipe } from '../../../core/pipes/input-type.pipe';
     InputTypePipe,
     AppInputComponent,
     AppSelectComponent,
+    AppDatepickerComponent,
   ],
 })
 export class AuthDialogComponent {

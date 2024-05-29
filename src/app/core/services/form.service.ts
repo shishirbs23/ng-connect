@@ -22,6 +22,12 @@ import { AuthMode } from '../../utils/enums/auth-mode.enum';
 import { FormId } from '../../utils/constants/formId';
 import { Collection } from '../../utils/enums/collection.enum';
 
+// Moment.JS
+import * as _moment from 'moment';
+import { default as _rollupMoment } from 'moment';
+
+const moment = _rollupMoment || _moment;
+
 @Injectable({
   providedIn: 'root',
 })
