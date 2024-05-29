@@ -12,7 +12,7 @@ import {
   GithubAuthProvider,
 } from 'firebase/auth';
 import { RouteNames } from '../app.routes';
-import { AuthProvider as AProvider } from '../enums/auth-provider.enum';
+import { AuthProvider as AProvider } from '../utils/enums/auth-provider.enum';
 
 @Injectable({
   providedIn: 'root',

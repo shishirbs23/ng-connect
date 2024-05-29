@@ -15,8 +15,8 @@ import { RouteNames } from '../../app.routes';
 import { Router } from '@angular/router';
 
 // Enums
-import { AuthProvider } from '../../enums/auth-provider.enum';
-import { AuthMode } from '../../enums/auth-mode.enum';
+import { AuthProvider } from '../../utils/enums/auth-provider.enum';
+import { AuthMode } from '../../utils/enums/auth-mode.enum';
 
 @Component({
   selector: 'app-auth',
@@ -34,13 +34,12 @@ export class AuthComponent {
   authMode = AuthMode;
 
   openAuthDialog(mode: string) {
-    console.log(mode);
-
     const dialogRef = this.dialog.open(AuthDialogComponent, {
       width: '400px',
       data: {
         mode,
       },
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe((result) => {

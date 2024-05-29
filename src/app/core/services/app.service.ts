@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class CommonService {
+export class AppService {
+  _appDB: any;
+
   constructor() {}
 
   static redirectToRoute(): string {
