@@ -12,6 +12,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 
 // Components
 import { AppInputComponent } from '../../../core/components/app-input/app-input.component';
+import { AppSelectComponent } from '../../../core/components/app-select/app-select.component';
 
 // Forms
 import { ReactiveFormsModule } from '@angular/forms';
@@ -46,6 +47,7 @@ import { InputTypePipe } from '../../../core/pipes/input-type.pipe';
     MatDatepickerModule,
     InputTypePipe,
     AppInputComponent,
+    AppSelectComponent,
   ],
 })
 export class AuthDialogComponent {

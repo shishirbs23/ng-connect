@@ -10,21 +10,7 @@
   >
     @for (field of formService.formFields; track field.id) { @switch
     (field.type) { @case (fieldTypes.DROPDOWN) {
-    <mat-form-field
-      class="w-100 mt-30px"
-      appearance="outline"
-      floatLabel="always"
-    >
-      <mat-label>
-        {{ field.label }}
-      </mat-label>
-      <mat-select [formControlName]="field.name">
-        @for (option of field.values; track option) {
-        <mat-option [value]="option.id">{{ option.label }}</mat-option>
-        }
-      </mat-select>
-      <mat-error [innerHTML]="formService.formErrors[field.name]"></mat-error>
-    </mat-form-field>
+    <app-select [field]="field"></app-select>
     } @case (fieldTypes.DATE) {
     <mat-form-field
       class="w-100 mt-30px"
@@ -44,22 +30,6 @@
     </mat-form-field>
     } @default {
     <app-input [field]="field"></app-input>
-    <!-- <mat-form-field
-      class="w-100 mt-30px"
-      appearance="outline"
-      floatLabel="always"
-    >
-      <mat-label>
-        {{ field.label }}
-      </mat-label>
-      <input
-        autocomplete="off"
-        matInput
-        [formControlName]="field.name"
-        [type]="field.type | inputType"
-      />
-      <mat-error [innerHTML]="formService.formErrors[field.name]"></mat-error>
-    </mat-form-field> -->
     } } }
   </form>
   } @if (formService.isFormLoading) {
