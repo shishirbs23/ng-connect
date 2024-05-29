@@ -1,4 +1,4 @@
-import { Component, inject, input, model } from '@angular/core';
+import { Component, inject, model } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 
 // Angular Material
@@ -38,8 +38,6 @@ export class AppInputComponent {
     value: '',
     values: [],
   });
-
-  /*  formService = input<FormService>(new FormService()); */
 
   formService = inject(FormService);
 }
