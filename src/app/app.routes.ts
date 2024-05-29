@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
-import { CommonService } from './core/services/common.service';
+import { AppService } from './core/services/app.service';
 import { loggedInGuard } from './core/guards/loggedIn.guard';
 
 export enum RouteNames {
@@ -15,7 +15,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: () => CommonService.redirectToRoute(),
+    redirectTo: () => AppService.redirectToRoute(),
   },
   {
     path: RouteNames.AUTH,
