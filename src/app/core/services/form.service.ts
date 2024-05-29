@@ -19,11 +19,18 @@ import { FormField } from '../../models/formField.model';
 // Enums & Constants
 import { FieldType } from '../../utils/enums/field-type.enum';
 import { AuthMode } from '../../utils/enums/auth-mode.enum';
-import { FormId } from '../../utils/constants/formId';
+import { FormId } from '../../utils/constants/form-id';
 import { Collection } from '../../utils/enums/collection.enum';
 
 // Validators
 import { MinimumAgeValidator } from '../validators/minimum-age.validator';
+import { LeadingAlphabeticValidator } from '../validators/leading-alphabetic.validator';
+import { HasExtraSpaceValidator } from '../validators/has-extra-space.validator';
+import { MaxLengthValidator } from '../validators/max-length.validator';
+import { MinLengthValidator } from '../validators/min-length.validator';
+
+// Contants
+import { ENTITY } from '../../utils/constants/entity';
 
 @Injectable({
   providedIn: 'root',
@@ -40,7 +47,7 @@ export class FormService {
 
   formEventSubscription: Subscription = new Subscription();
 
-  prepareForm(formFields: any[]) {
+  prepareAuthForm(formFields: any[]) {
     formFields.map((field) => {
       let validators = [];
 
@@ -57,9 +64,16 @@ export class FormService {
           [FieldType.TEXT, FieldType.EMAIL, FieldType.PASSWORD] as string[]
         ).includes(field.type)
       ) {
-        validators.push(Validators.maxLength(field.maxLength));
-        validators.push(Validators.minLength(field.minLength));
-      } else if (FieldType.DATE === field.type) {
+        if (field.name == ENTITY.DISPLAY_NAME) {
+          validators.push(LeadingAlphabeticValidator);
+          validators.push(HasExtraSpaceValidator);
+          validators.push(MaxLengthValidator);
+          validators.push(MinLengthValidator);
+        } else {
+          validators.push(Validators.maxLength(field.maxLength));
+          validators.push(Validators.minLength(field.minLength));
+        }
+      } else if (field.name == ENTITY.DATE_OF_BIRTH) {
         validators.push(MinimumAgeValidator);
       }
 
@@ -86,13 +100,13 @@ export class FormService {
                 errors.push('<li>Invalid email</li>');
               }
 
-              if (prop.errors['maxlength']) {
+              if (prop.errors['maxlength'] || prop.errors['invalidMaxLength']) {
                 errors.push(
                   `<li>This field can have at most ${prop.errors['maxlength']['requiredLength']} characters</li>`
                 );
               }
 
-              if (prop.errors['minlength']) {
+              if (prop.errors['minlength'] || prop.errors['invalidMinLength']) {
                 errors.push(
                   `<li>This field must have at least ${prop.errors['minlength']['requiredLength']} characters</li>`
                 );
@@ -112,6 +126,16 @@ export class FormService {
 
               if (prop.errors['invalidAge']) {
                 errors.push(`<li>You must be at least 18 years old</li>`);
+              }
+
+              if (prop.errors['noLeadingAlphabetic']) {
+                errors.push(
+                  `<li>Please enter a value that starts with a letter (A-Z or a-z)</li>`
+                );
+              }
+
+              if (prop.errors['hasExtraSpace']) {
+                errors.push(`<li>Contains extra spaces</li>`);
               }
 
               this.formErrors[name] = errors.join('');
@@ -137,7 +161,7 @@ export class FormService {
 
       if (docSnapData) {
         this.formFields = (docSnapData['fields'] ?? []) as FormField[];
-        this.prepareForm(this.formFields);
+        this.prepareAuthForm(this.formFields);
         this.isFormLoading = false;
       } else {
         this.isFormLoading = false;

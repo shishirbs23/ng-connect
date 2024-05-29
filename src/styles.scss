@@ -89,8 +89,16 @@ body {
   align-items: center !important;
 }
 
+.justify-content-start {
+  justify-content: flex-start !important;
+}
+
 .justify-content-center {
   justify-content: center !important;
+}
+
+.justify-content-end {
+  justify-content: flex-end !important;
 }
 
 .ion-text-none {
@@ -279,7 +287,8 @@ body {
   -webkit-box-orient: vertical;
 }
 
-.mat-mdc-form-field-hint-wrapper, .mat-mdc-form-field-error-wrapper {
+.mat-mdc-form-field-hint-wrapper,
+.mat-mdc-form-field-error-wrapper {
   position: relative !important;
   margin-top: -30px;
 }
