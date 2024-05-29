@@ -22,11 +22,8 @@ import { AuthMode } from '../../utils/enums/auth-mode.enum';
 import { FormId } from '../../utils/constants/formId';
 import { Collection } from '../../utils/enums/collection.enum';
 
-// Moment.JS
-import * as _moment from 'moment';
-import { default as _rollupMoment } from 'moment';
-
-const moment = _rollupMoment || _moment;
+// Validators
+import { MinimumAgeValidator } from '../validators/minimum-age.validator';
 
 @Injectable({
   providedIn: 'root',
@@ -62,10 +59,11 @@ export class FormService {
       ) {
         validators.push(Validators.maxLength(field.maxLength));
         validators.push(Validators.minLength(field.minLength));
+      } else if (FieldType.DATE === field.type) {
+        validators.push(MinimumAgeValidator);
       }
 
       const control = new FormControl('', validators);
-
       this.form.addControl(field.name, control);
     });
   }
@@ -98,6 +96,22 @@ export class FormService {
                 errors.push(
                   `<li>This field must have at least ${prop.errors['minlength']['requiredLength']} characters</li>`
                 );
+              }
+
+              if (prop.errors['matDatepickerParse']) {
+                errors.push(`<li>Invalid date format</li>`);
+              }
+
+              if (prop.errors['matDatepickerMax']) {
+                errors.push(`<li>Date exceeds the maximum allowed date</li>`);
+              }
+
+              if (prop.errors['matDatepickerMin']) {
+                errors.push(`<li>Date is too early</li>`);
+              }
+
+              if (prop.errors['invalidAge']) {
+                errors.push(`<li>You must be at least 18 years old</li>`);
               }
 
               this.formErrors[name] = errors.join('');
