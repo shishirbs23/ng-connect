@@ -1,1 +1,17 @@
-<p>app-select works!</p>
+<div [formGroup]="formService.form">
+  <mat-form-field
+    class="w-100 mt-30px"
+    appearance="outline"
+    floatLabel="always"
+  >
+    <mat-label>
+      {{ field().label }}
+    </mat-label>
+    <mat-select [formControlName]="field().name">
+      @for (option of field().values; track option) {
+      <mat-option [value]="option.id">{{ option.label }}</mat-option>
+      }
+    </mat-select>
+    <mat-error [innerHTML]="formService.formErrors[field().name]"></mat-error>
+  </mat-form-field>
+</div>
