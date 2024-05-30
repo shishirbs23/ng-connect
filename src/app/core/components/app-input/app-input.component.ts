@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 // Models
-import { FormField } from '../../../models/formField.model';
+import { AuthFormField } from '../../../models/formField.model';
 
 // Services
 import { FormService } from '../../services/form.service';
@@ -30,7 +30,7 @@ import { FieldType } from '../../../utils/enums/field-type.enum';
   ],
 })
 export class AppInputComponent {
-  field = model<FormField>({
+  field = model<AuthFormField>({
     id: 0,
     isRequired: false,
     label: '',

@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormService } from '../../services/form.service';
 
 // Models
-import { FormField } from '../../../models/formField.model';
+import { AuthFormField } from '../../../models/formField.model';
 
 @Component({
   selector: 'app-select',
@@ -23,7 +23,7 @@ import { FormField } from '../../../models/formField.model';
   styleUrl: './app-select.component.scss'
 })
 export class AppSelectComponent {
-  field = model<FormField>({
+  field = model<AuthFormField>({
     id: 0,
     isRequired: false,
     label: '',
