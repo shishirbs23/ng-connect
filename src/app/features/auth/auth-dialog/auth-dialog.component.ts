@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 
 // Enums & Constants
 import { AuthMode } from '../../../utils/enums/auth-mode.enum';
+import { DialogMode } from '../../../utils/enums/dialog-mode.enum';
 import { FieldType } from '../../../utils/enums/field-type.enum';
 
 // Services
@@ -25,10 +26,7 @@ import { AppService } from '../../../core/services/app.service';
 import { FormService } from '../../../core/services/form.service';
 
 // Models
-import { SignUp } from '../../../models/sign-up.model';
-
-// Moment
-import moment from 'moment';
+import { AuthUser } from '../../../models/auth-user.model';
 
 @Component({
   selector: 'app-auth-dialog',
@@ -45,11 +43,12 @@ import moment from 'moment';
   ],
 })
 export class AuthDialogComponent {
-  authMode = AuthMode;
-  headerTitle: string =
-    this.data.mode == this.authMode.SIGNIN ? 'Sign In' : 'Sign Up';
-
+  authModes = AuthMode;
   fieldTypes = FieldType;
+  dialogModes = DialogMode;
+
+  headerTitle: string =
+    this.data.mode == this.authModes.SIGNIN ? 'Sign In' : 'Sign Up';
 
   authService = inject(AuthService);
   appService = inject(AppService);
@@ -64,12 +63,18 @@ export class AuthDialogComponent {
   }
 
   onAuthFormSubmit(event: FormGroup<any>) {
-    const signUpFormValue: SignUp = event.value;
+    const authFormValue: AuthUser = event.value;
 
-    console.log(signUpFormValue);
+    this.data.mode == this.authModes.SIGNIN
+      ? this.onSignIn(authFormValue)
+      : this.onSignUp(authFormValue);
+  }
 
-    signUpFormValue.dob = moment().toISOString();
-   
+  onSignIn(signInFormValue: Partial<AuthUser>) {
+    this.authService.signIn(signInFormValue);
+  }
+
+  onSignUp(signUpFormValue: AuthUser) {
     this.authService.signUp(signUpFormValue);
   }
 

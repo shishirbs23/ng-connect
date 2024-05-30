@@ -38,11 +38,11 @@ export class AppFormComponent {
   headerTitle = input<string>();
   isLoading = input<boolean>();
   formService = inject(FormService);
-  
+
   submitForm = output<FormGroup>();
   fieldTypes = FieldType;
 
-  onSignUp() {
+  onSubmitForm() {
     this.formService.form.disable();
     this.submitForm.emit(this.formService.form);
   }

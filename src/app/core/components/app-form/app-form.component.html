@@ -1,6 +1,6 @@
 <form
   [formGroup]="formService.form"
-  (ngSubmit)="onSignUp()"
+  (ngSubmit)="onSubmitForm()"
   autocomplete="off"
 >
   @for (field of formService.formFields; track field.id) { @switch (field.type)

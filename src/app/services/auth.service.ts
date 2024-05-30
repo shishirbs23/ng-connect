@@ -29,7 +29,7 @@ import { FormService } from '../core/services/form.service';
 import { UiService } from '../core/services/ui.service';
 
 // Models
-import { SignUp } from '../models/sign-up.model';
+import { AuthUser } from '../models/auth-user.model';
 
 // Enums
 import { Collection } from '../utils/enums/collection.enum';
@@ -37,6 +37,9 @@ import { User } from '../models/user.model';
 
 // Components
 import { EmailVerificationComponent } from '../features/auth/email-verification/email-verification.component';
+
+// Moment
+import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -52,7 +55,53 @@ export class AuthService {
   isAuthLoading: boolean = false;
   settingUserData: boolean = false;
 
-  signUp(signUpFormValue: SignUp) {
+  handleAuthErrors(error: any) {
+    let errorMessage: string;
+
+    switch (error.code) {
+      case 'auth/email-already-in-use': {
+        errorMessage = 'Email already in use';
+        break;
+      }
+      case 'auth/invalid-credential': {
+        errorMessage = 'Incorrect email or password';
+        break;
+      }
+      default: {
+        errorMessage = 'Errors occur during sign in. Try after sometimes';
+      }
+    }
+
+    this.uiService.openSnackbar(errorMessage, true);
+    this.formService.form.enable();
+  }
+
+  signIn(signInFormValue: Partial<AuthUser>) {
+    this.isAuthLoading = true;
+
+    signInWithEmailAndPassword(
+      this.auth,
+      signInFormValue.email!,
+      signInFormValue.password!
+    )
+      .then((result: any) => {
+        this.formService.finishWatching();
+        this.uiService.closeDialog(null);
+        this.uiService.openSnackbar('Signed in successfully');
+        localStorage.setItem('token', result.user['accessToken']);
+        this.router.navigateByUrl(RouteNames.PROFILE);
+      })
+      .catch((error) => {
+        this.handleAuthErrors(error);
+      })
+      .finally(() => {
+        this.isAuthLoading = false;
+      });
+  }
+
+  signUp(signUpFormValue: AuthUser) {
+    signUpFormValue.dob = moment(signUpFormValue.dob).toISOString();
+
     this.isAuthLoading = true;
 
     return createUserWithEmailAndPassword(
@@ -61,8 +110,7 @@ export class AuthService {
       signUpFormValue.password
     )
       .then((result: any) => {
-        console.log(result.user);
-
+        this.formService.finishWatching();
         this.setUserData(
           {
             uid: result.user.uid,
@@ -73,32 +121,14 @@ export class AuthService {
             genderId: signUpFormValue.genderId,
             dob: signUpFormValue.dob,
             address: null,
+            phoneNumber: null,
           },
           true
         );
-
         this.sendEmailVerification();
-        /* this.uiService.openSnackbar('Signed up successfully'); */
-        /* localStorage.setItem('token', result.user['accessToken']);
-        this.router.navigateByUrl(RouteNames.PROFILE); */
-        this.formService.finishWatching();
       })
       .catch((error) => {
-        console.log(error.code);
-
-        let errorMessage: string;
-
-        switch (error.code) {
-          case 'auth/email-already-in-use': {
-            errorMessage = 'Email already in use';
-            break;
-          }
-          default: {
-            errorMessage = 'Errors occur during sign up. Try after sometimes';
-          }
-        }
-
-        this.uiService.openSnackbar(errorMessage, true);
+        this.handleAuthErrors(error);
       })
       .finally(() => {
         this.isAuthLoading = false;

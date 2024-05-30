@@ -17,11 +17,8 @@ export class FormFieldErrorPipe implements PipeTransform {
 
     let errors: string[] = [];
 
-    console.log(fieldName, maxLength, minLength);
-
     if (formControl.touched) {
       if (formControl.hasError('required')) {
-        console.log(formControl);
         errors.push(`${fieldName} is required`);
       }
 

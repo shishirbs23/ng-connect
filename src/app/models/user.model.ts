@@ -7,4 +7,5 @@ export interface User {
   genderId: number | null;
   dob: string | null;
   address: string | null;
+  phoneNumber: string | null;
 }
