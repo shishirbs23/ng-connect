@@ -14,7 +14,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { AppService } from './app.service';
 
 // Models
-import { FormField } from '../../models/formField.model';
+import { AuthFormField } from '../../models/formField.model';
 
 // Enums & Constants
 import { FieldType } from '../../utils/enums/field-type.enum';
@@ -41,7 +41,7 @@ export class FormService {
   public form: FormGroup = new FormGroup({});
   public formErrors: Record<string, string> = {};
   public isFormLoading!: boolean;
-  public formFields: FormField[] = [];
+  public formFields: AuthFormField[] = [];
 
   authMode = AuthMode;
 
@@ -153,6 +153,10 @@ export class FormService {
                 }
               }
 
+              if (prop.errors['misMatchPasswords']) {
+                errors.push(prop.errors['misMatchPasswords']);
+              }
+
               this.formErrors[name] = errors.join('');
             }
           }
@@ -164,7 +168,14 @@ export class FormService {
               this.formErrors[ENTITY.CONFIRM_PASSWORD] = '';
             }
 
-            this.formErrors[ENTITY.CONFIRM_PASSWORD] += formErrors['misMatchPasswords'];
+            if (
+              !this.formErrors[ENTITY.CONFIRM_PASSWORD].includes(
+                formErrors['misMatchPasswords']
+              )
+            ) {
+              this.formErrors[ENTITY.CONFIRM_PASSWORD] +=
+                formErrors['misMatchPasswords'];
+            }
           }
         }
       }
@@ -185,7 +196,7 @@ export class FormService {
       const docSnapData = docSnap.data();
 
       if (docSnapData) {
-        this.formFields = (docSnapData['fields'] ?? []) as FormField[];
+        this.formFields = (docSnapData['fields'] ?? []) as AuthFormField[];
         this.prepareAuthForm(
           this.formFields,
           data.mode == this.authMode.SIGNUP
@@ -200,6 +211,7 @@ export class FormService {
   }
 
   finishWatching() {
+    this.form.enable();
     this.form.reset();
     this.formEventSubscription?.unsubscribe();
   }

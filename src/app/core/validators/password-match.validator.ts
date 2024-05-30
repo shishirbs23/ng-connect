@@ -7,7 +7,7 @@ export function PasswordMatchValidator(
   const confirmPasswordValue = group.value['confirmPassword'];
 
   if (passwordValue) {
-    if (passwordValue === confirmPasswordValue) {
+    if (passwordValue == confirmPasswordValue) {
       return null;
     } else {
       return { misMatchPasswords: "<li>Passwords don't match</li>" };

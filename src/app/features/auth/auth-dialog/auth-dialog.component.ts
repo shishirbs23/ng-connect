@@ -4,6 +4,7 @@ import { Component, Inject, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Components
 import { AppFormComponent } from '../../../core/components/app-form/app-form.component';
@@ -11,15 +12,23 @@ import { AppFormComponent } from '../../../core/components/app-form/app-form.com
 // Forms
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 
+// Router
+import { Router } from '@angular/router';
+
 // Enums & Constants
 import { AuthMode } from '../../../utils/enums/auth-mode.enum';
+import { FieldType } from '../../../utils/enums/field-type.enum';
 
 // Services
+import { AuthService } from '../../../services/auth.service';
 import { AppService } from '../../../core/services/app.service';
 import { FormService } from '../../../core/services/form.service';
 
 // Models
-import { FieldType } from '../../../utils/enums/field-type.enum';
+import { SignUp } from '../../../models/sign-up.model';
+
+// Moment
+import moment from 'moment';
 
 @Component({
   selector: 'app-auth-dialog',
@@ -31,6 +40,7 @@ import { FieldType } from '../../../utils/enums/field-type.enum';
     MatButtonModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
     AppFormComponent,
   ],
 })
@@ -41,8 +51,10 @@ export class AuthDialogComponent {
 
   fieldTypes = FieldType;
 
+  authService = inject(AuthService);
   appService = inject(AppService);
   formService = inject(FormService);
+  router = inject(Router);
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { mode: string }) {}
 
@@ -52,7 +64,13 @@ export class AuthDialogComponent {
   }
 
   onAuthFormSubmit(event: FormGroup<any>) {
-    console.log(event);
+    const signUpFormValue: SignUp = event.value;
+
+    console.log(signUpFormValue);
+
+    signUpFormValue.dob = moment().toISOString();
+   
+    this.authService.signUp(signUpFormValue);
   }
 
   ngOnDestroy() {

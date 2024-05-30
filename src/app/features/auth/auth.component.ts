@@ -4,11 +4,9 @@ import { Component, inject } from '@angular/core';
 import { AuthButtonComponent } from './auth-button/auth-button.component';
 import { AuthDialogComponent } from './auth-dialog/auth-dialog.component';
 
-// Angular Material
-import { MatDialog } from '@angular/material/dialog';
-
 // Services
 import { AuthService } from '../../services/auth.service';
+import { UiService } from '../../core/services/ui.service';
 
 // Enums
 import { AuthProvider } from '../../utils/enums/auth-provider.enum';
@@ -23,23 +21,13 @@ import { AuthMode } from '../../utils/enums/auth-mode.enum';
 })
 export class AuthComponent {
   private authService = inject(AuthService);
-  private dialog = inject(MatDialog);
+  private uiService = inject(UiService);
 
   authProviders = AuthProvider;
   authMode = AuthMode;
 
   openAuthDialog(mode: string) {
-    const dialogRef = this.dialog.open(AuthDialogComponent, {
-      width: '400px',
-      data: {
-        mode,
-      },
-      disableClose: true,
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(result);
-    });
+    this.uiService.openDialog(AuthDialogComponent, { mode }, '400px');
   }
 
   connectWithAuthProvider(authProvider: string) {

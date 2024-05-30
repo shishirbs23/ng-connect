@@ -29,6 +29,6 @@ export class ProfileComponent {
   }
 
   signOutUser() {
-    this.authService.signOutUser();
+    this.authService.signOut();
   }
 }

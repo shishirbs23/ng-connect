@@ -3,7 +3,11 @@
 </h2>
 <mat-dialog-content>
   @defer (when !formService.isFormLoading) {
-  <app-form (submitForm)="onAuthFormSubmit($event)"></app-form>
+  <app-form
+    [headerTitle]="headerTitle"
+    [isLoading]="authService.isAuthLoading || authService.settingUserData"
+    (submitForm)="onAuthFormSubmit($event)"
+  ></app-form>
   } @if (formService.isFormLoading) {
   <div class="flex justify-content-center align-items-center gap-20px">
     <span> Loading form ... </span>

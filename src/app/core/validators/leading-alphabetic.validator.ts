@@ -12,8 +12,8 @@ export function LeadingAlphabeticValidator(
   const firstCharacter: string = value[0];
 
   if (
-    (firstCharacter >= 'A' && firstCharacter >= 'Z') ||
-    (firstCharacter >= 'a' && firstCharacter >= 'z')
+    (firstCharacter >= 'A' && firstCharacter <= 'Z') ||
+    (firstCharacter >= 'a' && firstCharacter <= 'z')
   ) {
     return null;
   }

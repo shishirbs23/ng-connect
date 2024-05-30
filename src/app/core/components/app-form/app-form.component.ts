@@ -1,8 +1,9 @@
-import { Component, inject, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 
 // Angular Material
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Components
 import { AppInputComponent } from '../app-input/app-input.component';
@@ -25,6 +26,7 @@ import { FieldType } from '../../../utils/enums/field-type.enum';
     ReactiveFormsModule,
     MatButtonModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
     AppInputComponent,
     AppSelectComponent,
     AppDatepickerComponent,
@@ -33,7 +35,15 @@ import { FieldType } from '../../../utils/enums/field-type.enum';
   styleUrl: './app-form.component.scss',
 })
 export class AppFormComponent {
+  headerTitle = input<string>();
+  isLoading = input<boolean>();
   formService = inject(FormService);
+  
   submitForm = output<FormGroup>();
   fieldTypes = FieldType;
+
+  onSignUp() {
+    this.formService.form.disable();
+    this.submitForm.emit(this.formService.form);
+  }
 }
