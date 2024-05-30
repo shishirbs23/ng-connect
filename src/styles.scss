@@ -292,3 +292,19 @@ body {
   position: relative !important;
   margin-top: -30px;
 }
+
+.success-snackbar {
+  .mat-mdc-snack-bar-label {
+    color: #5edd5e !important;
+  }
+}
+
+.error-snackbar {
+  .mat-mdc-snack-bar-label {
+    color: #e77c7c !important;
+  }
+}
+
+.mat-mdc-snack-bar-container {
+  margin-bottom: 40px;
+}

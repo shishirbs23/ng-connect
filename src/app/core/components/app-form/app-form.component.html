@@ -1,6 +1,6 @@
 <form
   [formGroup]="formService.form"
-  (ngSubmit)="submitForm.emit(formService.form)"
+  (ngSubmit)="onSignUp()"
   autocomplete="off"
 >
   @for (field of formService.formFields; track field.id) { @switch (field.type)
@@ -16,7 +16,11 @@
       Close
     </button>
     <button mat-button [disabled]="formService.form.invalid" type="submit">
-      Sign Up
+      @if (isLoading()) {
+      <mat-spinner color="h-20px w-20px"></mat-spinner>
+      } @else {
+      <span> {{ headerTitle() }} </span>
+      }
     </button>
   </mat-dialog-actions>
 </form>
