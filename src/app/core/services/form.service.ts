@@ -96,11 +96,11 @@ export class FormService {
         const controls = [this.form.controls];
         const formErrors = this.form.errors;
 
-        let errors: string[] = [];
-
         for (const control of controls) {
           for (const [name, prop] of Object.entries(control)) {
             if (prop.errors) {
+              let errors: string[] = [];
+
               if (prop.errors['required']) {
                 errors.push('<li>This field is required</li>');
               }
