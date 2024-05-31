@@ -30,6 +30,7 @@ import { MaxLengthValidator } from '../validators/max-length.validator';
 import { MinLengthValidator } from '../validators/min-length.validator';
 import { PasswordStrengthValidator } from '../validators/password-strength.validator';
 import { PasswordMatchValidator } from '../validators/password-match.validator';
+import { UniqueValueValidator } from '../validators/unique-value.validator';
 
 // Contants
 import { ENTITY } from '../../utils/enums/entity.enum';
@@ -40,6 +41,7 @@ import { FormType } from '../../utils/enums/form-type.enum';
 })
 export class FormService {
   public form: FormGroup = new FormGroup({});
+  public formMessage: string = '';
   public formErrors: Record<string, string> = {};
   public isFormLoading!: boolean;
   public formFields: AuthFormField[] = [];
@@ -48,11 +50,12 @@ export class FormService {
 
   appService = inject(AppService);
 
-  formEventSubscription: Subscription = new Subscription();
+  formEventSub: Subscription = new Subscription();
 
   prepareAuthForm(formFields: any[], isSignUpForm: boolean) {
     formFields.map((field) => {
       let validators = [];
+      let asyncValidators = [];
 
       if (field.isRequired) {
         validators.push(Validators.required);
@@ -72,6 +75,10 @@ export class FormService {
           validators.push(HasExtraSpaceValidator);
           validators.push(MaxLengthValidator);
           validators.push(MinLengthValidator);
+
+          asyncValidators.push(
+            UniqueValueValidator.createValidator(this.appService)
+          );
         } else {
           validators.push(Validators.maxLength(field.maxLength));
           validators.push(Validators.minLength(field.minLength));
@@ -84,7 +91,7 @@ export class FormService {
         validators.push(MinimumAgeValidator);
       }
 
-      const control = new FormControl('', validators);
+      const control = new FormControl('', validators, asyncValidators);
       this.form.addControl(field.name, control);
     });
 
@@ -92,7 +99,7 @@ export class FormService {
   }
 
   watchFormEvents() {
-    this.formEventSubscription = this.form.events.subscribe((event) => {
+    this.formEventSub = this.form.events.subscribe((event) => {
       if (event instanceof StatusChangeEvent && event.status == 'INVALID') {
         const controls = [this.form.controls];
         const formErrors = this.form.errors;
@@ -156,6 +163,10 @@ export class FormService {
 
               if (prop.errors['misMatchPasswords']) {
                 errors.push(prop.errors['misMatchPasswords']);
+              }
+
+              if (prop.errors['uniqueUserName']) {
+                errors.push(prop.errors['uniqueUserName']);
               }
 
               this.formErrors[name] = errors.join('');
@@ -223,6 +234,6 @@ export class FormService {
     this.form = new FormGroup({});
     this.form.enable();
     this.form.reset();
-    this.formEventSubscription?.unsubscribe();
+    this.formEventSub?.unsubscribe();
   }
 }

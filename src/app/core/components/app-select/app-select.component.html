@@ -8,7 +8,7 @@
       {{ field().label }}
     </mat-label>
     <mat-select [formControlName]="field().name">
-      @for (option of field().values; track option) {
+      @for (option of field().values; track option.id) {
       <mat-option [value]="option.id">{{ option.label }}</mat-option>
       }
     </mat-select>

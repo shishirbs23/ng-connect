@@ -183,7 +183,7 @@ export class AuthService {
       this.formService.form.enable();
     } else {
       sendPasswordResetEmail(this.auth, passwordResetEmail)
-        .then((result) => {
+        .then((_) => {
           this.formService.reinitializeForm();
           this.uiService.closeDialog(null);
           this.uiService.openSnackbar(
@@ -191,48 +191,18 @@ export class AuthService {
             false,
             3000
           );
-          console.log(result);
         })
-        .catch((err) => {
+        .catch((_) => {
           this.formService.form.enable();
           this.uiService.openSnackbar(
             'Error during resetting password. Please try after sometimes',
             true
           );
-          console.log(err);
         })
         .finally(() => {
           this.isAuthLoading = false;
         });
     }
-  }
-
-  signInWithEmailPassword(email: string, password: string) {
-    return signInWithEmailAndPassword(this.auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-  }
-
-  listenToAuthStateChange() {
-    return onAuthStateChanged(this.auth, (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
-        const uid = user.uid;
-        // ...
-      } else {
-        // User is signed out
-        // ...
-      }
-    });
   }
 
   signInWithProvider(authProvider: String) {
@@ -259,7 +229,7 @@ export class AuthService {
 
   signOut() {
     this.auth.signOut().then(
-      () => {
+      (_) => {
         localStorage.clear();
         this.router.navigateByUrl(RouteNames.AUTH);
         this.uiService.openSnackbar('Signed out successfully');
