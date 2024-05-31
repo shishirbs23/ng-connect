@@ -10,16 +10,33 @@
   <app-datepicker [field]="field"></app-datepicker>
   } @default {
   <app-input [field]="field"></app-input>
-  } } }
+  } } } @if (formType() === formTypes.SIGNIN) {
+  <div class="mt-15px text-center">
+    <button type="button" mat-button (click)="prepareForgotPasswordForm.emit()">
+      Forgot Password?
+    </button>
+  </div>
+  } @if (formType() === formTypes.FORGOT_PASSWORD) {
+  <div class="mt-15px text-center">
+    <button type="button" mat-button (click)="prepareSignInForm.emit()">
+      Back to Sign In
+    </button>
+  </div>
+  }
+
   <mat-dialog-actions class="mt-20px justify-content-end">
-    <button mat-button mat-dialog-close (click)="formService.finishWatching()">
+    <button
+      mat-button
+      mat-dialog-close
+      (click)="formService.reinitializeForm()"
+    >
       Close
     </button>
     <button mat-button [disabled]="formService.form.invalid" type="submit">
       @if (isLoading()) {
       <mat-spinner color="h-20px w-20px"></mat-spinner>
       } @else {
-      <span> {{ headerTitle() }} </span>
+      <span> {{ btnLabel() }} </span>
       }
     </button>
   </mat-dialog-actions>

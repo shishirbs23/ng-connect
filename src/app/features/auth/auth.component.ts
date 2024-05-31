@@ -10,7 +10,7 @@ import { UiService } from '../../core/services/ui.service';
 
 // Enums
 import { AuthProvider } from '../../utils/enums/auth-provider.enum';
-import { AuthMode } from '../../utils/enums/auth-mode.enum';
+import { FormType } from '../../utils/enums/form-type.enum';
 
 @Component({
   selector: 'app-auth',
@@ -24,10 +24,14 @@ export class AuthComponent {
   private uiService = inject(UiService);
 
   authProviders = AuthProvider;
-  authMode = AuthMode;
+  formTypes = FormType;
 
   openAuthDialog(mode: string) {
-    this.uiService.openDialog(AuthDialogComponent, { mode }, '400px');
+    this.uiService.openDialog(
+      AuthDialogComponent,
+      { mode },
+      '400px'
+    );
   }
 
   connectWithAuthProvider(authProvider: string) {

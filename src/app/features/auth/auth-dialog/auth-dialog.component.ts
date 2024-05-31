@@ -16,9 +16,9 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 // Enums & Constants
-import { AuthMode } from '../../../utils/enums/auth-mode.enum';
 import { DialogMode } from '../../../utils/enums/dialog-mode.enum';
 import { FieldType } from '../../../utils/enums/field-type.enum';
+import { FormType } from '../../../utils/enums/form-type.enum';
 
 // Services
 import { AuthService } from '../../../services/auth.service';
@@ -43,12 +43,12 @@ import { AuthUser } from '../../../models/auth-user.model';
   ],
 })
 export class AuthDialogComponent {
-  authModes = AuthMode;
-  fieldTypes = FieldType;
   dialogModes = DialogMode;
+  fieldTypes = FieldType;
 
   headerTitle: string =
-    this.data.mode == this.authModes.SIGNIN ? 'Sign In' : 'Sign Up';
+    this.data.mode == FormType.SIGNIN ? 'Complete Sign In' : 'Complete Sign Up';
+  btnLabel: string = this.data.mode == FormType.SIGNIN ? 'Sign In' : 'Sign Up';
 
   authService = inject(AuthService);
   appService = inject(AppService);
@@ -65,9 +65,13 @@ export class AuthDialogComponent {
   onAuthFormSubmit(event: FormGroup<any>) {
     const authFormValue: AuthUser = event.value;
 
-    this.data.mode == this.authModes.SIGNIN
-      ? this.onSignIn(authFormValue)
-      : this.onSignUp(authFormValue);
+    if (this.data.mode == FormType.SIGNIN) {
+      this.onSignIn(authFormValue);
+    } else if (this.data.mode == FormType.SIGNUP) {
+      this.onSignUp(authFormValue);
+    } else if (this.data.mode == FormType.FORGOT_PASSWORD) {
+      this.onForgotPassword(authFormValue.email);
+    }
   }
 
   onSignIn(signInFormValue: Partial<AuthUser>) {
@@ -78,7 +82,29 @@ export class AuthDialogComponent {
     this.authService.signUp(signUpFormValue);
   }
 
+  onForgotPassword(passwordResetEmail: string) {
+    this.authService.forgotPassword(passwordResetEmail);
+  }
+
+  prepareSignInForm() {
+    this.data.mode = FormType.SIGNIN;
+    this.headerTitle = 'Complete Sign In';
+    this.btnLabel = 'Sign In';
+    this.formService.reinitializeForm();
+    this.formService.getAuthFormFields({ mode: FormType.SIGNIN });
+    this.formService.watchFormEvents();
+  }
+
+  prepareForgotPasswordForm() {
+    this.data.mode = FormType.FORGOT_PASSWORD;
+    this.headerTitle = 'Reset Password';
+    this.btnLabel = 'Reset';
+    this.formService.reinitializeForm();
+    this.formService.getAuthFormFields({ mode: FormType.FORGOT_PASSWORD });
+    this.formService.watchFormEvents();
+  }
+
   ngOnDestroy() {
-    this.formService.finishWatching();
+    this.formService.reinitializeForm();
   }
 }

@@ -1,17 +1,21 @@
 <h2 mat-dialog-title class="text-center" style="background-color: #eaeaea">
-  Complete {{ headerTitle }}
+  {{ headerTitle }}
 </h2>
 <mat-dialog-content>
-  @defer (when !formService.isFormLoading) {
-  <app-form
-    [headerTitle]="headerTitle"
-    [isLoading]="authService.isAuthLoading || authService.settingUserData"
-    (submitForm)="onAuthFormSubmit($event)"
-  ></app-form>
-  } @if (formService.isFormLoading) {
+  @if (formService.isFormLoading) {
   <div class="flex justify-content-center align-items-center gap-20px">
     <span> Loading form ... </span>
     <mat-spinner color="h-35px w-35px"></mat-spinner>
   </div>
+  } @else {
+  <app-form
+    [formType]="data.mode"
+    [headerTitle]="headerTitle"
+    [btnLabel]="btnLabel"
+    [isLoading]="authService.isAuthLoading || authService.settingUserData"
+    (submitForm)="onAuthFormSubmit($event)"
+    (prepareSignInForm)="prepareSignInForm()"
+    (prepareForgotPasswordForm)="prepareForgotPasswordForm()"
+  ></app-form>
   }
 </mat-dialog-content>

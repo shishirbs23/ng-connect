@@ -19,11 +19,9 @@
       font-weight: 500;
 
       &.signin {
-
       }
 
       &.signup {
-
       }
     }
   }
@@ -36,15 +34,23 @@
   button {
     height: 40px;
     width: 200px;
-  
+
     img {
       width: 20px;
       vertical-align: middle;
     }
-  
+
     span {
       color: #1c1c4d;
       margin-left: 10px;
     }
+  }
+}
+
+::ng-deep {
+  .mat-mdc-dialog-container .mat-mdc-dialog-title + .mat-mdc-dialog-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }

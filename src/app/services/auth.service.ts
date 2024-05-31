@@ -1,7 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 
 // Firebase
-import { doc, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  where,
+} from 'firebase/firestore';
 
 // Router
 import { Router } from '@angular/router';
@@ -85,7 +92,7 @@ export class AuthService {
       signInFormValue.password!
     )
       .then((result: any) => {
-        this.formService.finishWatching();
+        this.formService.reinitializeForm();
         this.uiService.closeDialog(null);
         this.uiService.openSnackbar('Signed in successfully');
         localStorage.setItem('token', result.user['accessToken']);
@@ -110,7 +117,7 @@ export class AuthService {
       signUpFormValue.password
     )
       .then((result: any) => {
-        this.formService.finishWatching();
+        this.formService.reinitializeForm();
         this.setUserData(
           {
             uid: result.user.uid,
@@ -155,6 +162,49 @@ export class AuthService {
     sendEmailVerification(this.auth.currentUser!).then((_) => {
       this.uiService.openSnackbarFromComponent(EmailVerificationComponent);
     });
+  }
+
+  async forgotPassword(passwordResetEmail: string) {
+    this.isAuthLoading = true;
+
+    const userQuery = query(
+      collection(this.appService._appDB, Collection.REGISTERED_USERS),
+      where('email', '==', passwordResetEmail)
+    );
+    const userSnap = await getDocs(userQuery);
+
+    if (userSnap.empty) {
+      this.uiService.openSnackbar(
+        'No user found with this email address. Please provide a correct email',
+        true,
+        2000
+      );
+      this.isAuthLoading = false;
+      this.formService.form.enable();
+    } else {
+      sendPasswordResetEmail(this.auth, passwordResetEmail)
+        .then((result) => {
+          this.formService.reinitializeForm();
+          this.uiService.closeDialog(null);
+          this.uiService.openSnackbar(
+            'Password reset email sent to your email, kindly check your inbox',
+            false,
+            3000
+          );
+          console.log(result);
+        })
+        .catch((err) => {
+          this.formService.form.enable();
+          this.uiService.openSnackbar(
+            'Error during resetting password. Please try after sometimes',
+            true
+          );
+          console.log(err);
+        })
+        .finally(() => {
+          this.isAuthLoading = false;
+        });
+    }
   }
 
   signInWithEmailPassword(email: string, password: string) {

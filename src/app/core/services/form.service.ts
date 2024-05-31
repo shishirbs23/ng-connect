@@ -32,7 +32,8 @@ import { PasswordStrengthValidator } from '../validators/password-strength.valid
 import { PasswordMatchValidator } from '../validators/password-match.validator';
 
 // Contants
-import { ENTITY } from '../../utils/constants/entity';
+import { ENTITY } from '../../utils/enums/entity.enum';
+import { FormType } from '../../utils/enums/form-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -185,10 +186,16 @@ export class FormService {
   async getAuthFormFields(data: { mode: string }) {
     this.isFormLoading = true;
 
-    const formId: string =
-      data.mode == this.authMode.SIGNIN
-        ? FormId.SIGN_IN_FORM_ID
-        : FormId.SIGN_UP_FORM_ID;
+    let formId!: string;
+
+    if (data.mode == FormType.SIGNIN) {
+      formId = FormId.SIGN_IN_FORM_ID;
+    } else if (data.mode == FormType.SIGNUP) {
+      formId = FormId.SIGN_UP_FORM_ID;
+    } else if (data.mode == FormType.FORGOT_PASSWORD) {
+      formId = FormId.FORGOT_PASSWORD_FORM_ID;
+    }
+
     const docRef = doc(this.appService._appDB, Collection.FORMFIELDS, formId);
     const docSnap = await getDoc(docRef);
 
@@ -197,10 +204,12 @@ export class FormService {
 
       if (docSnapData) {
         this.formFields = (docSnapData['fields'] ?? []) as AuthFormField[];
+
         this.prepareAuthForm(
           this.formFields,
           data.mode == this.authMode.SIGNUP
         );
+
         this.isFormLoading = false;
       } else {
         this.isFormLoading = false;
@@ -210,7 +219,8 @@ export class FormService {
     }
   }
 
-  finishWatching() {
+  reinitializeForm() {
+    this.form = new FormGroup({});
     this.form.enable();
     this.form.reset();
     this.formEventSubscription?.unsubscribe();
