@@ -11,7 +11,7 @@
       autocomplete="off"
       matInput
       [formControlName]="field().name"
-      [type]="field().type | inputType"
+      [type]="field().type! | inputType"
     />
     @if (shouldShowEye) {
     <mat-icon matSuffix (click)="toggleInput()">

@@ -98,9 +98,52 @@ export class FormService {
     isSignUpForm && this.form.addValidators(PasswordMatchValidator);
   }
 
+  prepareUsernameForm() {
+    this.form = new FormGroup({});
+    let validators = [
+      Validators.required,
+      LeadingAlphabeticValidator,
+      HasExtraSpaceValidator,
+      MaxLengthValidator,
+      MinLengthValidator,
+    ];
+    let asyncValidators = [
+      UniqueValueValidator.createValidator(this.appService),
+    ];
+    const control = new FormControl('', validators, asyncValidators);
+    this.form.addControl('displayName', control);
+    this.watchFormEvents();
+  }
+
+  prepareGenderForm() {
+    this.form = new FormGroup({});
+    let validators = [
+      Validators.required,
+    ];
+    const control = new FormControl('', validators);
+    this.form.addControl('genderId', control);
+    this.watchFormEvents();
+  }
+
+  preparePhotoURLForm() {
+    this.form = new FormGroup({});
+    const control = new FormControl('');
+    this.form.addControl('photoURL', control);
+    this.watchFormEvents();
+  }
+
+  prepareBirthdayForm() {
+    this.form = new FormGroup({});
+    const control = new FormControl('');
+    this.form.addControl('dob', control);
+    this.watchFormEvents();
+  }
+
   watchFormEvents() {
     this.formEventSub = this.form.events.subscribe((event) => {
       if (event instanceof StatusChangeEvent && event.status == 'INVALID') {
+        console.log(this.form.controls);
+
         const controls = [this.form.controls];
         const formErrors = this.form.errors;
 

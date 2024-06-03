@@ -1,4 +1,14 @@
 <app-header headerText="My Profile"></app-header>
-<button mat-raised-button color="accent" (click)="signOutUser()">
-  Sign Out
-</button>
+
+<div class="profile-section">
+  @if (isUserLoading) {
+  <div class="flex justify-content-center align-items-center gap-20px">
+    <strong> Loading Profile ... </strong>
+    <mat-spinner color="h-35px w-35px"></mat-spinner>
+  </div>
+  } @else {
+  <button mat-raised-button color="accent" (click)="signOutUser()">
+    Sign Out
+  </button>
+  }
+</div>
