@@ -8,10 +8,10 @@ export interface AuthFormField {
   id: number;
   isRequired: boolean;
   label: string;
-  maxLength: number;
-  minLength: number;
+  maxLength?: number;
+  minLength?: number;
   name: string;
-  type: string;
-  value: string;
-  values: AuthFormValue[];
+  type?: string;
+  value?: string;
+  values?: AuthFormValue[];
 }

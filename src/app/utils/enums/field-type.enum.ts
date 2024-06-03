@@ -4,4 +4,6 @@ export enum FieldType {
   PASSWORD = 'PasswordField',
   DROPDOWN = 'DropdownField',
   DATE = 'DateField',
+  PICTURE = 'DateField',
+  FILE = 'DateField',
 }

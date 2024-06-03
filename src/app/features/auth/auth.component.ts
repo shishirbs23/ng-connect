@@ -16,10 +16,7 @@ import { FormType } from '../../utils/enums/form-type.enum';
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [
-    AppHeaderComponent,
-    AuthButtonComponent
-  ],
+  imports: [AppHeaderComponent, AuthButtonComponent],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
 })
@@ -31,11 +28,7 @@ export class AuthComponent {
   formTypes = FormType;
 
   openAuthDialog(mode: string) {
-    this.uiService.openDialog(
-      AuthDialogComponent,
-      { mode },
-      '400px'
-    );
+    this.uiService.openDialog(AuthDialogComponent, { mode }, '400px');
   }
 
   connectWithAuthProvider(authProvider: string) {

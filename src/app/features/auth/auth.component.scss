@@ -46,11 +46,3 @@
     }
   }
 }
-
-::ng-deep {
-  .mat-mdc-dialog-container .mat-mdc-dialog-title + .mat-mdc-dialog-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-}

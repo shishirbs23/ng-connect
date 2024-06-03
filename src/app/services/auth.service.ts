@@ -1,14 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 
 // Firebase
-import {
-  collection,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
 // Router
 import { Router } from '@angular/router';
@@ -19,7 +12,6 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
@@ -34,13 +26,13 @@ import { AuthProvider as AProvider } from '../utils/enums/auth-provider.enum';
 import { AppService } from '../core/services/app.service';
 import { FormService } from '../core/services/form.service';
 import { UiService } from '../core/services/ui.service';
+import { UserService } from './user.service';
 
 // Models
 import { AuthUser } from '../models/auth-user.model';
 
 // Enums
 import { Collection } from '../utils/enums/collection.enum';
-import { User } from '../models/user.model';
 
 // Components
 import { EmailVerificationComponent } from '../features/auth/email-verification/email-verification.component';
@@ -58,6 +50,7 @@ export class AuthService {
   appService = inject(AppService);
   uiService = inject(UiService);
   formService = inject(FormService);
+  userService = inject(UserService);
 
   isAuthLoading: boolean = false;
   settingUserData: boolean = false;
@@ -118,7 +111,7 @@ export class AuthService {
     )
       .then((result: any) => {
         this.formService.reinitializeForm();
-        this.setUserData(
+        this.userService.setUserData(
           {
             uid: result.user.uid,
             email: signUpFormValue.email,
@@ -140,22 +133,6 @@ export class AuthService {
       .finally(() => {
         this.isAuthLoading = false;
       });
-  }
-
-  async setUserData(userData: User, fromSignUp: boolean = false) {
-    const userRef = doc(
-      this.appService._appDB,
-      Collection.REGISTERED_USERS,
-      userData.uid
-    );
-
-    this.settingUserData = true;
-    await setDoc(userRef, userData, { merge: true });
-    this.settingUserData = false;
-
-    if (fromSignUp) {
-      this.uiService.closeDialog(null);
-    }
   }
 
   async sendEmailVerification() {

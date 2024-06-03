@@ -14,11 +14,17 @@ export class UiService {
   dialogRef: any;
   dialog = inject(MatDialog);
 
-  openDialog(component: ComponentType<any>, data: any, width: string) {
+  openDialog(
+    component: ComponentType<any>,
+    data: any,
+    width?: string,
+    height?: string
+  ) {
     this.dialogRef = this.dialog.open(component, {
       width,
       data,
       disableClose: true,
+      height,
     });
 
     this.dialogRef.afterClosed().subscribe((result: any) => {
