@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 
 // Components
+import { AppHeaderComponent } from '../../core/components/app-header/app-header.component';
 import { AuthButtonComponent } from './auth-button/auth-button.component';
 import { AuthDialogComponent } from './auth-dialog/auth-dialog.component';
 
@@ -15,7 +16,10 @@ import { FormType } from '../../utils/enums/form-type.enum';
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [AuthButtonComponent],
+  imports: [
+    AppHeaderComponent,
+    AuthButtonComponent
+  ],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
 })
