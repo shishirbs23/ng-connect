@@ -1,0 +1,32 @@
+<div class="wrapper">
+  <label
+    class="picture-input-label"
+    for="picture-input"
+    [class.disabled]="profileService.savingProfileImage"
+  >
+    <span>
+      {{
+        profileService.savingProfileImage
+          ? "Uploading"
+          : "Upload from a Computer"
+      }}
+    </span>
+    @if (profileService.savingProfileImage) {
+    <mat-spinner color="accent" class="ml-10px h-22px w-22px"></mat-spinner>
+    }
+  </label>
+
+  <input
+    type="file"
+    hidden="true"
+    id="picture-input"
+    (change)="profileService.onPictureChange($event, profile())"
+    accept="image/*"
+  />
+
+  <label
+    class="picture-input-label"
+    [class.disabled]="profileService.savingProfileImage"
+    >Take a photo</label
+  >
+</div>

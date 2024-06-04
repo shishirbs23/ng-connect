@@ -1,12 +1,117 @@
 <app-header headerText="My Profile"></app-header>
 
 <div class="profile-section">
-  @if (isUserLoading) {
+  @if (profileService.loadingProfile) {
   <div class="flex justify-content-center align-items-center gap-20px">
     <strong> Loading Profile ... </strong>
     <mat-spinner color="h-35px w-35px"></mat-spinner>
   </div>
   } @else {
+  <div>
+    <div>
+      <strong> Profile Photo </strong>
+    </div>
+
+    @if (profileService.profile.photoURL) {
+    <div
+      class="profile-photo"
+      [ngStyle]="{
+        'background-image': 'url(' + profileService.profile.photoURL + ')'
+      }"
+      [class.disabled]="profileService.updatingProfileImage"
+    >
+      @if (profileService.updatingProfileImage) {
+      <mat-spinner color="accent" class="h-25px w-25px"></mat-spinner>
+      } @else {
+      <div class="actions">
+        <mat-icon matTooltip="View" (click)="viewProfilePhoto()"
+          >visibility</mat-icon
+        >
+
+        <mat-icon matTooltip="Update" [matMenuTriggerFor]="pictureUpdateMenu"
+          >edit</mat-icon
+        >
+        <mat-menu #pictureUpdateMenu="matMenu" class="picture-update-menu">
+          <label mat-menu-item class="picture-input-label" for="picture-input"
+            >Upload from a Computer</label
+          >
+          <input
+            type="file"
+            hidden="true"
+            id="picture-input"
+            (change)="
+              profileService.onPictureChange(
+                $event,
+                profileService.profile,
+                true
+              )
+            "
+          />
+          <button mat-menu-item>Take a photo</button>
+        </mat-menu>
+
+        <mat-icon
+          matTooltip="Remove"
+          (click)="
+            profileService.deleteProfileImage(
+              profileService.profile.uid,
+              profileService.profile.photoName!
+            )
+          "
+          >delete</mat-icon
+        >
+      </div>
+      }
+    </div>
+    } @else {
+    <div>
+      <div class="mb-10px">You haven't uploaded any profile photo yet.</div>
+      <app-profile-picture-upload-options
+        [profile]="profileService.profile"
+      ></app-profile-picture-upload-options>
+    </div>
+    }
+  </div>
+
+  <div>
+    <div>
+      <strong> Username </strong>
+    </div>
+    <div>
+      {{ profileService.profile.displayName }}
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <strong> Email Address </strong>
+    </div>
+    <div>
+      {{ profileService.profile.email }}
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <strong> Gender </strong>
+    </div>
+    <div>
+      {{ profileService.profile.genderId == 1 ? "Male" : "Female" }}
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <strong> Birthday </strong>
+    </div>
+
+    @if (profileService.profile.dob) {
+    <div>
+      {{ profileService.profile.dob | date }}
+    </div>
+    } @else { You haven't provided }
+  </div>
+
   <button mat-raised-button color="accent" (click)="signOutUser()">
     Sign Out
   </button>

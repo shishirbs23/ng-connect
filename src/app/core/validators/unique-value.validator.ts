@@ -27,14 +27,14 @@ export class UniqueValueValidator {
         return null;
       }
 
-      const userQuery = query(
-        collection(appService._appDB, Collection.REGISTERED_USERS),
+      const profileQuery = query(
+        collection(appService._appDB, Collection.PROFILES),
         where(ENTITY.DISPLAY_NAME, '==', value)
       );
 
-      const userSnap = await getDocs(userQuery);
+      const profileSnap = await getDocs(profileQuery);
 
-      return userSnap.empty
+      return profileSnap.empty
         ? null
         : { uniqueUserName: Message.usernameTaken };
     };

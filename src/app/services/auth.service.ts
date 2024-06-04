@@ -26,7 +26,7 @@ import { AuthProvider as AProvider } from '../utils/enums/auth-provider.enum';
 import { AppService } from '../core/services/app.service';
 import { FormService } from '../core/services/form.service';
 import { UiService } from '../core/services/ui.service';
-import { UserService } from './user.service';
+import { ProfileService } from './profile.service';
 
 // Models
 import { AuthUser } from '../models/auth-user.model';
@@ -50,7 +50,7 @@ export class AuthService {
   appService = inject(AppService);
   uiService = inject(UiService);
   formService = inject(FormService);
-  userService = inject(UserService);
+  profileService = inject(ProfileService);
 
   isAuthLoading: boolean = false;
   settingUserData: boolean = false;
@@ -111,12 +111,13 @@ export class AuthService {
     )
       .then((result: any) => {
         this.formService.reinitializeForm();
-        this.userService.setUserData(
+        this.profileService.setProfile(
           {
             uid: result.user.uid,
             email: signUpFormValue.email,
             displayName: signUpFormValue.displayName,
             photoURL: null,
+            photoName: null,
             isEmailVerified: result.user.emailVerified,
             genderId: signUpFormValue.genderId,
             dob: signUpFormValue.dob,
@@ -145,7 +146,7 @@ export class AuthService {
     this.isAuthLoading = true;
 
     const userQuery = query(
-      collection(this.appService._appDB, Collection.REGISTERED_USERS),
+      collection(this.appService._appDB, Collection.PROFILES),
       where('email', '==', passwordResetEmail)
     );
     const userSnap = await getDocs(userQuery);

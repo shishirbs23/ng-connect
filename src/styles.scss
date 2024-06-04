@@ -318,3 +318,15 @@ mat-dialog-content {
 .minh-full {
   min-height: 100vh !important;
 }
+
+.pointer {
+  cursor: pointer;
+}
+
+.mat-mdc-menu-item {
+  min-height: 35px !important;
+
+  span {
+    font-size: 14px !important;
+  }
+}

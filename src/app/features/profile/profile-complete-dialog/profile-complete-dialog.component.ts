@@ -13,16 +13,17 @@ import { MatRippleModule } from '@angular/material/core';
 import { AppInputComponent } from '../../../core/components/app-input/app-input.component';
 import { AppSelectComponent } from '../../../core/components/app-select/app-select.component';
 import { AppDatepickerComponent } from '../../../core/components/app-datepicker/app-datepicker.component';
+import { ProfilePictureUploadOptionsComponent } from '../profile-picture-upload-options/profile-picture-upload-options.component';
 
 // Models
-import { User as UserProfile } from '../../../models/user.model';
+import { Profile } from '../../../models/profile.model';
 import { AuthFormField } from '../../../models/formField.model';
 
 // Services
 import { AuthService } from '../../../services/auth.service';
 import { FormService } from '../../../core/services/form.service';
 import { UiService } from '../../../core/services/ui.service';
-import { UserService } from '../../../services/user.service';
+import { ProfileService } from '../../../services/profile.service';
 
 @Component({
   selector: 'app-profile-complete-dialog',
@@ -36,6 +37,7 @@ import { UserService } from '../../../services/user.service';
     AppInputComponent,
     AppSelectComponent,
     AppDatepickerComponent,
+    ProfilePictureUploadOptionsComponent,
   ],
   templateUrl: './profile-complete-dialog.component.html',
   styleUrl: './profile-complete-dialog.component.scss',
@@ -47,7 +49,7 @@ export class ProfileCompleteDialogComponent {
   authService = inject(AuthService);
   formService = inject(FormService);
   uiService = inject(UiService);
-  userService = inject(UserService);
+  profileService = inject(ProfileService);
 
   field!: AuthFormField;
   uiID: number = 0;
@@ -55,11 +57,9 @@ export class ProfileCompleteDialogComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    public data: { profile: UserProfile }
+    public data: { profile: Profile }
   ) {
     this.setComponentUI();
-    console.log(data.profile);
-    console.log(this.canSkip);
   }
 
   setComponentUI() {
@@ -119,18 +119,11 @@ export class ProfileCompleteDialogComponent {
     this.uiID = 4;
   }
 
-  onPictureChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-
-    if (input.files?.length) {
-      this.file = input.files[0];
-      this.userService.uploadFile(this.file, this.data.profile);
-    }
-  }
-
   skipSection() {
     if (this.uiID == 3) {
-      this.prepareBirthdayForm();
+      this.data.profile.dob
+        ? this.uiService.closeDialog(null)
+        : this.prepareBirthdayForm();
     } else if (this.uiID == 4) {
       this.uiService.closeDialog(null);
     }

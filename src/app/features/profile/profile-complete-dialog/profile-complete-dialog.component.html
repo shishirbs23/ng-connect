@@ -1,6 +1,6 @@
 <div mat-dialog-title class="text-center">{{ headerText }}</div>
 
-<mat-dialog-content>
+<mat-dialog-content class="p-20px">
   <div
     class="flex align-items-center justify-content-center flex-col h-100 gap-20px"
   >
@@ -13,11 +13,9 @@
       <app-select [field]="field"></app-select>
     </form>
     } @else if (uiID == 3) {
-    <label class="picture-input-label" for="picture-input"
-      >Upload from a Computer</label
-    >
-    <input type="file" hidden="true" id="picture-input" (change)="onPictureChange($event)" />
-    <label class="picture-input-label">Take a photo</label>
+    <app-profile-picture-upload-options
+      [profile]="data.profile"
+    ></app-profile-picture-upload-options>
     } @else if (uiID == 4) {
     <form class="w-100" [formGroup]="formService.form">
       <app-datepicker [field]="field"></app-datepicker>
@@ -28,8 +26,10 @@
   </div>
 </mat-dialog-content>
 
-<mat-dialog-actions class="mt-20px justify-content-end">
+<mat-dialog-actions class="justify-content-end">
   <button mat-button [disabled]="!canSkip" (click)="skipSection()">Skip</button>
+
+  @if (uiID != 3) {
   <button
     mat-button
     [disabled]="formService.form.invalid"
@@ -37,4 +37,5 @@
   >
     Save
   </button>
+  }
 </mat-dialog-actions>
