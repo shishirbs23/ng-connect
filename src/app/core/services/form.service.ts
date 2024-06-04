@@ -142,8 +142,6 @@ export class FormService {
   watchFormEvents() {
     this.formEventSub = this.form.events.subscribe((event) => {
       if (event instanceof StatusChangeEvent && event.status == 'INVALID') {
-        console.log(this.form.controls);
-
         const controls = [this.form.controls];
         const formErrors = this.form.errors;
 
