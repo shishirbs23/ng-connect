@@ -50,14 +50,7 @@
           <button mat-menu-item>Take a photo</button>
         </mat-menu>
 
-        <mat-icon
-          matTooltip="Remove"
-          (click)="
-            profileService.deleteProfileImage(
-              profileService.profile.uid,
-              profileService.profile.photoName!
-            )
-          "
+        <mat-icon matTooltip="Remove" (click)="openConfirmDeletionDialog()"
           >delete</mat-icon
         >
       </div>

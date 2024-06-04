@@ -9,11 +9,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 
 // Firebase
-import { User, getAuth } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth';
 
 // Components
 import { AppHeaderComponent } from '../../core/components/app-header/app-header.component';
+import { ConfirmDeleteDialogComponent } from '../../core/components/confirm-delete-dialog/confirm-delete-dialog.component';
 import { ImageViewerComponent } from '../../core/components/image-viewer/image-viewer.component';
 import { ProfileCompleteDialogComponent } from './profile-complete-dialog/profile-complete-dialog.component';
 import { ProfilePictureUploadOptionsComponent } from './profile-picture-upload-options/profile-picture-upload-options.component';
@@ -23,12 +23,6 @@ import { AuthService } from '../../services/auth.service';
 import { AppService } from '../../core/services/app.service';
 import { ProfileService } from '../../services/profile.service';
 import { UiService } from '../../core/services/ui.service';
-
-// Enums and Constants
-import { Collection } from '../../utils/enums/collection.enum';
-
-// Models
-import { Profile } from '../../models/profile.model';
 
 @Component({
   selector: 'app-profile',
@@ -69,6 +63,19 @@ export class ProfileComponent {
       '300px',
       '300px'
     );
+  }
+
+  openConfirmDeletionDialog() {
+    this.uiService.openDialog(ConfirmDeleteDialogComponent);
+
+    this.uiService.dialogRef.afterClosed().subscribe((res: any) => {
+      if (res) {
+        this.profileService.deleteProfileImage(
+          this.profileService.profile.uid,
+          this.profileService.profile.photoName!
+        );
+      }
+    });
   }
 
   signOutUser() {

@@ -16,7 +16,7 @@ export class UiService {
 
   openDialog(
     component: ComponentType<any>,
-    data: any,
+    data?: any,
     width?: string,
     height?: string
   ) {
@@ -25,12 +25,6 @@ export class UiService {
       data,
       disableClose: true,
       height,
-    });
-
-    this.dialogRef.afterClosed().subscribe((result: any) => {
-      if (result) {
-        console.log(result);
-      }
     });
   }
 
