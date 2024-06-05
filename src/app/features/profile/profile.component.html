@@ -47,7 +47,9 @@
               )
             "
           />
-          <button mat-menu-item>Take a photo</button>
+          <button mat-menu-item (click)="openWebcamDialog()">
+            Take a photo
+          </button>
         </mat-menu>
 
         <mat-icon matTooltip="Remove" (click)="openConfirmDeletionDialog()"

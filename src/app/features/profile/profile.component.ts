@@ -17,6 +17,7 @@ import { ConfirmDeleteDialogComponent } from '../../core/components/confirm-dele
 import { ImageViewerComponent } from '../../core/components/image-viewer/image-viewer.component';
 import { ProfileCompleteDialogComponent } from './profile-complete-dialog/profile-complete-dialog.component';
 import { ProfilePictureUploadOptionsComponent } from './profile-picture-upload-options/profile-picture-upload-options.component';
+import { WebcamDialogComponent } from './webcam-dialog/webcam-dialog.component';
 
 // Services
 import { AuthService } from '../../services/auth.service';
@@ -75,6 +76,12 @@ export class ProfileComponent {
           this.profileService.profile.photoName!
         );
       }
+    });
+  }
+
+  openWebcamDialog() {
+    this.uiService.openDialog(WebcamDialogComponent, {
+      profile: this.profileService.profile,
     });
   }
 
