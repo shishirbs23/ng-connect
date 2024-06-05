@@ -27,6 +27,8 @@ export class ProfilePictureUploadOptionsComponent {
   uiService = inject(UiService);
 
   openWebcamDialog() {
-    this.uiService.openDialog(WebcamDialogComponent);
+    this.uiService.openDialog(WebcamDialogComponent, {
+      profile: this.profile(),
+    });
   }
 }

@@ -60,8 +60,8 @@ export class ProfileComponent {
       {
         url: this.profileService.profile.photoURL,
       },
-      '300px',
-      '300px'
+      '600px',
+      '500px'
     );
   }
 

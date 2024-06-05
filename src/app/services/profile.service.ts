@@ -182,14 +182,14 @@ export class ProfileService {
     imageFileName: string,
     deleteCurrent: boolean = true
   ) {
-    const filePath: string = `uploads/${userId}/${imageFileName}`;
-    const fileRef: StorageReference = ref(this.storage, filePath);
-    await deleteObject(fileRef);
-
     if (deleteCurrent) {
       this.profile.photoURL = this.profile.photoName = null;
       await this.setProfile(this.profile);
       this.uiService.openSnackbar('Profile photo has been removed');
     }
+
+    const filePath: string = `uploads/${userId}/${imageFileName}`;
+    const fileRef: StorageReference = ref(this.storage, filePath);
+    await deleteObject(fileRef);
   }
 }
