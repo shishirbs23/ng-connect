@@ -9,6 +9,16 @@
     (imageCapture)="service.handleImage($event, data.profile.uid)"
     [imageQuality]="1"
   ></webcam>
+  } @else { @if (service.showImageCropper) {
+  <image-cropper
+    class="mb-10px h-375px w-500px"
+    [imageFile]="service.imageFile"
+    [maintainAspectRatio]="true"
+    [aspectRatio]="4 / 3"
+    [imageQuality]="100"
+    (imageCropped)="service.imageCropped($event)"
+  >
+  </image-cropper>
   } @else {
   <div
     class="captured-image-section"
@@ -16,7 +26,7 @@
       'background-image': 'url(' + service.imageDataUrl + ')'
     }"
   ></div>
-  } @if (service.showWebCamOptions) { @if (service.showWebCam) {
+  } } @if (service.showWebCamOptions) { @if (service.showWebCam) {
   <div class="flex justify-content-center">
     <button mat-flat-button color="accent" (click)="service.triggerSnapshot()">
       Capture Image
@@ -24,6 +34,7 @@
   </div>
   } @else {
   <div class="flex justify-content-center gap-10px">
+    @if (!service.showImageCropper) {
     <button
       mat-flat-button
       color="accent"
@@ -32,6 +43,8 @@
     >
       Crop
     </button>
+    }
+
     <button
       mat-flat-button
       color="accent"
@@ -40,6 +53,17 @@
     >
       Switch Camera
     </button>
+
+    @if (service.showImageCropper) {
+    <button
+      mat-flat-button
+      color="accent"
+      (click)="service.switchCamera()"
+      [disabled]="profileService.savingProfileImage"
+    >
+      Confirm
+    </button>
+    } @if (!service.showImageCropper) {
     <button
       mat-flat-button
       color="accent"
@@ -56,15 +80,15 @@
         }
       </div>
     </button>
+    }
   </div>
   } }
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button
     mat-button
-    mat-dialog-close
-    cdkFocusInitial
     [disabled]="profileService.savingProfileImage"
+    (click)="service.closeClearDialog()"
   >
     Close
   </button>

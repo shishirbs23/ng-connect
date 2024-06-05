@@ -16,6 +16,9 @@ import { WebcamService } from '../../../services/webcam.service';
 // Webcam
 import { WebcamModule } from 'ngx-webcam';
 
+// Image Cropper
+import { ImageCropperComponent } from 'ngx-image-cropper';
+
 @Component({
   selector: 'app-webcam-dialog',
   standalone: true,
@@ -25,6 +28,7 @@ import { WebcamModule } from 'ngx-webcam';
     MatDialogModule,
     MatProgressSpinnerModule,
     WebcamModule,
+    ImageCropperComponent,
   ],
   templateUrl: './webcam-dialog.component.html',
   styleUrl: './webcam-dialog.component.scss',

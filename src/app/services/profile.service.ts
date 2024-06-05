@@ -127,6 +127,8 @@ export class ProfileService {
     profile: Profile,
     isUpdate: boolean
   ): Promise<void> {
+    console.log(file);
+
     const fileNameToDelete: string | null = profile.photoName;
 
     if (!this.fileService.isFileImage(file)) {

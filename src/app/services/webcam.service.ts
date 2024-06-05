@@ -10,6 +10,7 @@ import { Profile } from '../models/profile.model';
 
 // Webcam
 import { WebcamImage } from 'ngx-webcam';
+import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ import { WebcamImage } from 'ngx-webcam';
 export class WebcamService {
   imageDataUrl!: string;
   imageFile!: File;
+  croppedImageBlob!: Blob;
 
   profileService = inject(ProfileService);
   uiService = inject(UiService);
@@ -26,6 +28,7 @@ export class WebcamService {
 
   showWebCam: boolean = true;
   showWebCamOptions: boolean = false;
+  showImageCropper: boolean = false;
 
   constructor() {}
 
@@ -40,20 +43,35 @@ export class WebcamService {
     const response = await fetch(this.imageDataUrl);
     const blob = await response.blob();
     const dateNow = Date.now();
+    const fileType = blob.type.split('/')[1];
 
-    this.imageFile = new File([blob], `${userId}_captured_image_${dateNow}`, {
-      type: blob.type,
-      lastModified: dateNow,
-    });
+    this.imageFile = new File(
+      [blob],
+      `${userId}_captured_image_${dateNow}.${fileType}`,
+      {
+        type: blob.type,
+        lastModified: dateNow,
+      }
+    );
+
+    console.log(this.imageFile.name);
   }
 
   get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
 
-  cropImage() {}
+  cropImage() {
+    this.showImageCropper = true;
+  }
+
+  imageCropped(event: ImageCroppedEvent) {
+    this.croppedImageBlob = event.blob!;
+    console.log(event.blob);
+  }
 
   switchCamera() {
+    this.showImageCropper = false;
     this.showWebCam = true;
     this.imageDataUrl = '';
   }
@@ -64,6 +82,17 @@ export class WebcamService {
       profile,
       !!profile.photoURL
     );
+    this.closeClearDialog();
+  }
+
+  closeClearDialog() {
+    this.imageDataUrl = '';
+    this.imageFile = new File([], '', {
+      type: '',
+      lastModified: 0,
+    });
+    this.showWebCam = true;
+    this.showWebCamOptions = this.showImageCropper = false;
     this.uiService.closeDialog(null);
   }
 }
