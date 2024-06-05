@@ -26,7 +26,7 @@
 
   <label
     class="picture-input-label"
-    [class.disabled]="profileService.savingProfileImage"
+    [class.disabled]="profileService.savingProfileImage" (click)="openWebcamDialog()"
     >Take a photo</label
   >
 </div>
