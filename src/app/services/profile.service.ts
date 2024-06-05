@@ -65,8 +65,6 @@ export class ProfileService {
 
         this.profile = profile;
 
-        console.log(this.profile);
-
         if (!profile.displayName || !profile.genderId) {
           this.openProfileCompleteDialog(profile);
         }
@@ -127,8 +125,6 @@ export class ProfileService {
     profile: Profile,
     isUpdate: boolean
   ): Promise<void> {
-    console.log(file);
-
     const fileNameToDelete: string | null = profile.photoName;
 
     if (!this.fileService.isFileImage(file)) {

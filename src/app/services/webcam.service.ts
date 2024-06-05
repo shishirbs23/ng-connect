@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 // Services
+import { FileService } from '../core/services/file.service';
 import { ProfileService } from './profile.service';
 import { UiService } from '../core/services/ui.service';
 
@@ -20,6 +21,7 @@ export class WebcamService {
   imageFile!: File;
   croppedImageBlob!: Blob;
 
+  fileService = inject(FileService);
   profileService = inject(ProfileService);
   uiService = inject(UiService);
 
@@ -36,38 +38,46 @@ export class WebcamService {
     this.trigger.next();
   }
 
-  async handleImage(webcamImage: WebcamImage, userId: string): Promise<void> {
-    this.imageDataUrl = webcamImage.imageAsDataUrl;
-    this.showWebCam = false;
-
-    const response = await fetch(this.imageDataUrl);
-    const blob = await response.blob();
+  blobToImageFile(blob: Blob) {
     const dateNow = Date.now();
     const fileType = blob.type.split('/')[1];
 
     this.imageFile = new File(
       [blob],
-      `${userId}_captured_image_${dateNow}.${fileType}`,
+      `${this.profileService.profile.uid}_captured_image_${dateNow}.${fileType}`,
       {
         type: blob.type,
         lastModified: dateNow,
       }
     );
+  }
 
-    console.log(this.imageFile.name);
+  async handleImage(webcamImage: WebcamImage): Promise<void> {
+    this.imageDataUrl = webcamImage.imageAsDataUrl;
+    this.showWebCam = false;
+
+    const response = await fetch(this.imageDataUrl);
+    const blob = await response.blob();
+    
+    this.blobToImageFile(blob);
   }
 
   get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
 
-  cropImage() {
+  openImageCropper() {
     this.showImageCropper = true;
+  }
+
+  async cropImage() {
+    this.showImageCropper = false;
+    this.blobToImageFile(this.croppedImageBlob);
+    this.imageDataUrl = await this.fileService.blobToDataURL(this.croppedImageBlob);
   }
 
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImageBlob = event.blob!;
-    console.log(event.blob);
   }
 
   switchCamera() {

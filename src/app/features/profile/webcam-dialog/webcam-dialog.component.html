@@ -1,4 +1,5 @@
 <h2 mat-dialog-title>Take a photo</h2>
+
 <mat-dialog-content>
   @if (service.showWebCam) {
   <webcam
@@ -6,7 +7,7 @@
     [height]="500"
     [width]="500"
     [trigger]="service.triggerObservable"
-    (imageCapture)="service.handleImage($event, data.profile.uid)"
+    (imageCapture)="service.handleImage($event)"
     [imageQuality]="1"
   ></webcam>
   } @else { @if (service.showImageCropper) {
@@ -38,7 +39,7 @@
     <button
       mat-flat-button
       color="accent"
-      (click)="service.cropImage()"
+      (click)="service.openImageCropper()"
       [disabled]="profileService.savingProfileImage"
     >
       Crop
@@ -58,7 +59,7 @@
     <button
       mat-flat-button
       color="accent"
-      (click)="service.switchCamera()"
+      (click)="service.cropImage()"
       [disabled]="profileService.savingProfileImage"
     >
       Confirm
@@ -84,6 +85,7 @@
   </div>
   } }
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
   <button
     mat-button
