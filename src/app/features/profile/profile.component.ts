@@ -51,19 +51,12 @@ import { AuthFormField } from '../../models/formField.model';
 })
 export class ProfileComponent {
   auth = getAuth();
-  field!: AuthFormField;
 
   appService = inject(AppService);
   authService = inject(AuthService);
   formService = inject(FormService);
   uiService = inject(UiService);
   profileService = inject(ProfileService);
-
-  isEditable = {
-    address: false,
-    birthday: false,
-    phoneNumber: false,
-  };
 
   ngOnInit() {
     this.profileService.getCurrentProfile();
@@ -99,36 +92,25 @@ export class ProfileComponent {
     });
   }
 
-  prepareBirthdayForm() {
-    this.isEditable.birthday = true;
-    this.formService.prepareBirthdayForm(this.profileService.profile.dob!);
-    this.field = {
-      id: 4,
-      isRequired: false,
-      label: 'Birthday',
-      name: 'dob',
-    };
-  }
-
   async saveProfile() {
     const updatedProfile = { ...this.profileService.profile };
 
-    if (this.isEditable.address) {
+    if (this.profileService.isEditable.address) {
     }
 
-    if (this.isEditable.birthday) {
+    if (this.profileService.isEditable.birthday) {
       const dob = this.appService.formatMomentDate(
         this.formService.form.value.dob
       );
       updatedProfile.dob = dob;
     }
 
-    if (this.isEditable.phoneNumber) {
+    if (this.profileService.isEditable.phoneNumber) {
     }
 
     await this.profileService.setProfile(updatedProfile);
 
-    this.isEditable = {
+    this.profileService.isEditable = {
       address: false,
       birthday: false,
       phoneNumber: false,

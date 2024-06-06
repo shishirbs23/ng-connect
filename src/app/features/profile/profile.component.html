@@ -82,8 +82,27 @@
       <strong> Email Address </strong>
     </div>
     <div>
-      {{ profileService.profile.email }}
+      {{ profileService.profile.email }} @if
+      (profileService.profile.isEmailVerified) {
+      <span> (Verified) </span>
+      }
     </div>
+    @if (!profileService.profile.isEmailVerified) {
+    <div class="mt-5px">
+      Your email is not verified yet.
+      <button
+        mat-flat-button
+        color="primary"
+        class="h-30px w-115px text-center"
+        (click)="authService.sendEmailVerification()"
+        [disabled]="authService.sendingEmail"
+      >
+        @if (authService.sendingEmail) {
+        <mat-spinner class="ml-10px h-20px w-20px"></mat-spinner>
+        } @else { Verify now }
+      </button>
+    </div>
+    }
   </div>
 
   <div>
@@ -100,21 +119,36 @@
       <strong> Birthday </strong>
     </div>
 
-    @if (profileService.profile.dob && !isEditable.birthday) {
+    @if (profileService.profile.dob && !profileService.isEditable.birthday) {
     <div class="flex align-items-center gap-10px">
       <span>
         {{ profileService.profile.dob | date : "MMMM d, y" }}
       </span>
 
-      @if (!isEditable.birthday) {
-      <mat-icon class="pointer" (click)="prepareBirthdayForm()">edit</mat-icon>
+      @if (!profileService.isEditable.birthday) {
+      <mat-icon class="pointer" (click)="profileService.prepareBirthdayForm()"
+        >edit</mat-icon
+      >
       }
     </div>
-    } @else {
-    <div class="flex justify-content-center align-items-center mt-10px">
-      <app-datepicker [field]="field"></app-datepicker>
+    } @else { @if (!profileService.profile.dob) {
+    <div>You haven't updated your birthday.</div>
+    <div class="mt-10px mb-25px">
+      <button
+        mat-flat-button
+        class="h-30px"
+        color="primary"
+        (click)="profileService.prepareBirthdayForm()"
+      >
+        Click
+      </button>
+      to update.
     </div>
-    }
+    } @if (profileService.isEditable.birthday) {
+    <div class="flex justify-content-center align-items-center mt-10px">
+      <app-datepicker [field]="profileService.field"></app-datepicker>
+    </div>
+    } }
   </div>
 
   <div>
@@ -124,9 +158,9 @@
       color="accent"
       (click)="saveProfile()"
       [disabled]="
-        (!isEditable.address &&
-          !isEditable.birthday &&
-          !isEditable.phoneNumber) ||
+        (!profileService.isEditable.address &&
+          !profileService.isEditable.birthday &&
+          !profileService.isEditable.phoneNumber) ||
         profileService.settingProfile
       "
     >
