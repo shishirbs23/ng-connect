@@ -198,6 +198,8 @@ export class ProfileService {
     imageFileName: string,
     deleteCurrent: boolean = true
   ) {
+    this.savingProfileImage = true;
+
     if (deleteCurrent) {
       this.profile.photoURL = this.profile.photoName = null;
       await this.setProfile(this.profile);
@@ -207,5 +209,7 @@ export class ProfileService {
     const filePath: string = `uploads/${userId}/${imageFileName}`;
     const fileRef: StorageReference = ref(this.storage, filePath);
     await deleteObject(fileRef);
+
+    this.savingProfileImage = false;
   }
 }
