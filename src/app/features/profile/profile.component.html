@@ -39,6 +39,7 @@
             type="file"
             hidden="true"
             id="picture-input"
+            accept="image/*"
             (change)="
               profileService.onPictureChange(
                 $event,
@@ -166,7 +167,8 @@
         profileService.settingProfile
       "
     >
-      @if (profileService.settingProfile) {
+      @if (profileService.settingProfile && !profileService.savingProfileImage)
+      {
       <mat-spinner class="h-25px w-25px"></mat-spinner>
       } @else {
       <span>Save Profile</span>
@@ -178,7 +180,7 @@
       mat-raised-button
       color="accent"
       (click)="signOutUser()"
-      [disabled]="profileService.settingProfile"
+      [disabled]="profileService.settingProfile || profileService.savingProfileImage"
     >
       Sign Out
     </button>

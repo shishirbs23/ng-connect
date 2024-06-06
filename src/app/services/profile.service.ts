@@ -175,7 +175,7 @@ export class ProfileService {
     const photoURL = await getDownloadURL(fileRef);
 
     // Save User Profile
-    this.setProfile({ ...profile, photoURL, photoName: file.name });
+    await this.setProfile({ ...profile, photoURL, photoName: file.name });
 
     // Setting Image data to show on UI
     profile.photoURL = photoURL;
