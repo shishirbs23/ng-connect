@@ -116,7 +116,7 @@ export class ProfileService {
     await setDoc(profileRef, profileData, { merge: true })
       .then((_) => {
         this.profile = profileData;
-        this.uiService.openSnackbar('Profile updated');
+        !fromSignUp && this.uiService.openSnackbar('Profile updated');
       })
       .catch((_) => {
         this.uiService.openSnackbar(
@@ -125,10 +125,7 @@ export class ProfileService {
       })
       .finally(() => {
         this.settingProfile = false;
-
-        if (fromSignUp) {
-          this.uiService.closeDialog(null);
-        }
+        fromSignUp && this.uiService.closeDialog(null);
       });
   }
 

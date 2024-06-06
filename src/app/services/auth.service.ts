@@ -110,9 +110,9 @@ export class AuthService {
       signUpFormValue.email,
       signUpFormValue.password
     )
-      .then((result: any) => {
+      .then(async (result: any) => {
         this.formService.reinitializeForm();
-        this.profileService.setProfile(
+        await this.profileService.setProfile(
           {
             uid: result.user.uid,
             email: signUpFormValue.email,
@@ -127,7 +127,7 @@ export class AuthService {
           },
           true
         );
-        this.sendEmailVerification();
+        await this.sendEmailVerification();
       })
       .catch((error) => {
         this.handleAuthErrors(error);

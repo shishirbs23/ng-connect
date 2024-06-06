@@ -28,7 +28,7 @@ export class AuthComponent {
   formTypes = FormType;
 
   openAuthDialog(mode: string) {
-    this.uiService.openDialog(AuthDialogComponent, { mode }, '400px');
+    this.uiService.openDialog(AuthDialogComponent, { mode }, '400px', mode === this.formTypes.SIGNIN ? '60vh' : '90vh');
   }
 
   connectWithAuthProvider(authProvider: string) {

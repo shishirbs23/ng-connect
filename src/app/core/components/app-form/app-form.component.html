@@ -7,7 +7,9 @@
   { @case (fieldTypes.DROPDOWN) {
   <app-select [field]="field"></app-select>
   } @case (fieldTypes.DATE) {
-  <app-datepicker [field]="field"></app-datepicker>
+  <div class="mt-30px">
+    <app-datepicker [field]="field"></app-datepicker>
+  </div>
   } @default {
   <app-input [field]="field"></app-input>
   } } } @if (formType() === formTypes.SIGNIN) {

@@ -30,7 +30,8 @@ import { MaxLengthValidator } from '../validators/max-length.validator';
 import { MinLengthValidator } from '../validators/min-length.validator';
 import { PasswordStrengthValidator } from '../validators/password-strength.validator';
 import { PasswordMatchValidator } from '../validators/password-match.validator';
-import { UniqueValueValidator } from '../validators/unique-value.validator';
+import { UniqueEmailValidator } from '../validators/unique-email.validator';
+import { UniqueUsernameValidator } from '../validators/unique-username.validator';
 
 // Contants
 import { ENTITY } from '../../utils/enums/entity.enum';
@@ -63,6 +64,11 @@ export class FormService {
 
       if (field.type == FieldType.EMAIL) {
         validators.push(Validators.email);
+
+        isSignUpForm &&
+          asyncValidators.push(
+            UniqueEmailValidator.createValidator(this.appService)
+          );
       }
 
       if (
@@ -77,7 +83,7 @@ export class FormService {
           validators.push(MinLengthValidator);
 
           asyncValidators.push(
-            UniqueValueValidator.createValidator(this.appService)
+            UniqueUsernameValidator.createValidator(this.appService)
           );
         } else {
           validators.push(Validators.maxLength(field.maxLength));
@@ -108,7 +114,7 @@ export class FormService {
       MinLengthValidator,
     ];
     let asyncValidators = [
-      UniqueValueValidator.createValidator(this.appService),
+      UniqueUsernameValidator.createValidator(this.appService),
     ];
     const control = new FormControl('', validators, asyncValidators);
     this.form.addControl('displayName', control);
@@ -206,6 +212,10 @@ export class FormService {
 
               if (prop.errors['uniqueUserName']) {
                 errors.push(prop.errors['uniqueUserName']);
+              }
+
+              if (prop.errors['uniqueEmail']) {
+                errors.push(prop.errors['uniqueEmail']);
               }
 
               this.formErrors[name] = errors.join('');
