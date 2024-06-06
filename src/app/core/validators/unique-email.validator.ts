@@ -29,14 +29,13 @@ export class UniqueEmailValidator {
 
       const profileQuery = query(
         collection(appService._appDB, Collection.PROFILES),
-        where(ENTITY.EMAIL, '==', value)
+        where(ENTITY.EMAIL, '==', value),
+        where(ENTITY.IS_DELETED, '==', false)
       );
 
       const profileSnap = await getDocs(profileQuery);
 
-      return profileSnap.empty
-        ? null
-        : { uniqueEmail: Message.emailTaken };
+      return profileSnap.empty ? null : { uniqueEmail: Message.emailTaken };
     };
   }
 }

@@ -29,7 +29,8 @@ export class UniqueUsernameValidator {
 
       const profileQuery = query(
         collection(appService._appDB, Collection.PROFILES),
-        where(ENTITY.DISPLAY_NAME, '==', value)
+        where(ENTITY.DISPLAY_NAME, '==', value),
+        where(ENTITY.IS_DELETED, '==', false)
       );
 
       const profileSnap = await getDocs(profileQuery);

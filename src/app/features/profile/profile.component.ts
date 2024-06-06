@@ -75,16 +75,17 @@ export class ProfileComponent {
     );
   }
 
-  openConfirmDeletionDialog() {
-    this.uiService.openDialog(ConfirmDeleteDialogComponent);
+  openConfirmPictureDeletionDialog() {
+    this.uiService.openDialog(ConfirmDeleteDialogComponent, {
+      deleteText: 'this profile picture',
+    });
 
     this.uiService.dialogRef.afterClosed().subscribe((res: any) => {
-      if (res) {
+      res &&
         this.profileService.deleteProfileImage(
           this.profileService.profile.uid,
           this.profileService.profile.photoName!
         );
-      }
     });
   }
 
@@ -119,7 +120,34 @@ export class ProfileComponent {
     };
   }
 
-  signOutUser() {
-    this.authService.signOut();
+  signOutUser(fromDeletion: boolean = false) {
+    this.authService.signOut(fromDeletion);
+  }
+
+  openConfirmProfileDeletionDialog() {
+    this.uiService.openDialog(ConfirmDeleteDialogComponent, {
+      deleteText: 'your profile',
+    });
+
+    this.uiService.dialogRef.afterClosed().subscribe((res: any) => {
+      res && this.deleteUser();
+    });
+  }
+
+  async deleteUser() {
+    this.profileService.deletingProfile = true;
+
+    const { uid, photoName } = this.profileService.profile;
+
+    console.log(uid);
+    console.log(photoName);
+
+    await this.authService.deleteUserAccount();
+    await this.profileService.deleteUserProfile();
+    photoName &&
+      (await this.profileService.deleteProfileImage(uid, photoName!));
+
+    this.profileService.deletingProfile = false;
+    this.signOutUser(true);
   }
 }

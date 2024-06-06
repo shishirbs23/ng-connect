@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 
 // Firebase
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 import {
   StorageReference,
   deleteObject,
@@ -48,6 +48,7 @@ export class ProfileService {
   settingProfile: boolean = false;
   savingProfileImage: boolean = false;
   updatingProfileImage: boolean = false;
+  deletingProfile: boolean = false;
 
   isEditable = {
     address: false,
@@ -211,5 +212,10 @@ export class ProfileService {
     await deleteObject(fileRef);
 
     this.savingProfileImage = false;
+  }
+
+  async deleteUserProfile() {
+    this.profile.isDeleted = true;
+    await this.setProfile(this.profile);
   }
 }

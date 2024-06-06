@@ -4,4 +4,5 @@ export enum ENTITY {
   DATE_OF_BIRTH = 'dob',
   PASSWORD = 'password',
   CONFIRM_PASSWORD = 'confirmPassword',
+  IS_DELETED = 'isDeleted',
 }

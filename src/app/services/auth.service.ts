@@ -19,6 +19,7 @@ import {
   GithubAuthProvider,
   sendEmailVerification,
   sendPasswordResetEmail,
+  deleteUser,
 } from 'firebase/auth';
 import { AuthProvider as AProvider } from '../utils/enums/auth-provider.enum';
 
@@ -124,6 +125,8 @@ export class AuthService {
             dob: signUpFormValue.dob,
             address: null,
             phoneNumber: null,
+            privacyId: 1,
+            isDeleted: false,
           },
           true
         );
@@ -219,16 +222,33 @@ export class AuthService {
     );
   }
 
-  signOut() {
+  signOut(fromDeletion: boolean = false) {
     this.auth.signOut().then(
       (_) => {
         localStorage.clear();
         this.router.navigateByUrl(RouteNames.AUTH);
-        this.uiService.openSnackbar('Signed out successfully');
+
+        fromDeletion
+          ? this.uiService.openSnackbar('Signed out successfully')
+          : this.uiService.openSnackbar(
+              'Your profile has been deleted successfully'
+            );
       },
       (_) => {
-        this.uiService.openSnackbar('Error occurred during signout', true);
+        !fromDeletion &&
+          this.uiService.openSnackbar('Error occurred during signout', true);
       }
     );
+  }
+
+  async deleteUserAccount() {
+    await deleteUser(this.auth.currentUser!)
+      .then(() => {
+        console.log('User account deleted successfully');
+      })
+      .catch(() => {
+        console.log("User account can't be deleted");
+        throw Error("User account can't be deleted");
+      });
   }
 }

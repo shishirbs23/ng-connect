@@ -9,4 +9,6 @@ export interface Profile {
   dob: string | null;
   address: string | null;
   phoneNumber: string | null;
+  privacyId: number | null;
+  isDeleted: boolean;
 }

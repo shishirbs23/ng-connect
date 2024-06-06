@@ -53,7 +53,9 @@
           </button>
         </mat-menu>
 
-        <mat-icon matTooltip="Remove" (click)="openConfirmDeletionDialog()"
+        <mat-icon
+          matTooltip="Remove"
+          (click)="openConfirmPictureDeletionDialog()"
           >delete</mat-icon
         >
       </div>
@@ -167,8 +169,8 @@
         profileService.settingProfile
       "
     >
-      @if (profileService.settingProfile && !profileService.savingProfileImage)
-      {
+      @if (profileService.settingProfile && (!profileService.savingProfileImage
+      || !profileService.deleteProfileImage)) {
       <mat-spinner class="h-25px w-25px"></mat-spinner>
       } @else {
       <span>Save Profile</span>
@@ -180,9 +182,31 @@
       mat-raised-button
       color="accent"
       (click)="signOutUser()"
-      [disabled]="profileService.settingProfile || profileService.savingProfileImage"
+      [disabled]="
+        profileService.settingProfile || profileService.savingProfileImage
+      "
     >
       Sign Out
+    </button>
+
+    <button
+      class="ml-5px"
+      mat-raised-button
+      color="warn"
+      (click)="openConfirmProfileDeletionDialog()"
+      [disabled]="
+        profileService.settingProfile ||
+        profileService.savingProfileImage ||
+        profileService.deletingProfile
+      "
+    >
+      @if (profileService.deletingProfile) {
+      <mat-spinner class="h-25px w-25px"></mat-spinner>
+
+      } @else {
+
+      <span>Delete Profile</span>
+      }
     </button>
   </div>
   }
