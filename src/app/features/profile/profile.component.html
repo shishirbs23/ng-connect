@@ -90,17 +90,19 @@
     @if (!profileService.profile.isEmailVerified) {
     <div class="mt-5px">
       Your email is not verified yet.
-      <button
-        mat-flat-button
-        color="primary"
-        class="h-30px w-115px text-center"
-        (click)="authService.sendEmailVerification()"
-        [disabled]="authService.sendingEmail"
-      >
-        @if (authService.sendingEmail) {
-        <mat-spinner class="ml-10px h-20px w-20px"></mat-spinner>
-        } @else { Verify now }
-      </button>
+      <div class="mt-10px">
+        <button
+          mat-flat-button
+          color="primary"
+          class="h-30px w-115px text-center"
+          (click)="authService.sendEmailVerification()"
+          [disabled]="authService.sendingEmail"
+        >
+          @if (authService.sendingEmail) {
+          <mat-spinner class="ml-10px h-20px w-20px"></mat-spinner>
+          } @else { Verify now }
+        </button>
+      </div>
     </div>
     }
   </div>
