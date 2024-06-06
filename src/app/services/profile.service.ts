@@ -20,9 +20,11 @@ import { ProfileCompleteDialogComponent } from '../features/profile/profile-comp
 // Services
 import { AppService } from '../core/services/app.service';
 import { FileService } from '../core/services/file.service';
+import { FormService } from '../core/services/form.service';
 import { UiService } from '../core/services/ui.service';
 
 // Models
+import { AuthFormField } from '../models/formField.model';
 import { Profile } from '../models/profile.model';
 
 // Enums
@@ -34,16 +36,24 @@ import { Collection } from '../utils/enums/collection.enum';
 export class ProfileService {
   auth = getAuth();
   storage = getStorage();
+  field!: AuthFormField;
 
   appService = inject(AppService);
   uiService = inject(UiService);
   fileService = inject(FileService);
+  formService = inject(FormService);
 
   profile!: Profile;
   loadingProfile: boolean = true;
   settingProfile: boolean = false;
   savingProfileImage: boolean = false;
   updatingProfileImage: boolean = false;
+
+  isEditable = {
+    address: false,
+    birthday: false,
+    phoneNumber: false,
+  };
 
   getCurrentProfile() {
     this.loadingProfile = true;
@@ -70,6 +80,17 @@ export class ProfileService {
         }
       }
     });
+  }
+
+  prepareBirthdayForm() {
+    this.isEditable.birthday = true;
+    this.formService.prepareBirthdayForm(this.profile.dob!);
+    this.field = {
+      id: 4,
+      isRequired: false,
+      label: 'Birthday',
+      name: 'dob',
+    };
   }
 
   openProfileCompleteDialog(profile: Profile) {

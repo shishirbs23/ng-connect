@@ -54,6 +54,7 @@ export class AuthService {
 
   isAuthLoading: boolean = false;
   settingUserData: boolean = false;
+  sendingEmail: boolean = false;
 
   handleAuthErrors(error: any) {
     let errorMessage: string;
@@ -137,9 +138,28 @@ export class AuthService {
   }
 
   async sendEmailVerification() {
-    sendEmailVerification(this.auth.currentUser!).then((_) => {
-      this.uiService.openSnackbarFromComponent(EmailVerificationComponent);
-    });
+    if (this.profileService.profile.isEmailVerified) {
+      this.profileService.profile.isEmailVerified = true;
+    }
+
+    this.sendingEmail = true;
+
+    sendEmailVerification(this.auth.currentUser!)
+      .then((_) => {
+        this.uiService.openSnackbarFromComponent(EmailVerificationComponent);
+      })
+      .catch(() => {
+        this.uiService.openSnackbar(
+          'Error during sending email. Try after sometimes.',
+          true,
+          2000
+        );
+      })
+      .finally(() => {
+        setTimeout(() => {
+          this.sendingEmail = false;
+        }, 1000000);
+      });
   }
 
   async forgotPassword(passwordResetEmail: string) {
