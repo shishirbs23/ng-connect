@@ -7,14 +7,14 @@ import { AppHeaderComponent } from '../../core/components/app-header/app-header.
 import { PageType } from '../../utils/enums/page-type.enum';
 
 @Component({
-  selector: 'app-users',
+  selector: 'app-home',
   standalone: true,
   imports: [
     AppHeaderComponent
   ],
-  templateUrl: './users.component.html',
-  styleUrl: './users.component.scss'
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss'
 })
-export class UsersComponent {
+export class HomeComponent {
   pageTypes = PageType;
 }

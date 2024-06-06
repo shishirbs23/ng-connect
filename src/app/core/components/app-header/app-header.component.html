@@ -1,5 +1,38 @@
 <mat-toolbar color="accent">
-  <div class="w-100 text-center">
+  <div class="w-100" [class.text-center]="centreTitle()">
     {{ headerText() }}
   </div>
+
+  @if (!centreTitle()) {
+  <div>
+    <button
+      routerLink="/home"
+      mat-icon-button
+      [color]="pageType() == pageTypes.HOME ? 'primary' : ''"
+    >
+      <mat-icon>home</mat-icon>
+    </button>
+    <button
+      routerLink="/profile"
+      mat-icon-button
+      [color]="pageType() == pageTypes.PROFILE ? 'primary' : ''"
+    >
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <button
+      routerLink="/users"
+      mat-icon-button
+      [color]="pageType() == pageTypes.USERS ? 'primary' : ''"
+    >
+      <mat-icon>group</mat-icon>
+    </button>
+    <button
+      routerLink="/chats"
+      mat-icon-button
+      [color]="pageType() == pageTypes.CHATS ? 'primary' : ''"
+    >
+      <mat-icon matBadge="1">chat</mat-icon>
+    </button>
+  </div>
+  }
 </mat-toolbar>

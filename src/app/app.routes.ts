@@ -5,10 +5,10 @@ import { loggedInGuard } from './core/guards/loggedIn.guard';
 
 export enum RouteNames {
   AUTH = 'auth',
+  HOME = 'home',
   PROFILE = 'profile',
   USERS = 'users',
-  CHAT_LIST = 'chat-list',
-  CHAT_DETAILS = 'chat-details',
+  CHATS = 'chats',
 }
 
 export const routes: Routes = [
@@ -21,7 +21,21 @@ export const routes: Routes = [
     path: RouteNames.AUTH,
     loadComponent: () =>
       import('./features/auth/auth.component').then((m) => m.AuthComponent),
-    canActivate: [loggedInGuard]
+    canActivate: [loggedInGuard],
+  },
+  {
+    path: RouteNames.HOME,
+    loadComponent: () =>
+      import('./features/home/home.component').then((m) => m.HomeComponent),
+    canActivate: [authGuard],
+  },
+  {
+    path: RouteNames.PROFILE,
+    loadComponent: () =>
+      import('./features/profile/profile.component').then(
+        (m) => m.ProfileComponent
+      ),
+    canActivate: [authGuard],
   },
   {
     path: RouteNames.PROFILE,
@@ -38,15 +52,13 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: RouteNames.CHAT_LIST,
+    path: RouteNames.CHATS,
     loadComponent: () =>
-      import('./features/chat-list/chat-list.component').then(
-        (m) => m.ChatListComponent
-      ),
+      import('./features/chats/chats.component').then((m) => m.ChatsComponent),
     canActivate: [authGuard],
   },
   {
-    path: RouteNames.CHAT_DETAILS,
+    path: RouteNames.CHATS,
     loadComponent: () =>
       import('./features/chat-details/chat-details.component').then(
         (m) => m.ChatDetailsComponent

@@ -138,10 +138,6 @@ export class AuthService {
   }
 
   async sendEmailVerification() {
-    if (this.profileService.profile.isEmailVerified) {
-      this.profileService.profile.isEmailVerified = true;
-    }
-
     this.sendingEmail = true;
 
     sendEmailVerification(this.auth.currentUser!)
@@ -156,9 +152,7 @@ export class AuthService {
         );
       })
       .finally(() => {
-        setTimeout(() => {
-          this.sendingEmail = false;
-        }, 1000000);
+        this.sendingEmail = false;
       });
   }
 

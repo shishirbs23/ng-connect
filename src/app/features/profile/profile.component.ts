@@ -27,8 +27,8 @@ import { FormService } from '../../core/services/form.service';
 import { ProfileService } from '../../services/profile.service';
 import { UiService } from '../../core/services/ui.service';
 
-// Models
-import { AuthFormField } from '../../models/formField.model';
+// Utils
+import { PageType } from '../../utils/enums/page-type.enum';
 
 @Component({
   selector: 'app-profile',
@@ -57,6 +57,8 @@ export class ProfileComponent {
   formService = inject(FormService);
   uiService = inject(UiService);
   profileService = inject(ProfileService);
+
+  pageTypes = PageType;
 
   ngOnInit() {
     this.profileService.getCurrentProfile();
