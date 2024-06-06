@@ -1,9 +1,6 @@
+@if (field()) {
 <div [formGroup]="formService.form">
-  <mat-form-field
-    class="w-100"
-    appearance="outline"
-    floatLabel="always"
-  >
+  <mat-form-field class="w-100" appearance="outline" floatLabel="always">
     <mat-label>
       {{ field().label }}
     </mat-label>
@@ -19,3 +16,4 @@
     <mat-error [innerHTML]="formService.formErrors[field().name]"></mat-error>
   </mat-form-field>
 </div>
+}
