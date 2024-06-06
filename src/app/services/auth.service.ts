@@ -100,7 +100,7 @@ export class AuthService {
   }
 
   signUp(signUpFormValue: AuthUser) {
-    signUpFormValue.dob = moment(signUpFormValue.dob).toISOString();
+    signUpFormValue.dob = this.appService.formatMomentDate(signUpFormValue.dob);
 
     this.isAuthLoading = true;
 

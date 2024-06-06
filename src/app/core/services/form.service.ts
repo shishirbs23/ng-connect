@@ -117,9 +117,7 @@ export class FormService {
 
   prepareGenderForm() {
     this.form = new FormGroup({});
-    let validators = [
-      Validators.required,
-    ];
+    let validators = [Validators.required];
     const control = new FormControl('', validators);
     this.form.addControl('genderId', control);
     this.watchFormEvents();
@@ -132,9 +130,9 @@ export class FormService {
     this.watchFormEvents();
   }
 
-  prepareBirthdayForm() {
+  prepareBirthdayForm(value: string) {
     this.form = new FormGroup({});
-    const control = new FormControl('');
+    const control = new FormControl(value, [MinimumAgeValidator]);
     this.form.addControl('dob', control);
     this.watchFormEvents();
   }

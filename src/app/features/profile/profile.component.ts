@@ -13,6 +13,7 @@ import { getAuth } from 'firebase/auth';
 
 // Components
 import { AppHeaderComponent } from '../../core/components/app-header/app-header.component';
+import { AppDatepickerComponent } from '../../core/components/app-datepicker/app-datepicker.component';
 import { ConfirmDeleteDialogComponent } from '../../core/components/confirm-delete-dialog/confirm-delete-dialog.component';
 import { ImageViewerComponent } from '../../core/components/image-viewer/image-viewer.component';
 import { ProfileCompleteDialogComponent } from './profile-complete-dialog/profile-complete-dialog.component';
@@ -22,8 +23,12 @@ import { WebcamDialogComponent } from './webcam-dialog/webcam-dialog.component';
 // Services
 import { AuthService } from '../../services/auth.service';
 import { AppService } from '../../core/services/app.service';
+import { FormService } from '../../core/services/form.service';
 import { ProfileService } from '../../services/profile.service';
 import { UiService } from '../../core/services/ui.service';
+
+// Models
+import { AuthFormField } from '../../models/formField.model';
 
 @Component({
   selector: 'app-profile',
@@ -33,6 +38,7 @@ import { UiService } from '../../core/services/ui.service';
     AppHeaderComponent,
     ProfileCompleteDialogComponent,
     ProfilePictureUploadOptionsComponent,
+    AppDatepickerComponent,
     MatButtonModule,
     MatProgressSpinnerModule,
     MatIconModule,
@@ -45,11 +51,19 @@ import { UiService } from '../../core/services/ui.service';
 })
 export class ProfileComponent {
   auth = getAuth();
+  field!: AuthFormField;
 
   appService = inject(AppService);
   authService = inject(AuthService);
+  formService = inject(FormService);
   uiService = inject(UiService);
   profileService = inject(ProfileService);
+
+  isEditable = {
+    address: false,
+    birthday: false,
+    phoneNumber: false,
+  };
 
   ngOnInit() {
     this.profileService.getCurrentProfile();
@@ -83,6 +97,42 @@ export class ProfileComponent {
     this.uiService.openDialog(WebcamDialogComponent, {
       profile: this.profileService.profile,
     });
+  }
+
+  prepareBirthdayForm() {
+    this.isEditable.birthday = true;
+    this.formService.prepareBirthdayForm(this.profileService.profile.dob!);
+    this.field = {
+      id: 4,
+      isRequired: false,
+      label: 'Birthday',
+      name: 'dob',
+    };
+  }
+
+  async saveProfile() {
+    const updatedProfile = { ...this.profileService.profile };
+
+    if (this.isEditable.address) {
+    }
+
+    if (this.isEditable.birthday) {
+      const dob = this.appService.formatMomentDate(
+        this.formService.form.value.dob
+      );
+      updatedProfile.dob = dob;
+    }
+
+    if (this.isEditable.phoneNumber) {
+    }
+
+    await this.profileService.setProfile(updatedProfile);
+
+    this.isEditable = {
+      address: false,
+      birthday: false,
+      phoneNumber: false,
+    };
   }
 
   signOutUser() {

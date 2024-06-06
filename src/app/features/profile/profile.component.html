@@ -96,19 +96,56 @@
   </div>
 
   <div>
-    <div>
+    <div class="mb-8px">
       <strong> Birthday </strong>
     </div>
 
-    @if (profileService.profile.dob) {
-    <div>
-      {{ profileService.profile.dob | date }}
+    @if (profileService.profile.dob && !isEditable.birthday) {
+    <div class="flex align-items-center gap-10px">
+      <span>
+        {{ profileService.profile.dob | date : "MMMM d, y" }}
+      </span>
+
+      @if (!isEditable.birthday) {
+      <mat-icon class="pointer" (click)="prepareBirthdayForm()">edit</mat-icon>
+      }
     </div>
-    } @else { You haven't provided }
+    } @else {
+    <div class="flex justify-content-center align-items-center mt-10px">
+      <app-datepicker [field]="field"></app-datepicker>
+    </div>
+    }
   </div>
 
-  <button mat-raised-button color="accent" (click)="signOutUser()">
-    Sign Out
-  </button>
+  <div>
+    <button
+      class="w-125px mr-5px"
+      mat-raised-button
+      color="accent"
+      (click)="saveProfile()"
+      [disabled]="
+        (!isEditable.address &&
+          !isEditable.birthday &&
+          !isEditable.phoneNumber) ||
+        profileService.settingProfile
+      "
+    >
+      @if (profileService.settingProfile) {
+      <mat-spinner class="h-25px w-25px"></mat-spinner>
+      } @else {
+      <span>Save Profile</span>
+      }
+    </button>
+
+    <button
+      class="ml-5px"
+      mat-raised-button
+      color="accent"
+      (click)="signOutUser()"
+      [disabled]="profileService.settingProfile"
+    >
+      Sign Out
+    </button>
+  </div>
   }
 </div>

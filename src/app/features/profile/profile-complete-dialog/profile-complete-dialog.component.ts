@@ -109,7 +109,7 @@ export class ProfileCompleteDialogComponent {
 
   prepareBirthdayForm() {
     this.headerText = 'Please Select Your Birthday';
-    this.formService.prepareBirthdayForm();
+    this.formService.prepareBirthdayForm(this.profileService.profile.dob!);
     this.field = {
       id: 4,
       isRequired: false,
