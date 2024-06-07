@@ -136,18 +136,8 @@ export class ProfileComponent {
 
   async deleteUser() {
     this.profileService.deletingProfile = true;
-
-    const { uid, photoName } = this.profileService.profile;
-
-    console.log(uid);
-    console.log(photoName);
-
+    await this.authService.deleteUserProfile();
     await this.authService.deleteUserAccount();
-    await this.profileService.deleteUserProfile();
-    photoName &&
-      (await this.profileService.deleteProfileImage(uid, photoName!));
-
-    this.profileService.deletingProfile = false;
-    this.signOutUser(true);
+    this.authService.signOut(true);
   }
 }

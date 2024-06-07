@@ -1,7 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 
 // Firebase
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
 
 // Router
 import { Router } from '@angular/router';
@@ -23,6 +30,9 @@ import {
 } from 'firebase/auth';
 import { AuthProvider as AProvider } from '../utils/enums/auth-provider.enum';
 
+// Components
+import { EmailVerificationComponent } from '../features/auth/email-verification/email-verification.component';
+
 // Services
 import { AppService } from '../core/services/app.service';
 import { FormService } from '../core/services/form.service';
@@ -34,12 +44,6 @@ import { AuthUser } from '../models/auth-user.model';
 
 // Enums
 import { Collection } from '../utils/enums/collection.enum';
-
-// Components
-import { EmailVerificationComponent } from '../features/auth/email-verification/email-verification.component';
-
-// Moment
-import moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -126,7 +130,6 @@ export class AuthService {
             address: null,
             phoneNumber: null,
             privacyId: 1,
-            isDeleted: false,
           },
           true
         );
@@ -222,6 +225,24 @@ export class AuthService {
     );
   }
 
+  async deleteUserAccount() {
+    await deleteUser(this.auth.currentUser!)
+      .then(async () => {})
+      .catch(() => {});
+  }
+
+  async deleteUserProfile() {
+    const { profile } = this.profileService;
+    const { uid, photoName } = profile;
+
+    await deleteDoc(doc(this.appService._appDB, Collection.PROFILES, uid))
+      .then(() => {})
+      .catch(() => {});
+
+    photoName &&
+      (await this.profileService.deleteProfileImage(uid, photoName!));
+  }
+
   signOut(fromDeletion: boolean = false) {
     this.auth.signOut().then(
       (_) => {
@@ -239,16 +260,5 @@ export class AuthService {
           this.uiService.openSnackbar('Error occurred during signout', true);
       }
     );
-  }
-
-  async deleteUserAccount() {
-    await deleteUser(this.auth.currentUser!)
-      .then(() => {
-        console.log('User account deleted successfully');
-      })
-      .catch(() => {
-        console.log("User account can't be deleted");
-        throw Error("User account can't be deleted");
-      });
   }
 }

@@ -10,5 +10,4 @@ export interface Profile {
   address: string | null;
   phoneNumber: string | null;
   privacyId: number | null;
-  isDeleted: boolean;
 }

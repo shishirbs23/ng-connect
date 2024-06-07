@@ -190,7 +190,7 @@
     </button>
 
     <button
-      class="ml-5px"
+      class="ml-5px w-135px"
       mat-raised-button
       color="warn"
       (click)="openConfirmProfileDeletionDialog()"
@@ -202,9 +202,7 @@
     >
       @if (profileService.deletingProfile) {
       <mat-spinner class="h-25px w-25px"></mat-spinner>
-
       } @else {
-
       <span>Delete Profile</span>
       }
     </button>
