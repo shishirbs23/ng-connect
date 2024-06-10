@@ -7,7 +7,7 @@ export enum RouteNames {
   AUTH = 'auth',
   HOME = 'home',
   PROFILE = 'profile',
-  USERS = 'users',
+  PROFILES = 'profiles',
   CHATS = 'chats',
 }
 
@@ -46,9 +46,9 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: RouteNames.USERS,
+    path: RouteNames.PROFILES,
     loadComponent: () =>
-      import('./features/users/users.component').then((m) => m.UsersComponent),
+      import('./features/profiles/profiles.component').then((m) => m.ProfilesComponent),
     canActivate: [authGuard],
   },
   {

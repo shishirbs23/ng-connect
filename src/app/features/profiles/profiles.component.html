@@ -1,0 +1,48 @@
+<app-header headerText="Profiles" [pageType]="pageTypes.PROFILES"></app-header>
+
+<div
+  class="profiles-section"
+  [ngStyle]="{
+    'justify-content': profileService.loadingProfiles ? 'center' : ''
+  }"
+>
+  @if (profileService.loadingProfiles) {
+  <div class="flex justify-content-center align-items-center gap-20px">
+    <strong> Loading Profiles ... </strong>
+    <mat-spinner color="h-35px w-35px"></mat-spinner>
+  </div>
+  } @else {
+  <div>
+    <mat-slide-toggle color="primary">
+      <span class="ml-10px fw-500">Friends</span>
+    </mat-slide-toggle>
+  </div>
+
+  <div>
+    @for (profile of profileService.profiles; track profile) {
+    <div class="profile-section">
+      @if (profile.photoURL) {
+      <div
+        class="profile-photo"
+        [ngStyle]="{
+          'background-image': 'url(' + profile.photoURL + ')'
+        }"
+      ></div>
+      } @else {
+      <div class="profile-plc">
+        {{ profile.displayName?.substring(0, 2)?.toUpperCase() }}
+      </div>
+      }
+
+      <div>
+        {{ profile.displayName }}
+
+        @if (profile.uid === authService.userId) {
+        <strong> (You) </strong>
+        }
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>

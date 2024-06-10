@@ -76,9 +76,16 @@ export class FormService {
           [FieldType.TEXT, FieldType.EMAIL, FieldType.PASSWORD] as string[]
         ).includes(field.type)
       ) {
-        if (field.name === ENTITY.DISPLAY_NAME) {
+        if (
+          [ENTITY.FIRST_NAME, ENTITY.LAST_NAME, ENTITY.DISPLAY_NAME].includes(
+            field.name
+          )
+        ) {
           validators.push(LeadingAlphabeticValidator);
           validators.push(HasExtraSpaceValidator);
+        }
+
+        if (field.name === ENTITY.DISPLAY_NAME) {
           validators.push(MaxLengthValidator);
           validators.push(MinLengthValidator);
 
@@ -272,10 +279,11 @@ export class FormService {
       if (docSnapData) {
         this.formFields = (docSnapData['fields'] ?? []) as AuthFormField[];
 
-        this.prepareAuthForm(
-          this.formFields,
-          data.mode == this.authMode.SIGNUP
+        this.formFields.sort(
+          (firstField, secondField) => firstField.id - secondField.id
         );
+
+        this.prepareAuthForm(this.formFields, data.mode == FormType.SIGNUP);
 
         this.isFormLoading = false;
       } else {

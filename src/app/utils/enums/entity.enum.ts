@@ -1,5 +1,7 @@
 export enum ENTITY {
   UID = 'uid',
+  FIRST_NAME = 'firstName',
+  LAST_NAME = 'lastName',
   EMAIL = 'email',
   DISPLAY_NAME = 'displayName',
   DATE_OF_BIRTH = 'dob',

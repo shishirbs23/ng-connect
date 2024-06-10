@@ -1,7 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 
 // Firebase
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  setDoc,
+} from 'firebase/firestore';
 import {
   StorageReference,
   deleteObject,
@@ -29,6 +37,7 @@ import { Profile } from '../models/profile.model';
 
 // Enums
 import { Collection } from '../utils/enums/collection.enum';
+import { ENTITY } from '../utils/enums/entity.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -54,6 +63,9 @@ export class ProfileService {
     birthday: false,
     privacy: false,
   };
+
+  profiles: Profile[] = [];
+  loadingProfiles: boolean = true;
 
   getCurrentProfile() {
     this.loadingProfile = true;
@@ -234,5 +246,20 @@ export class ProfileService {
     await deleteObject(fileRef);
 
     this.savingProfileImage = false;
+  }
+
+  async getProfiles() {
+    this.loadingProfiles = true;
+
+    const profileCollection = collection(
+      this.appService._appDB,
+      Collection.PROFILES
+    );
+    const profileQuery = query(profileCollection, orderBy(ENTITY.DISPLAY_NAME));
+    const profileSnap = await getDocs(profileQuery);
+
+    this.profiles = profileSnap.docs.map(doc => doc.data()) as Profile[];
+
+    this.loadingProfiles = false;
   }
 }

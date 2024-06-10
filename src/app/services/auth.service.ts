@@ -61,6 +61,10 @@ export class AuthService {
   settingUserData: boolean = false;
   sendingEmail: boolean = false;
 
+  get userId(): string {
+    return localStorage.getItem('userId') ?? '';
+  }
+
   handleAuthErrors(error: any) {
     let errorMessage: string;
 
@@ -95,6 +99,7 @@ export class AuthService {
         this.uiService.closeDialog(null);
         this.uiService.openSnackbar('Signed in successfully');
         localStorage.setItem('token', result.user['accessToken']);
+        localStorage.setItem('userId', result.user['uid']);
         this.router.navigateByUrl(RouteNames.PROFILE);
       })
       .catch((error) => {

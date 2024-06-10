@@ -1,6 +1,6 @@
 export enum PageType {
   HOME = 'home',
   PROFILE = 'profile',
-  USERS = 'users',
+  PROFILES = 'profiles',
   CHATS = 'chats',
 }
