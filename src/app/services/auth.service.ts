@@ -127,8 +127,6 @@ export class AuthService {
             isEmailVerified: result.user.emailVerified,
             genderId: signUpFormValue.genderId,
             dob: signUpFormValue.dob,
-            address: null,
-            phoneNumber: null,
             privacyId: 1,
           },
           true

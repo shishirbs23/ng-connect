@@ -7,7 +7,5 @@ export interface Profile {
   isEmailVerified: boolean | null;
   genderId: number | null;
   dob: string | null;
-  address: string | null;
-  phoneNumber: string | null;
-  privacyId: number | null;
+  privacyId: number;
 }

@@ -131,7 +131,13 @@
       </span>
 
       @if (!profileService.isEditable.birthday) {
-      <mat-icon class="pointer" (click)="profileService.prepareBirthdayForm()"
+      <mat-icon
+        class="pointer"
+        (click)="profileService.prepareBirthdayForm()"
+        [class.disabled-icon]="
+          profileService.isEditable.birthday ||
+          profileService.isEditable.privacy
+        "
         >edit</mat-icon
       >
       }
@@ -150,8 +156,60 @@
       to update.
     </div>
     } @if (profileService.isEditable.birthday) {
-    <div class="flex justify-content-center align-items-center mt-10px">
+    <div class="flex justify-content-center align-items-center mt-10px gap-20px">
       <app-datepicker [field]="profileService.field"></app-datepicker>
+      <div class="close-icon">
+        <mat-icon
+        size="small"
+        class="pointer"
+        (click)="profileService.isEditable.birthday = false"
+        >close</mat-icon
+      >
+      </div>
+    </div>
+    } @else {
+    <mat-icon
+      class="pointer"
+      (click)="profileService.isEditable.birthday = false"
+      >close</mat-icon
+    >
+    } }
+  </div>
+
+  <div>
+    <div class="mb-8px">
+      <strong> Profile Privacy </strong>
+    </div>
+
+    @if (!profileService.isEditable.privacy) {
+    <div class="flex align-items-center justify-content-center gap-10px">
+      <span>
+        {{ profileService.profile.privacyId | privacyType }}
+      </span>
+
+      @if (!profileService.isEditable.privacy) {
+      <mat-icon
+        class="pointer"
+        (click)="profileService.preparePrivacyForm()"
+        [class.disabled-icon]="
+          profileService.isEditable.birthday ||
+          profileService.isEditable.privacy
+        "
+        >edit</mat-icon
+      >
+      }
+    </div>
+    } @else { @if (profileService.isEditable.privacy) {
+    <div class="flex justify-content-center align-items-center mt-10px gap-20px">
+      <app-select [field]="profileService.field"></app-select>
+      <div class="close-icon">
+        <mat-icon
+        size="small"
+        class="pointer"
+        (click)="profileService.isEditable.privacy = false"
+        >close</mat-icon
+      >
+      </div>
     </div>
     } }
   </div>
@@ -163,10 +221,7 @@
       color="accent"
       (click)="saveProfile()"
       [disabled]="
-        (!profileService.isEditable.address &&
-          !profileService.isEditable.birthday &&
-          !profileService.isEditable.phoneNumber) ||
-        profileService.settingProfile
+        (!profileService.isEditable.birthday && !profileService.isEditable.privacy) || profileService.settingProfile
       "
     >
       @if (profileService.settingProfile && (!profileService.savingProfileImage

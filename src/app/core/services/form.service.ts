@@ -143,6 +143,13 @@ export class FormService {
     this.watchFormEvents();
   }
 
+  preparePrivacyForm(value: number) {
+    this.form = new FormGroup({});
+    const control = new FormControl(value);
+    this.form.addControl('privacyId', control);
+    this.watchFormEvents();
+  }
+
   watchFormEvents() {
     this.formEventSub = this.form.events.subscribe((event) => {
       if (event instanceof StatusChangeEvent && event.status == 'INVALID') {

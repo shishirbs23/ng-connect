@@ -324,3 +324,22 @@ body {
     font-size: 14px !important;
   }
 }
+
+.close-icon {
+  mat-icon {
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    border-radius: 50%;
+    color: white;
+  }
+}
+
+.disabled-icon {
+  cursor: text;
+  pointer-events: none;
+  user-select: none;
+  color: #a7a4a4;
+}

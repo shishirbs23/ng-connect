@@ -51,9 +51,8 @@ export class ProfileService {
   deletingProfile: boolean = false;
 
   isEditable = {
-    address: false,
     birthday: false,
-    phoneNumber: false,
+    privacy: false,
   };
 
   getCurrentProfile() {
@@ -91,6 +90,29 @@ export class ProfileService {
       isRequired: false,
       label: 'Birthday',
       name: 'dob',
+    };
+  }
+
+  preparePrivacyForm() {
+    this.isEditable.privacy = true;
+    this.formService.preparePrivacyForm(this.profile.privacyId);
+    this.field = {
+      id: 10,
+      isRequired: false,
+      label: 'Privacy',
+      name: 'privacyId',
+      values: [
+        {
+          id: 1,
+          label: 'Public',
+          name: 'public',
+        },
+        {
+          id: 2,
+          label: 'Friends',
+          name: 'friends',
+        },
+      ],
     };
   }
 

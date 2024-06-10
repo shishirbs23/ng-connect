@@ -5,7 +5,9 @@
 >
   @for (field of formService.formFields; track field.id) { @switch (field.type)
   { @case (fieldTypes.DROPDOWN) {
-  <app-select [field]="field"></app-select>
+  <div class="mt-30px">
+    <app-select [field]="field"></app-select>
+  </div>
   } @case (fieldTypes.DATE) {
   <div class="mt-30px">
     <app-datepicker [field]="field"></app-datepicker>

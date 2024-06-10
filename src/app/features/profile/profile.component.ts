@@ -14,11 +14,15 @@ import { getAuth } from 'firebase/auth';
 // Components
 import { AppHeaderComponent } from '../../core/components/app-header/app-header.component';
 import { AppDatepickerComponent } from '../../core/components/app-datepicker/app-datepicker.component';
+import { AppSelectComponent } from '../../core/components/app-select/app-select.component';
 import { ConfirmDeleteDialogComponent } from '../../core/components/confirm-delete-dialog/confirm-delete-dialog.component';
 import { ImageViewerComponent } from '../../core/components/image-viewer/image-viewer.component';
 import { ProfileCompleteDialogComponent } from './profile-complete-dialog/profile-complete-dialog.component';
 import { ProfilePictureUploadOptionsComponent } from './profile-picture-upload-options/profile-picture-upload-options.component';
 import { WebcamDialogComponent } from './webcam-dialog/webcam-dialog.component';
+
+// Pipes
+import { PrivacyTypePipe } from "../../core/pipes/privacy-type.pipe";
 
 // Services
 import { AuthService } from '../../services/auth.service';
@@ -31,23 +35,25 @@ import { UiService } from '../../core/services/ui.service';
 import { PageType } from '../../utils/enums/page-type.enum';
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [
-    CommonModule,
-    AppHeaderComponent,
-    ProfileCompleteDialogComponent,
-    ProfilePictureUploadOptionsComponent,
-    AppDatepickerComponent,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatMenuModule,
-    DatePipe,
-  ],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss',
+    selector: 'app-profile',
+    standalone: true,
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.scss',
+    imports: [
+        CommonModule,
+        AppHeaderComponent,
+        ProfileCompleteDialogComponent,
+        ProfilePictureUploadOptionsComponent,
+        AppDatepickerComponent,
+        AppSelectComponent,
+        MatButtonModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatMenuModule,
+        DatePipe,
+        PrivacyTypePipe
+    ]
 })
 export class ProfileComponent {
   auth = getAuth();
@@ -98,9 +104,6 @@ export class ProfileComponent {
   async saveProfile() {
     const updatedProfile = { ...this.profileService.profile };
 
-    if (this.profileService.isEditable.address) {
-    }
-
     if (this.profileService.isEditable.birthday) {
       const dob = this.appService.formatMomentDate(
         this.formService.form.value.dob
@@ -108,15 +111,15 @@ export class ProfileComponent {
       updatedProfile.dob = dob;
     }
 
-    if (this.profileService.isEditable.phoneNumber) {
+    if (this.profileService.isEditable.privacy) {
+      updatedProfile.privacyId = this.formService.form.value.privacyId;
     }
 
     await this.profileService.setProfile(updatedProfile);
 
     this.profileService.isEditable = {
-      address: false,
       birthday: false,
-      phoneNumber: false,
+      privacy: false
     };
   }
 
