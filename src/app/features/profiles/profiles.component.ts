@@ -39,4 +39,9 @@ export class ProfilesComponent {
   ngOnInit() {
     this.profileService.getProfiles();
   }
+
+  filterWithFriends(event: any) {
+    const { checked } = event;
+    console.log(checked);
+  }
 }

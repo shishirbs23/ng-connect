@@ -13,7 +13,7 @@
   </div>
   } @else {
   <div class="toggle-section">
-    <mat-slide-toggle color="primary">
+    <mat-slide-toggle color="primary" (change)="filterWithFriends($event)">
       <span class="ml-10px fw-500">Friends</span>
     </mat-slide-toggle>
   </div>
