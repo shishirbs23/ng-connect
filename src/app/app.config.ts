@@ -5,7 +5,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 // Routes
 import { routes } from './app.routes';
 
-// Firebase
+// Date
 import { MatNativeDateModule } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
