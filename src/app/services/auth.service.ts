@@ -61,10 +61,6 @@ export class AuthService {
   settingUserData: boolean = false;
   sendingEmail: boolean = false;
 
-  get userId(): string {
-    return localStorage.getItem('userId') ?? '';
-  }
-
   handleAuthErrors(error: any) {
     let errorMessage: string;
 

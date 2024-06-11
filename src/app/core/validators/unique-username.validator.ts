@@ -12,7 +12,7 @@ import { collection, where, query, getDocs } from 'firebase/firestore';
 import { AppService } from '../services/app.service';
 
 // Enums
-import { ENTITY } from '../../utils/enums/entity.enum';
+import { Entity } from '../../utils/enums/entity.enum';
 import { Collection } from '../../utils/enums/collection.enum';
 import { Message } from '../../utils/constants/message';
 
@@ -29,7 +29,7 @@ export class UniqueUsernameValidator {
 
       const profileQuery = query(
         collection(appService._appDB, Collection.PROFILES),
-        where(ENTITY.DISPLAY_NAME, '==', value),
+        where(Entity.DISPLAY_NAME, '==', value),
       );
 
       const profileSnap = await getDocs(profileQuery);

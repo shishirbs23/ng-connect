@@ -37,7 +37,8 @@ import { Profile } from '../models/profile.model';
 
 // Enums
 import { Collection } from '../utils/enums/collection.enum';
-import { ENTITY } from '../utils/enums/entity.enum';
+import { Entity } from '../utils/enums/entity.enum';
+import { SearchType } from '../utils/enums/search-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -66,6 +67,7 @@ export class ProfileService {
 
   profiles: Profile[] = [];
   loadingProfiles: boolean = true;
+  showFriends: boolean = false;
 
   getCurrentProfile() {
     this.loadingProfile = true;
@@ -248,18 +250,36 @@ export class ProfileService {
     this.savingProfileImage = false;
   }
 
-  async getProfiles() {
+  async getProfilesFriends(getFriends: boolean = false) {
+    console.log(getFriends);
+
     this.loadingProfiles = true;
 
-    const profileCollection = collection(
-      this.appService._appDB,
-      Collection.PROFILES
-    );
-    const profileQuery = query(profileCollection, orderBy(ENTITY.DISPLAY_NAME));
-    const profileSnap = await getDocs(profileQuery);
+    let dataCollection;
 
-    this.profiles = profileSnap.docs.map(doc => doc.data()) as Profile[];
+    if (getFriends) {
+      const userDocRef = doc(
+        this.appService._appDB,
+        Collection.FRIENDS,
+        this.appService.userId
+      );
+      dataCollection = collection(userDocRef, Collection.FRIENDS);
+    } else {
+      dataCollection = collection(this.appService._appDB, Collection.PROFILES);
+    }
+
+    const dataQuery = query(dataCollection, orderBy(Entity.DISPLAY_NAME));
+    const dataSnap = await getDocs(dataQuery);
+
+    this.profiles = dataSnap.docs.map((doc) => doc.data()) as Profile[];
 
     this.loadingProfiles = false;
+
+    console.log(this.profiles);
+  }
+
+  filterWithFriends() {
+    this.showFriends = !this.showFriends;
+    this.getProfilesFriends(this.showFriends);
   }
 }

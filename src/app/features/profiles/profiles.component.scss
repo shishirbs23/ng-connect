@@ -1,13 +1,25 @@
+.toggle-section {
+  text-align: center;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  padding: 10px;
+  z-index: 1000;
+}
+
 .profiles-section {
   position: relative;
   display: flex;
   padding: 30px;
   flex-direction: column;
   gap: 40px;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 105px);
   text-align: center;
 
   .toggle-section {
+    text-align: center;
     position: fixed;
     top: 64px;
     left: 0;
@@ -17,6 +29,7 @@
   }
 
   .profile-section {
+    cursor: pointer;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -43,6 +56,13 @@
       justify-content: center;
       align-items: center;
       font-size: 14px;
+    }
+
+    &:hover {
+      .profile-dn {
+        color: blueviolet;
+        transition: 0.6s;
+      }
     }
   }
 }

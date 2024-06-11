@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 // Angular Material
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -8,7 +9,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { AppHeaderComponent } from '../../core/components/app-header/app-header.component';
 
 // Services
-import { AuthService } from '../../services/auth.service';
+import { AppService } from '../../core/services/app.service';
 import { ProfileService } from '../../services/profile.service';
 
 // Enums
@@ -26,6 +27,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     AsyncPipe,
+    RouterLink
   ],
   templateUrl: './profiles.component.html',
   styleUrl: './profiles.component.scss',
@@ -33,15 +35,10 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 export class ProfilesComponent {
   pageTypes = PageType;
 
-  authService = inject(AuthService);
+  appService = inject(AppService);
   profileService = inject(ProfileService);
 
   ngOnInit() {
-    this.profileService.getProfiles();
-  }
-
-  filterWithFriends(event: any) {
-    const { checked } = event;
-    console.log(checked);
+    this.profileService.getProfilesFriends();
   }
 }

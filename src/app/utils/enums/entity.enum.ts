@@ -1,4 +1,4 @@
-export enum ENTITY {
+export enum Entity {
   UID = 'uid',
   FIRST_NAME = 'firstName',
   LAST_NAME = 'lastName',

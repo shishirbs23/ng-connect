@@ -34,7 +34,7 @@ import { UniqueEmailValidator } from '../validators/unique-email.validator';
 import { UniqueUsernameValidator } from '../validators/unique-username.validator';
 
 // Contants
-import { ENTITY } from '../../utils/enums/entity.enum';
+import { Entity } from '../../utils/enums/entity.enum';
 import { FormType } from '../../utils/enums/form-type.enum';
 
 @Injectable({
@@ -77,7 +77,7 @@ export class FormService {
         ).includes(field.type)
       ) {
         if (
-          [ENTITY.FIRST_NAME, ENTITY.LAST_NAME, ENTITY.DISPLAY_NAME].includes(
+          [Entity.FIRST_NAME, Entity.LAST_NAME, Entity.DISPLAY_NAME].includes(
             field.name
           )
         ) {
@@ -85,7 +85,7 @@ export class FormService {
           validators.push(HasExtraSpaceValidator);
         }
 
-        if (field.name === ENTITY.DISPLAY_NAME) {
+        if (field.name === Entity.DISPLAY_NAME) {
           validators.push(MaxLengthValidator);
           validators.push(MinLengthValidator);
 
@@ -96,11 +96,11 @@ export class FormService {
           validators.push(Validators.maxLength(field.maxLength));
           validators.push(Validators.minLength(field.minLength));
 
-          if (field.name === ENTITY.PASSWORD) {
+          if (field.name === Entity.PASSWORD) {
             validators.push(PasswordStrengthValidator);
           }
         }
-      } else if (field.name == ENTITY.DATE_OF_BIRTH) {
+      } else if (field.name == Entity.DATE_OF_BIRTH) {
         validators.push(MinimumAgeValidator);
       }
 
@@ -239,16 +239,16 @@ export class FormService {
 
         if (formErrors) {
           if (formErrors['misMatchPasswords']) {
-            if (!this.formErrors[ENTITY.CONFIRM_PASSWORD]) {
-              this.formErrors[ENTITY.CONFIRM_PASSWORD] = '';
+            if (!this.formErrors[Entity.CONFIRM_PASSWORD]) {
+              this.formErrors[Entity.CONFIRM_PASSWORD] = '';
             }
 
             if (
-              !this.formErrors[ENTITY.CONFIRM_PASSWORD].includes(
+              !this.formErrors[Entity.CONFIRM_PASSWORD].includes(
                 formErrors['misMatchPasswords']
               )
             ) {
-              this.formErrors[ENTITY.CONFIRM_PASSWORD] +=
+              this.formErrors[Entity.CONFIRM_PASSWORD] +=
                 formErrors['misMatchPasswords'];
             }
           }

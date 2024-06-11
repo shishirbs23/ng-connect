@@ -1,23 +1,32 @@
 <app-header headerText="Profiles" [pageType]="pageTypes.PROFILES"></app-header>
 
+<div class="toggle-section">
+  <mat-slide-toggle
+    color="primary"
+    (change)="profileService.filterWithFriends()"
+    [checked]="profileService.showFriends"
+  >
+    <span class="ml-10px fw-500">Friends</span>
+  </mat-slide-toggle>
+</div>
+
 <div
   class="profiles-section"
   [ngStyle]="{
-    'justify-content': profileService.loadingProfiles ? 'center' : ''
+    'justify-content':
+      profileService.loadingProfiles || !profileService.profiles.length
+        ? 'center'
+        : ''
   }"
 >
   @if (profileService.loadingProfiles) {
   <div class="flex justify-content-center align-items-center gap-20px">
-    <strong> Loading Profiles ... </strong>
+    <strong>
+      Loading {{ profileService.showFriends ? "Friends" : "Profiles" }} ...
+    </strong>
     <mat-spinner color="h-35px w-35px"></mat-spinner>
   </div>
-  } @else {
-  <div class="toggle-section">
-    <mat-slide-toggle color="primary" (change)="filterWithFriends($event)">
-      <span class="ml-10px fw-500">Friends</span>
-    </mat-slide-toggle>
-  </div>
-
+  } @else { @if(profileService.profiles.length) {
   <div class="mt-90px">
     @for (profile of profileService.profiles; track profile) {
     <div class="profile-section">
@@ -34,15 +43,23 @@
       </div>
       }
 
-      <div>
+      <div class="profile-dn" routerLink="/profile/{{ profile.uid }}">
         {{ profile.displayName }}
 
-        @if (profile.uid === authService.userId) {
+        @if (profile.uid === appService.userId) {
         <strong> (You) </strong>
         }
       </div>
     </div>
     }
   </div>
-  }
+  } @else {
+  <div>
+    <strong>
+      {{
+        profileService.showFriends ? "No friends found" : "No profiles found"
+      }}
+    </strong>
+  </div>
+  } }
 </div>
