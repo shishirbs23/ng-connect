@@ -38,7 +38,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: RouteNames.PROFILE,
+    path: `${RouteNames.PROFILE}/:id`,
     loadComponent: () =>
       import('./features/profile/profile.component').then(
         (m) => m.ProfileComponent
@@ -58,7 +58,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: RouteNames.CHATS,
+    path: `${RouteNames.CHATS}/:id`,
     loadComponent: () =>
       import('./features/chat-details/chat-details.component').then(
         (m) => m.ChatDetailsComponent
