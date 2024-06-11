@@ -7,6 +7,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // Components
 import { AppHeaderComponent } from '../../core/components/app-header/app-header.component';
+import { ImagePlaceholderComponent } from '../../core/components/image-placeholder/image-placeholder.component';
 
 // Services
 import { AppService } from '../../core/services/app.service';
@@ -24,6 +25,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
   imports: [
     CommonModule,
     AppHeaderComponent,
+    ImagePlaceholderComponent,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     AsyncPipe,

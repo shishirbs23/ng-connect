@@ -38,9 +38,12 @@
         }"
       ></div>
       } @else {
-      <div class="profile-plc">
-        {{ profile.displayName?.substring(0, 2)?.toUpperCase() }}
-      </div>
+      <app-image-placeholder
+        [profile]="profile"
+        [height]="50"
+        [width]="50"
+        [fontSize]="14"
+      ></app-image-placeholder>
       }
 
       <div class="profile-dn" routerLink="/profile/{{ profile.uid }}">
