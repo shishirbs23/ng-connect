@@ -59,6 +59,7 @@ export class ProfileService {
   savingProfileImage: boolean = false;
   updatingProfileImage: boolean = false;
   deletingProfile: boolean = false;
+  isMyProfile: boolean = false;
 
   isEditable = {
     birthday: false,
@@ -94,6 +95,25 @@ export class ProfileService {
         }
       }
     });
+  }
+
+  async getProfileFromDb(userId: string) {
+    this.isMyProfile = userId === this.appService.userId;
+
+    this.loadingProfile = true;
+
+    const profileRef = doc(this.appService._appDB, Collection.PROFILES, userId);
+
+    const profileSnap = await getDoc(profileRef);
+    const profile = profileSnap.data() as Profile;
+
+    this.loadingProfile = false;
+
+    this.profile = profile;
+
+    if (this.isMyProfile && (!profile.displayName || !profile.genderId)) {
+      this.openProfileCompleteDialog(profile);
+    }
   }
 
   prepareBirthdayForm() {
@@ -251,8 +271,6 @@ export class ProfileService {
   }
 
   async getProfilesFriends(getFriends: boolean = false) {
-    console.log(getFriends);
-
     this.loadingProfiles = true;
 
     let dataCollection;
@@ -274,8 +292,6 @@ export class ProfileService {
     this.profiles = dataSnap.docs.map((doc) => doc.data()) as Profile[];
 
     this.loadingProfiles = false;
-
-    console.log(this.profiles);
   }
 
   filterWithFriends() {

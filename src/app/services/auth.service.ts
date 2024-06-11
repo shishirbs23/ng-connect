@@ -121,9 +121,12 @@ export class AuthService {
         await this.profileService.setProfile(
           {
             uid: result.user.uid,
+            firstName: signUpFormValue.firstName,
+            lastName: signUpFormValue.lastName,
             email: signUpFormValue.email,
             displayName: signUpFormValue.displayName,
             photoURL: null,
+            coverPhotoURL: null,
             photoName: null,
             isEmailVerified: result.user.emailVerified,
             genderId: signUpFormValue.genderId,
