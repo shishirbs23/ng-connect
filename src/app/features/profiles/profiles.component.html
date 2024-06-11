@@ -6,7 +6,7 @@
     (change)="profileService.filterWithFriends()"
     [checked]="profileService.showFriends"
   >
-    <span class="ml-10px fw-500">Friends</span>
+    <span class="ml-10px fw-500">Show Friends Only</span>
   </mat-slide-toggle>
 </div>
 
@@ -44,7 +44,7 @@
       }
 
       <div class="profile-dn" routerLink="/profile/{{ profile.uid }}">
-        {{ profile.displayName }}
+        {{ profile.firstName }} {{ profile.lastName }}
 
         @if (profile.uid === appService.userId) {
         <strong> (You) </strong>

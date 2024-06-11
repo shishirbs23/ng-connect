@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -22,7 +23,7 @@ import { ProfilePictureUploadOptionsComponent } from './profile-picture-upload-o
 import { WebcamDialogComponent } from './webcam-dialog/webcam-dialog.component';
 
 // Pipes
-import { PrivacyTypePipe } from "../../core/pipes/privacy-type.pipe";
+import { PrivacyTypePipe } from '../../core/pipes/privacy-type.pipe';
 
 // Services
 import { AuthService } from '../../services/auth.service';
@@ -35,25 +36,25 @@ import { UiService } from '../../core/services/ui.service';
 import { PageType } from '../../utils/enums/page-type.enum';
 
 @Component({
-    selector: 'app-profile',
-    standalone: true,
-    templateUrl: './profile.component.html',
-    styleUrl: './profile.component.scss',
-    imports: [
-        CommonModule,
-        AppHeaderComponent,
-        ProfileCompleteDialogComponent,
-        ProfilePictureUploadOptionsComponent,
-        AppDatepickerComponent,
-        AppSelectComponent,
-        MatButtonModule,
-        MatProgressSpinnerModule,
-        MatIconModule,
-        MatTooltipModule,
-        MatMenuModule,
-        DatePipe,
-        PrivacyTypePipe
-    ]
+  selector: 'app-profile',
+  standalone: true,
+  templateUrl: './profile.component.html',
+  styleUrl: './profile.component.scss',
+  imports: [
+    CommonModule,
+    AppHeaderComponent,
+    ProfileCompleteDialogComponent,
+    ProfilePictureUploadOptionsComponent,
+    AppDatepickerComponent,
+    AppSelectComponent,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatMenuModule,
+    DatePipe,
+    PrivacyTypePipe,
+  ],
 })
 export class ProfileComponent {
   auth = getAuth();
@@ -66,8 +67,11 @@ export class ProfileComponent {
 
   pageTypes = PageType;
 
+  route = inject(ActivatedRoute);
+
   ngOnInit() {
-    this.profileService.getCurrentProfile();
+    const userId: string = this.appService.getRouteParamData(this.route, "id");
+    this.profileService.getProfileFromDb(userId);
   }
 
   viewProfilePhoto() {
@@ -119,7 +123,7 @@ export class ProfileComponent {
 
     this.profileService.isEditable = {
       birthday: false,
-      privacy: false
+      privacy: false,
     };
   }
 
