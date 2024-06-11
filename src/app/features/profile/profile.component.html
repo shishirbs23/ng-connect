@@ -7,11 +7,22 @@
     <mat-spinner color="h-35px w-35px"></mat-spinner>
   </div>
   } @else {
-  <div>
-    <div>
-      <strong> Profile Photo </strong>
+  <!-- Cover photo section with Profile photo -->
+  <div
+    class="cover-photo-section"
+    [ngStyle]="{
+      'background-image': 'url(' + profileService.profile.coverPhotoURL + ')'
+    }"
+  >
+    <div class="options">
+      <app-profile-picture-upload-options
+        [profile]="profileService.profile"
+        [option]="pictureOptions.COVER_PHOTO"
+      ></app-profile-picture-upload-options>
     </div>
+  </div>
 
+  <div>
     @if (profileService.profile.photoURL) {
     <div
       class="profile-photo"
@@ -45,6 +56,7 @@
               profileService.onPictureChange(
                 $event,
                 profileService.profile,
+                '',
                 true
               )
             "
@@ -63,12 +75,10 @@
       } }
     </div>
     } @else { @if (profileService.isMyProfile) {
-    <div>
-      <div class="mb-10px">You haven't uploaded any profile photo yet.</div>
-      <app-profile-picture-upload-options
-        [profile]="profileService.profile"
-      ></app-profile-picture-upload-options>
-    </div>
+    <app-profile-picture-upload-options
+      [profile]="profileService.profile"
+      [option]="pictureOptions.PROFILE_PHOTO"
+    ></app-profile-picture-upload-options>
     } @else { } }
   </div>
 

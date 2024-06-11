@@ -34,6 +34,7 @@ import { UiService } from '../../core/services/ui.service';
 
 // Utils
 import { PageType } from '../../utils/enums/page-type.enum';
+import { PictureOption } from '../../utils/enums/picture-option.enum';
 
 @Component({
   selector: 'app-profile',
@@ -66,6 +67,7 @@ export class ProfileComponent {
   profileService = inject(ProfileService);
 
   pageTypes = PageType;
+  pictureOptions = PictureOption;
 
   route = inject(ActivatedRoute);
 

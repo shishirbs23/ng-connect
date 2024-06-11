@@ -3,11 +3,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 50px;
+  /* padding: 50px; */
   flex-direction: column;
   gap: 40px;
   min-height: calc(100vh - 64px);
   text-align: center;
+
+  .cover-photo-section {
+    margin-top: 64px;
+    position: relative;
+    background-color: #cecece;
+    height: 300px;
+    width: 100%;
+
+    .options {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
 
   .profile-photo {
     position: relative;

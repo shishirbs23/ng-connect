@@ -13,6 +13,9 @@ import { UiService } from '../../../core/services/ui.service';
 // Models
 import { Profile } from '../../../models/profile.model';
 
+// Enums
+import { PictureOption } from '../../../utils/enums/picture-option.enum';
+
 @Component({
   selector: 'app-profile-picture-upload-options',
   standalone: true,
@@ -22,6 +25,9 @@ import { Profile } from '../../../models/profile.model';
 })
 export class ProfilePictureUploadOptionsComponent {
   profile = input.required<Profile>();
+  option = input.required<PictureOption>();
+
+  pictureOptions = PictureOption;
 
   profileService = inject(ProfileService);
   uiService = inject(UiService);

@@ -25,6 +25,9 @@ import { FormService } from '../../../core/services/form.service';
 import { UiService } from '../../../core/services/ui.service';
 import { ProfileService } from '../../../services/profile.service';
 
+// Enums
+import { PictureOption } from '../../../utils/enums/picture-option.enum';
+
 @Component({
   selector: 'app-profile-complete-dialog',
   standalone: true,
@@ -54,6 +57,8 @@ export class ProfileCompleteDialogComponent {
   field!: AuthFormField;
   uiID: number = 0;
   file: File | null = null;
+
+  pictureOptions = PictureOption;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)

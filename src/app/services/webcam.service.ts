@@ -9,8 +9,13 @@ import { UiService } from '../core/services/ui.service';
 // Models
 import { Profile } from '../models/profile.model';
 
+// Utils
+import { PictureOption } from '../utils/enums/picture-option.enum';
+
 // Webcam
 import { WebcamImage } from 'ngx-webcam';
+
+// Image Cropper
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 
 @Injectable({
@@ -58,7 +63,7 @@ export class WebcamService {
 
     const response = await fetch(this.imageDataUrl);
     const blob = await response.blob();
-    
+
     this.blobToImageFile(blob);
   }
 
@@ -73,7 +78,9 @@ export class WebcamService {
   async cropImage() {
     this.showImageCropper = false;
     this.blobToImageFile(this.croppedImageBlob);
-    this.imageDataUrl = await this.fileService.blobToDataURL(this.croppedImageBlob);
+    this.imageDataUrl = await this.fileService.blobToDataURL(
+      this.croppedImageBlob
+    );
   }
 
   imageCropped(event: ImageCroppedEvent) {
@@ -90,6 +97,7 @@ export class WebcamService {
     await this.profileService.uploadFile(
       this.imageFile,
       profile,
+      PictureOption.PROFILE_PHOTO,
       !!profile.photoURL
     );
     this.closeClearDialog();

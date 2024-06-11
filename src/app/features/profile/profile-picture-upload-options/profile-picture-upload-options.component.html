@@ -1,3 +1,8 @@
+<div class="mb-10px">
+  You haven't uploaded any
+  {{ option() === pictureOptions.PROFILE_PHOTO ? "Profile" : "Cover" }} Photo
+  yet
+</div>
 <div class="wrapper">
   <label
     class="picture-input-label"
@@ -20,7 +25,7 @@
     type="file"
     hidden="true"
     id="picture-input"
-    (change)="profileService.onPictureChange($event, profile())"
+    (change)="profileService.onPictureChange($event, profile(), option())"
     accept="image/*"
   />
 

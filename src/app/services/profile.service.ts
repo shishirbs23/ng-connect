@@ -39,6 +39,7 @@ import { Profile } from '../models/profile.model';
 import { Collection } from '../utils/enums/collection.enum';
 import { Entity } from '../utils/enums/entity.enum';
 import { SearchType } from '../utils/enums/search-type.enum';
+import { PictureOption } from '../utils/enums/picture-option.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -186,18 +187,24 @@ export class ProfileService {
       });
   }
 
-  onPictureChange(event: Event, profile: Profile, isUpdate?: boolean) {
+  onPictureChange(
+    event: Event,
+    profile: Profile,
+    pictureOption: string,
+    isUpdate?: boolean
+  ) {
     const input = event.target as HTMLInputElement;
 
     if (input.files?.length) {
       const file: File = input.files[0];
-      this.uploadFile(file, profile, isUpdate ?? false);
+      this.uploadFile(file, profile, pictureOption, isUpdate ?? false);
     }
   }
 
   async uploadFile(
     file: File,
     profile: Profile,
+    pictureOption: string,
     isUpdate: boolean
   ): Promise<void> {
     const fileNameToDelete: string | null = profile.photoName;
@@ -229,14 +236,29 @@ export class ProfileService {
     await uploadBytes(fileRef, file);
 
     // Get download URL
-    const photoURL = await getDownloadURL(fileRef);
+    const url = await getDownloadURL(fileRef);
 
     // Save User Profile
-    await this.setProfile({ ...profile, photoURL, photoName: file.name });
+    pictureOption === PictureOption.PROFILE_PHOTO
+      ? await this.setProfile({
+          ...profile,
+          photoURL: url,
+          photoName: file.name,
+        })
+      : await this.setProfile({
+          ...profile,
+          coverPhotoURL: url,
+          photoName: file.name,
+        });
 
     // Setting Image data to show on UI
-    profile.photoURL = photoURL;
-    profile.photoName = file.name;
+    if (pictureOption === PictureOption.PROFILE_PHOTO) {
+      profile.photoURL = url;
+      profile.photoName = file.name;
+    } else {
+      profile.coverPhotoURL = url;
+      profile.coverPhotoName = file.name;
+    }
 
     this.savingProfileImage = false;
 
@@ -244,7 +266,7 @@ export class ProfileService {
       this.updatingProfileImage = false;
     }
 
-    // Delete the existing photo from the storages
+    // Delete the existing photo from the storage
     if (fileNameToDelete) {
       this.deleteProfileImage(profile.uid, fileNameToDelete, false);
     }
