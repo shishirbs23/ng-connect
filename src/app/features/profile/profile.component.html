@@ -22,7 +22,8 @@
         [option]="pictureOptions.COVER_PHOTO"
       ></app-photo-upload-options>
     </div>
-    } @else { @if (profileService.savingCoverPhoto) {
+    } @else { @if (profileService.savingCoverPhoto ||
+    profileService.updatingCoverPhoto) {
     <div class="loader">
       <mat-spinner color="accent" color="h-35px w-35px"></mat-spinner>
     </div>
@@ -41,8 +42,8 @@
       }"
       [class.disabled]="profileService.updatingProfilePhoto"
     >
-      @if (profileService.isMyProfile) { @if
-      (profileService.updatingProfilePhoto) {
+      @if (profileService.isMyProfile) { @if (profileService.savingProfilePhoto
+      || profileService.updatingProfilePhoto) {
       <mat-spinner color="accent" class="h-25px w-25px"></mat-spinner>
       } @else {
       <div class="profile-photo-actions">

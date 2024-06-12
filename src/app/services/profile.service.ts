@@ -270,30 +270,25 @@ export class ProfileService {
     if (pictureOption === PictureOption.PROFILE_PHOTO) {
       profile.photoURL = url;
       profile.photoName = file.name;
+      this.savingProfilePhoto = false;
+
+      if (isUpdate) {
+        this.updatingProfilePhoto = false;
+      }
+
+      if (fileNameToDelete) {
+        this.deleteProfilePhoto(profile.uid, fileNameToDelete, false);
+      }
     } else {
       profile.coverPhotoURL = url;
       profile.coverPhotoName = file.name;
-    }
-
-    if (pictureOption === PictureOption.PROFILE_PHOTO) {
-      this.savingProfilePhoto = false;
-    } else {
       this.savingCoverPhoto = false;
-    }
 
-    if (isUpdate) {
-      if (pictureOption === PictureOption.PROFILE_PHOTO) {
-        this.updatingProfilePhoto = false;
-      } else {
+      if (isUpdate) {
         this.updatingCoverPhoto = false;
       }
-    }
 
-    // Delete the existing photo from the storage
-    if (fileNameToDelete) {
-      if (pictureOption === PictureOption.PROFILE_PHOTO) {
-        this.deleteProfilePhoto(profile.uid, fileNameToDelete, false);
-      } else {
+      if (fileNameToDelete) {
         this.deleteCoverPhoto(profile.uid, fileNameToDelete, false);
       }
     }

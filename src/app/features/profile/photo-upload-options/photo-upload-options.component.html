@@ -10,7 +10,7 @@
 
   <label
     class="picture-input-label"
-    for="picture-input"
+    for="photo-upload-input"
     [class.disabled]="profileService.savingProfilePhoto"
   >
     <span>
@@ -28,7 +28,7 @@
   <input
     type="file"
     hidden="true"
-    id="picture-input"
+    id="photo-upload-input"
     (change)="profileService.onPictureChange($event, profile(), option())"
     accept="image/*"
   />

@@ -17,22 +17,20 @@
     >edit</mat-icon
   >
   <mat-menu #pictureUpdateMenu="matMenu" class="picture-update-menu">
-    <label mat-menu-item class="picture-input-label" for="picture-input"
+    <label mat-menu-item class="picture-input-label" for="photo-action-input"
       >Upload from a Computer</label
     >
     <input
       type="file"
       hidden="true"
-      id="picture-input"
+      id="photo-action-input"
       accept="image/*"
-      (change)="
-        profileService.onPictureChange(
-          $event,
-          profileService.profile,
-          option(),
-          true
-        )
-      "
+      (change)="profileService.onPictureChange(
+        $event,
+        profileService.profile,
+        option(),
+        true
+      )"
     />
     <button mat-menu-item (click)="openWebcamDialog()">Take a photo</button>
   </mat-menu>

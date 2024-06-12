@@ -93,7 +93,7 @@ export class WebcamService {
     this.imageDataUrl = '';
   }
 
-  async saveAsProfilePhoto(profile: Profile, option: string) {
+  async savePhoto(profile: Profile, option: string) {
     const url: string | null =
       (option === PictureOption.PROFILE_PHOTO
         ? profile.photoURL
