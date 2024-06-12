@@ -19,7 +19,7 @@ import { AppSelectComponent } from '../../core/components/app-select/app-select.
 import { ConfirmDeleteDialogComponent } from '../../core/components/confirm-delete-dialog/confirm-delete-dialog.component';
 import { ImageViewerComponent } from '../../core/components/image-viewer/image-viewer.component';
 import { ProfileCompleteDialogComponent } from './profile-complete-dialog/profile-complete-dialog.component';
-import { ProfilePictureUploadOptionsComponent } from './profile-picture-upload-options/profile-picture-upload-options.component';
+import { CoverPhotoUploadOptionsComponent } from './cover-photo-upload-options/cover-photo-upload-options.component';
 import { WebcamDialogComponent } from './webcam-dialog/webcam-dialog.component';
 
 // Pipes
@@ -45,7 +45,7 @@ import { PictureOption } from '../../utils/enums/picture-option.enum';
     CommonModule,
     AppHeaderComponent,
     ProfileCompleteDialogComponent,
-    ProfilePictureUploadOptionsComponent,
+    CoverPhotoUploadOptionsComponent,
     AppDatepickerComponent,
     AppSelectComponent,
     MatButtonModule,

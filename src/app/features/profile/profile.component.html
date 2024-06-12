@@ -14,12 +14,14 @@
       'background-image': 'url(' + profileService.profile.coverPhotoURL + ')'
     }"
   >
+    @if (!profileService.profile.coverPhotoURL) {
     <div class="options">
-      <app-profile-picture-upload-options
+      <app-cover-photo-upload-options
         [profile]="profileService.profile"
         [option]="pictureOptions.COVER_PHOTO"
-      ></app-profile-picture-upload-options>
+      ></app-cover-photo-upload-options>
     </div>
+    }
   </div>
 
   <div>
@@ -75,10 +77,10 @@
       } }
     </div>
     } @else { @if (profileService.isMyProfile) {
-    <app-profile-picture-upload-options
+    <!--  <app-profile-picture-upload-options
       [profile]="profileService.profile"
       [option]="pictureOptions.PROFILE_PHOTO"
-    ></app-profile-picture-upload-options>
+    ></app-profile-picture-upload-options> -->
     } @else { } }
   </div>
 
