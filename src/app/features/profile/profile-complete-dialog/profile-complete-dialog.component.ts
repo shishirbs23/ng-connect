@@ -13,7 +13,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { AppInputComponent } from '../../../core/components/app-input/app-input.component';
 import { AppSelectComponent } from '../../../core/components/app-select/app-select.component';
 import { AppDatepickerComponent } from '../../../core/components/app-datepicker/app-datepicker.component';
-import { ProfilePictureUploadOptionsComponent } from '../profile-picture-upload-options/profile-picture-upload-options.component';
+import { CoverPhotoUploadOptionsComponent } from '../cover-photo-upload-options/cover-photo-upload-options.component';
 
 // Models
 import { Profile } from '../../../models/profile.model';
@@ -40,7 +40,7 @@ import { PictureOption } from '../../../utils/enums/picture-option.enum';
     AppInputComponent,
     AppSelectComponent,
     AppDatepickerComponent,
-    ProfilePictureUploadOptionsComponent,
+    CoverPhotoUploadOptionsComponent,
   ],
   templateUrl: './profile-complete-dialog.component.html',
   styleUrl: './profile-complete-dialog.component.scss',
