@@ -93,12 +93,17 @@ export class WebcamService {
     this.imageDataUrl = '';
   }
 
-  async saveAsProfilePhoto(profile: Profile) {
+  async saveAsProfilePhoto(profile: Profile, option: string) {
+    const url: string | null =
+      (option === PictureOption.PROFILE_PHOTO
+        ? profile.photoURL
+        : profile.coverPhotoURL) || null;
+
     await this.profileService.uploadFile(
       this.imageFile,
       profile,
-      PictureOption.PROFILE_PHOTO,
-      !!profile.photoURL
+      option,
+      !!url
     );
     this.closeClearDialog();
   }

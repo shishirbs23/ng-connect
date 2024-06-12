@@ -207,7 +207,10 @@ export class ProfileService {
     pictureOption: string,
     isUpdate: boolean
   ): Promise<void> {
-    const fileNameToDelete: string | null = profile.photoName;
+    const fileNameToDelete: string | null =
+      pictureOption === PictureOption.PROFILE_PHOTO
+        ? profile.photoName
+        : profile.coverPhotoName;
 
     if (!this.fileService.isFileImage(file)) {
       this.uiService.openSnackbar(
@@ -248,7 +251,7 @@ export class ProfileService {
       : await this.setProfile({
           ...profile,
           coverPhotoURL: url,
-          photoName: file.name,
+          coverPhotoName: file.name,
         });
 
     // Setting Image data to show on UI
@@ -268,11 +271,15 @@ export class ProfileService {
 
     // Delete the existing photo from the storage
     if (fileNameToDelete) {
-      this.deleteProfileImage(profile.uid, fileNameToDelete, false);
+      if (pictureOption === PictureOption.PROFILE_PHOTO) {
+        this.deleteProfilePhoto(profile.uid, fileNameToDelete, false);
+      } else {
+        this.deleteCoverPhoto(profile.uid, fileNameToDelete, false);
+      }
     }
   }
 
-  async deleteProfileImage(
+  async deleteProfilePhoto(
     userId: string,
     imageFileName: string,
     deleteCurrent: boolean = true
@@ -283,6 +290,26 @@ export class ProfileService {
       this.profile.photoURL = this.profile.photoName = null;
       await this.setProfile(this.profile);
       this.uiService.openSnackbar('Profile photo has been removed');
+    }
+
+    const filePath: string = `uploads/${userId}/${imageFileName}`;
+    const fileRef: StorageReference = ref(this.storage, filePath);
+    await deleteObject(fileRef);
+
+    this.savingProfileImage = false;
+  }
+
+  async deleteCoverPhoto(
+    userId: string,
+    imageFileName: string,
+    deleteCurrent: boolean = true
+  ) {
+    this.savingProfileImage = true;
+
+    if (deleteCurrent) {
+      this.profile.coverPhotoURL = this.profile.coverPhotoName = null;
+      await this.setProfile(this.profile);
+      this.uiService.openSnackbar('Cover photo has been removed');
     }
 
     const filePath: string = `uploads/${userId}/${imageFileName}`;

@@ -68,7 +68,7 @@
     <button
       mat-flat-button
       color="accent"
-      (click)="service.saveAsProfilePhoto(data.profile)"
+      (click)="service.saveAsProfilePhoto(data.profile, data.option)"
       [disabled]="profileService.savingProfileImage"
     >
       <div class="flex justify-content-center gap-10px">

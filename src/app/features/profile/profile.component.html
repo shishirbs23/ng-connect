@@ -14,14 +14,25 @@
       'background-image': 'url(' + profileService.profile.coverPhotoURL + ')'
     }"
   >
-    @if (!profileService.profile.coverPhotoURL) {
+    @if (profileService.isMyProfile) { @if
+    (!profileService.profile.coverPhotoURL) {
     <div class="options">
-      <app-cover-photo-upload-options
+      <app-photo-upload-options
         [profile]="profileService.profile"
         [option]="pictureOptions.COVER_PHOTO"
-      ></app-cover-photo-upload-options>
+      ></app-photo-upload-options>
     </div>
-    }
+    } @else { @if (profileService.savingProfileImage) {
+    <div class="loader">
+      <mat-spinner color="accent" color="h-35px w-35px"></mat-spinner>
+    </div>
+    } @else {
+    <div class="actions">
+      <app-photo-actions
+        [option]="pictureOptions.COVER_PHOTO"
+      ></app-photo-actions>
+    </div>
+    } } }
   </div>
 
   <div>
@@ -246,8 +257,8 @@
         profileService.settingProfile
       "
     >
-      @if (profileService.settingProfile && (!profileService.savingProfileImage
-      || !profileService.deleteProfileImage)) {
+      @if (profileService.settingProfile && !profileService.savingProfileImage )
+      {
       <mat-spinner class="h-25px w-25px"></mat-spinner>
       } @else {
       <span>Save Profile</span>

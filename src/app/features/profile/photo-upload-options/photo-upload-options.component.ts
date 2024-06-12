@@ -17,13 +17,13 @@ import { Profile } from '../../../models/profile.model';
 import { PictureOption } from '../../../utils/enums/picture-option.enum';
 
 @Component({
-  selector: 'app-cover-photo-upload-options',
+  selector: 'app-photo-upload-options',
   standalone: true,
   imports: [MatProgressSpinnerModule],
-  templateUrl: './cover-photo-upload-options.component.html',
-  styleUrl: './cover-photo-upload-options.component.scss',
+  templateUrl: './photo-upload-options.component.html',
+  styleUrl: './photo-upload-options.component.scss',
 })
-export class CoverPhotoUploadOptionsComponent {
+export class PhotoUploadOptionsComponent {
   profile = input.required<Profile>();
   option = input.required<PictureOption>();
 
@@ -35,6 +35,7 @@ export class CoverPhotoUploadOptionsComponent {
   openWebcamDialog() {
     this.uiService.openDialog(WebcamDialogComponent, {
       profile: this.profile(),
+      option: this.option(),
     });
   }
 }

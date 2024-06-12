@@ -19,7 +19,8 @@ import { AppSelectComponent } from '../../core/components/app-select/app-select.
 import { ConfirmDeleteDialogComponent } from '../../core/components/confirm-delete-dialog/confirm-delete-dialog.component';
 import { ImageViewerComponent } from '../../core/components/image-viewer/image-viewer.component';
 import { ProfileCompleteDialogComponent } from './profile-complete-dialog/profile-complete-dialog.component';
-import { CoverPhotoUploadOptionsComponent } from './cover-photo-upload-options/cover-photo-upload-options.component';
+import { PhotoUploadOptionsComponent } from './photo-upload-options/photo-upload-options.component';
+import { PhotoActionsComponent } from './photo-actions/photo-actions.component';
 import { WebcamDialogComponent } from './webcam-dialog/webcam-dialog.component';
 
 // Pipes
@@ -45,7 +46,8 @@ import { PictureOption } from '../../utils/enums/picture-option.enum';
     CommonModule,
     AppHeaderComponent,
     ProfileCompleteDialogComponent,
-    CoverPhotoUploadOptionsComponent,
+    PhotoUploadOptionsComponent,
+    PhotoActionsComponent,
     AppDatepickerComponent,
     AppSelectComponent,
     MatButtonModule,
@@ -72,7 +74,7 @@ export class ProfileComponent {
   route = inject(ActivatedRoute);
 
   ngOnInit() {
-    const userId: string = this.appService.getRouteParamData(this.route, "id");
+    const userId: string = this.appService.getRouteParamData(this.route, 'id');
     this.profileService.getProfileFromDb(userId);
   }
 
@@ -94,7 +96,7 @@ export class ProfileComponent {
 
     this.uiService.dialogRef.afterClosed().subscribe((res: any) => {
       res &&
-        this.profileService.deleteProfileImage(
+        this.profileService.deleteProfilePhoto(
           this.profileService.profile.uid,
           this.profileService.profile.photoName!
         );

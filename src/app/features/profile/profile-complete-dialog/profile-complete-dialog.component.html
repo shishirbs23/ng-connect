@@ -13,10 +13,10 @@
       <app-select [field]="field"></app-select>
     </form>
     } @else if (uiID == 3) {
-    <app-cover-photo-upload-options
+    <app-photo-upload-options
       [profile]="data.profile"
       [option]="pictureOptions.PROFILE_PHOTO"
-    ></app-cover-photo-upload-options>
+    ></app-photo-upload-options>
     } @else if (uiID == 4) {
     <form class="w-100" [formGroup]="formService.form">
       <app-datepicker [field]="field"></app-datepicker>

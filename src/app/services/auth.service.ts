@@ -236,14 +236,17 @@ export class AuthService {
 
   async deleteUserProfile() {
     const { profile } = this.profileService;
-    const { uid, photoName } = profile;
+    const { uid, photoName, coverPhotoName } = profile;
 
     await deleteDoc(doc(this.appService._appDB, Collection.PROFILES, uid))
       .then(() => {})
       .catch(() => {});
 
     photoName &&
-      (await this.profileService.deleteProfileImage(uid, photoName!));
+      (await this.profileService.deleteProfilePhoto(uid, photoName!));
+
+    coverPhotoName &&
+      (await this.profileService.deleteCoverPhoto(uid, photoName!));
   }
 
   signOut(fromDeletion: boolean = false) {

@@ -37,7 +37,11 @@ export class WebcamDialogComponent {
   profileService = inject(ProfileService);
   service = inject(WebcamService);
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { profile: Profile }) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: { profile: Profile; option: string }
+  ) {
+    console.log(data.option);
+  }
 
   ngOnInit() {
     setTimeout(() => {
