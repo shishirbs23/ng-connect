@@ -1,11 +1,18 @@
 <div class="actions">
-  <mat-icon class="mr-5px" matTooltip="View" (click)="viewPhoto()"
+  @if ((profileService.profile.photoURL && (option() == options.PROFILE_PHOTO))
+  || (profileService.profile.coverPhotoURL && (option() ==
+  options.COVER_PHOTO))) {
+  <mat-icon
+    class="mr-5px"
+    matTooltip="View {{ tooltipText }}"
+    (click)="viewPhoto()"
     >visibility</mat-icon
   >
+  }
 
   <mat-icon
     class="mr-5px"
-    matTooltip="Update"
+    matTooltip="Update {{ tooltipText }}"
     [matMenuTriggerFor]="pictureUpdateMenu"
     >edit</mat-icon
   >
@@ -30,7 +37,13 @@
     <button mat-menu-item (click)="openWebcamDialog()">Take a photo</button>
   </mat-menu>
 
-  <mat-icon matTooltip="Remove" (click)="openConfirmPictureDeletionDialog()"
+  @if ((profileService.profile.photoURL && (option() == options.PROFILE_PHOTO))
+  || (profileService.profile.coverPhotoURL && (option() ==
+  options.COVER_PHOTO))) {
+  <mat-icon
+    matTooltip="Remove {{ tooltipText }}"
+    (click)="openConfirmPictureDeletionDialog()"
     >delete</mat-icon
   >
+  }
 </div>

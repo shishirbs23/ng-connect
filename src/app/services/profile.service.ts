@@ -57,8 +57,10 @@ export class ProfileService {
   profile!: Profile;
   loadingProfile: boolean = true;
   settingProfile: boolean = false;
-  savingProfileImage: boolean = false;
-  updatingProfileImage: boolean = false;
+  savingProfilePhoto: boolean = false;
+  updatingProfilePhoto: boolean = false;
+  savingCoverPhoto: boolean = false;
+  updatingCoverPhoto: boolean = false;
   deletingProfile: boolean = false;
   isMyProfile: boolean = false;
 
@@ -111,6 +113,8 @@ export class ProfileService {
     this.loadingProfile = false;
 
     this.profile = profile;
+
+    console.log(profile);
 
     if (this.isMyProfile && (!profile.displayName || !profile.genderId)) {
       this.openProfileCompleteDialog(profile);
@@ -223,10 +227,18 @@ export class ProfileService {
     }
 
     // Using for loader
-    this.savingProfileImage = true;
+    if (pictureOption === PictureOption.PROFILE_PHOTO) {
+      this.savingProfilePhoto = true;
+    } else {
+      this.savingCoverPhoto = true;
+    }
 
     if (isUpdate) {
-      this.updatingProfileImage = true;
+      if (pictureOption === PictureOption.PROFILE_PHOTO) {
+        this.updatingProfilePhoto = true;
+      } else {
+        this.updatingCoverPhoto = true;
+      }
     }
 
     // Create the file path
@@ -263,10 +275,18 @@ export class ProfileService {
       profile.coverPhotoName = file.name;
     }
 
-    this.savingProfileImage = false;
+    if (pictureOption === PictureOption.PROFILE_PHOTO) {
+      this.savingProfilePhoto = false;
+    } else {
+      this.savingCoverPhoto = false;
+    }
 
     if (isUpdate) {
-      this.updatingProfileImage = false;
+      if (pictureOption === PictureOption.PROFILE_PHOTO) {
+        this.updatingProfilePhoto = false;
+      } else {
+        this.updatingCoverPhoto = false;
+      }
     }
 
     // Delete the existing photo from the storage
@@ -284,7 +304,7 @@ export class ProfileService {
     imageFileName: string,
     deleteCurrent: boolean = true
   ) {
-    this.savingProfileImage = true;
+    this.savingProfilePhoto = true;
 
     if (deleteCurrent) {
       this.profile.photoURL = this.profile.photoName = null;
@@ -296,7 +316,7 @@ export class ProfileService {
     const fileRef: StorageReference = ref(this.storage, filePath);
     await deleteObject(fileRef);
 
-    this.savingProfileImage = false;
+    this.savingProfilePhoto = false;
   }
 
   async deleteCoverPhoto(
@@ -304,7 +324,7 @@ export class ProfileService {
     imageFileName: string,
     deleteCurrent: boolean = true
   ) {
-    this.savingProfileImage = true;
+    this.savingCoverPhoto = true;
 
     if (deleteCurrent) {
       this.profile.coverPhotoURL = this.profile.coverPhotoName = null;
@@ -316,7 +336,7 @@ export class ProfileService {
     const fileRef: StorageReference = ref(this.storage, filePath);
     await deleteObject(fileRef);
 
-    this.savingProfileImage = false;
+    this.savingCoverPhoto = false;
   }
 
   async getProfilesFriends(getFriends: boolean = false) {

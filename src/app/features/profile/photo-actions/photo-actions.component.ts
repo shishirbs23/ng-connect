@@ -29,8 +29,17 @@ export class PhotoActionsComponent {
 
   options = PictureOption;
 
+  tooltipText: string = '';
+
   profileService = inject(ProfileService);
   uiService = inject(UiService);
+
+  ngOnInit() {
+    this.tooltipText =
+      this.option() == this.options.PROFILE_PHOTO
+        ? 'Profile Photo'
+        : 'Cover Photo';
+  }
 
   viewPhoto() {
     this.uiService.openDialog(

@@ -1,5 +1,5 @@
 <div class="wrapper">
-  @if (profileService.savingProfileImage) {
+  @if (profileService.savingProfilePhoto) {
   <mat-spinner color="h-35px w-35px"></mat-spinner>
   } @else {
   <div class="mb-10px text-center">
@@ -11,16 +11,16 @@
   <label
     class="picture-input-label"
     for="picture-input"
-    [class.disabled]="profileService.savingProfileImage"
+    [class.disabled]="profileService.savingProfilePhoto"
   >
     <span>
       {{
-        profileService.savingProfileImage
+        profileService.savingProfilePhoto
           ? "Uploading"
           : "Upload from a Computer"
       }}
     </span>
-    @if (profileService.savingProfileImage) {
+    @if (profileService.savingProfilePhoto) {
     <mat-spinner color="accent" class="ml-10px h-22px w-22px"></mat-spinner>
     }
   </label>
@@ -35,7 +35,7 @@
 
   <label
     class="picture-input-label"
-    [class.disabled]="profileService.savingProfileImage"
+    [class.disabled]="profileService.savingProfilePhoto"
     (click)="openWebcamDialog()"
     >Take a photo</label
   >

@@ -40,7 +40,7 @@
       mat-flat-button
       color="accent"
       (click)="service.openImageCropper()"
-      [disabled]="profileService.savingProfileImage"
+      [disabled]="profileService.savingProfilePhoto"
     >
       Crop
     </button>
@@ -50,7 +50,7 @@
       mat-flat-button
       color="accent"
       (click)="service.switchCamera()"
-      [disabled]="profileService.savingProfileImage"
+      [disabled]="profileService.savingProfilePhoto"
     >
       Switch Camera
     </button>
@@ -60,7 +60,7 @@
       mat-flat-button
       color="accent"
       (click)="service.cropImage()"
-      [disabled]="profileService.savingProfileImage"
+      [disabled]="profileService.savingProfilePhoto"
     >
       Confirm
     </button>
@@ -69,14 +69,14 @@
       mat-flat-button
       color="accent"
       (click)="service.saveAsProfilePhoto(data.profile, data.option)"
-      [disabled]="profileService.savingProfileImage"
+      [disabled]="profileService.savingProfilePhoto"
     >
       <div class="flex justify-content-center gap-10px">
         <span>
-          {{ profileService.savingProfileImage ? "Saving" : "Save" }}
+          {{ profileService.savingProfilePhoto ? "Saving" : "Save" }}
         </span>
 
-        @if (profileService.savingProfileImage) {
+        @if (profileService.savingProfilePhoto) {
         <mat-spinner class="h-20px w-20px"></mat-spinner>
         }
       </div>
@@ -89,7 +89,7 @@
 <mat-dialog-actions align="end">
   <button
     mat-button
-    [disabled]="profileService.savingProfileImage"
+    [disabled]="profileService.savingProfilePhoto"
     (click)="service.closeClearDialog()"
   >
     Close

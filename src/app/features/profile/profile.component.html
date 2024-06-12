@@ -22,77 +22,36 @@
         [option]="pictureOptions.COVER_PHOTO"
       ></app-photo-upload-options>
     </div>
-    } @else { @if (profileService.savingProfileImage) {
+    } @else { @if (profileService.savingCoverPhoto) {
     <div class="loader">
       <mat-spinner color="accent" color="h-35px w-35px"></mat-spinner>
     </div>
     } @else {
-    <div class="actions">
+    <div class="cover-photo-actions">
       <app-photo-actions
         [option]="pictureOptions.COVER_PHOTO"
       ></app-photo-actions>
     </div>
     } } }
-  </div>
 
-  <div>
-    @if (profileService.profile.photoURL) {
     <div
-      class="profile-photo"
+      class="profile-photo-section"
       [ngStyle]="{
         'background-image': 'url(' + profileService.profile.photoURL + ')'
       }"
-      [class.disabled]="profileService.updatingProfileImage"
+      [class.disabled]="profileService.updatingProfilePhoto"
     >
       @if (profileService.isMyProfile) { @if
-      (profileService.updatingProfileImage) {
+      (profileService.updatingProfilePhoto) {
       <mat-spinner color="accent" class="h-25px w-25px"></mat-spinner>
       } @else {
-      <div class="actions">
-        <mat-icon matTooltip="View" (click)="viewProfilePhoto()"
-          >visibility</mat-icon
-        >
-
-        <mat-icon matTooltip="Update" [matMenuTriggerFor]="pictureUpdateMenu"
-          >edit</mat-icon
-        >
-        <mat-menu #pictureUpdateMenu="matMenu" class="picture-update-menu">
-          <label mat-menu-item class="picture-input-label" for="picture-input"
-            >Upload from a Computer</label
-          >
-          <input
-            type="file"
-            hidden="true"
-            id="picture-input"
-            accept="image/*"
-            (change)="
-              profileService.onPictureChange(
-                $event,
-                profileService.profile,
-                '',
-                true
-              )
-            "
-          />
-          <button mat-menu-item (click)="openWebcamDialog()">
-            Take a photo
-          </button>
-        </mat-menu>
-
-        <mat-icon
-          matTooltip="Remove"
-          (click)="openConfirmPictureDeletionDialog()"
-          >delete</mat-icon
-        >
+      <div class="profile-photo-actions">
+        <app-photo-actions
+          [option]="pictureOptions.PROFILE_PHOTO"
+        ></app-photo-actions>
       </div>
       } }
     </div>
-    } @else { @if (profileService.isMyProfile) {
-    <!--  <app-profile-picture-upload-options
-      [profile]="profileService.profile"
-      [option]="pictureOptions.PROFILE_PHOTO"
-    ></app-profile-picture-upload-options> -->
-    } @else { } }
   </div>
 
   <div>
@@ -257,7 +216,7 @@
         profileService.settingProfile
       "
     >
-      @if (profileService.settingProfile && !profileService.savingProfileImage )
+      @if (profileService.settingProfile && !profileService.savingProfilePhoto )
       {
       <mat-spinner class="h-25px w-25px"></mat-spinner>
       } @else {
@@ -271,7 +230,7 @@
       color="accent"
       (click)="signOutUser()"
       [disabled]="
-        profileService.settingProfile || profileService.savingProfileImage
+        profileService.settingProfile || profileService.savingProfilePhoto
       "
     >
       Sign Out
@@ -284,7 +243,7 @@
       (click)="openConfirmProfileDeletionDialog()"
       [disabled]="
         profileService.settingProfile ||
-        profileService.savingProfileImage ||
+        profileService.savingProfilePhoto ||
         profileService.deletingProfile
       "
     >
