@@ -1,0 +1,43 @@
+<div class="wrapper">
+  @if (profileService.savingProfileImage) {
+  <mat-spinner color="h-35px w-35px"></mat-spinner>
+  } @else {
+  <div class="mb-10px text-center">
+    You haven't uploaded any
+    {{ option() === pictureOptions.PROFILE_PHOTO ? "Profile" : "Cover" }}
+    Photo yet
+  </div>
+
+  <label
+    class="picture-input-label"
+    for="picture-input"
+    [class.disabled]="profileService.savingProfileImage"
+  >
+    <span>
+      {{
+        profileService.savingProfileImage
+          ? "Uploading"
+          : "Upload from a Computer"
+      }}
+    </span>
+    @if (profileService.savingProfileImage) {
+    <mat-spinner color="accent" class="ml-10px h-22px w-22px"></mat-spinner>
+    }
+  </label>
+
+  <input
+    type="file"
+    hidden="true"
+    id="picture-input"
+    (change)="profileService.onPictureChange($event, profile(), option())"
+    accept="image/*"
+  />
+
+  <label
+    class="picture-input-label"
+    [class.disabled]="profileService.savingProfileImage"
+    (click)="openWebcamDialog()"
+    >Take a photo</label
+  >
+  }
+</div>
