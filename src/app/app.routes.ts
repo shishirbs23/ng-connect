@@ -9,6 +9,7 @@ export enum RouteNames {
   PROFILE = 'profile',
   PROFILES = 'profiles',
   CHATS = 'chats',
+  ACCOUNT_SETTINGS = 'account-settings',
 }
 
 export const routes: Routes = [
@@ -48,7 +49,9 @@ export const routes: Routes = [
   {
     path: RouteNames.PROFILES,
     loadComponent: () =>
-      import('./features/profiles/profiles.component').then((m) => m.ProfilesComponent),
+      import('./features/profiles/profiles.component').then(
+        (m) => m.ProfilesComponent
+      ),
     canActivate: [authGuard],
   },
   {
@@ -62,6 +65,14 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/chat-details/chat-details.component').then(
         (m) => m.ChatDetailsComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: RouteNames.ACCOUNT_SETTINGS,
+    loadComponent: () =>
+      import('./features/account-settings/account-settings.component').then(
+        (m) => m.AccountSettingsComponent
       ),
     canActivate: [authGuard],
   },
