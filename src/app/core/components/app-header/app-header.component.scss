@@ -5,4 +5,20 @@
 mat-toolbar {
   position: fixed;
   z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+
+  .name-with-pp {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .name {
+      font-size: 14px;
+    }
+
+    img {
+      border-radius: 50%;
+    }
+  }
 }

@@ -1,5 +1,5 @@
-<mat-toolbar color="accent">
-  <div class="w-100" [class.text-center]="centreTitle()">
+<mat-toolbar color="dark">
+  <div [class.text-center]="centreTitle()">
     {{ headerText() }}
   </div>
 
@@ -12,13 +12,7 @@
     >
       <mat-icon>home</mat-icon>
     </button>
-    <button
-      routerLink="/profile"
-      mat-icon-button
-      [color]="pageType() == pageTypes.PROFILE ? 'primary' : ''"
-    >
-      <mat-icon>account_circle</mat-icon>
-    </button>
+
     <button
       routerLink="/profiles"
       mat-icon-button
@@ -26,6 +20,7 @@
     >
       <mat-icon>group</mat-icon>
     </button>
+
     <button
       routerLink="/chats"
       mat-icon-button
@@ -34,5 +29,41 @@
       <mat-icon matBadge="1" aria-hidden="false">chat</mat-icon>
     </button>
   </div>
+
+  <div>
+    @if (profileService.profile) {
+    <div class="name-with-pp">
+      <div class="name" routerLink="/profile">
+        {{ profileService.profile.firstName }}
+        {{ profileService.profile.lastName }}
+      </div>
+
+      <div class="flex ml-10px" [matMenuTriggerFor]="accountMenu">
+        @if (profileService.profile.photoURL) {
+        <img
+          [ngSrc]="profileService.profile.photoURL"
+          [height]="35"
+          [width]="35"
+        />
+        } @else {
+        <app-image-placeholder
+          [profile]="profileService.profile"
+          [height]="35"
+          [width]="35"
+          [fontSize]="12"
+        ></app-image-placeholder>
+        }
+      </div>
+    </div>
+    }
+  </div>
+
+  <mat-menu #accountMenu="matMenu" class="picture-update-menu">
+    <button mat-menu-item routerLink="/profile">My Account</button>
+    <button mat-menu-item routerLink="/account-settings">
+      Account Settings
+    </button>
+    <button mat-menu-item (click)="authService.signOut()">Sign Out</button>
+  </mat-menu>
   }
 </mat-toolbar>
