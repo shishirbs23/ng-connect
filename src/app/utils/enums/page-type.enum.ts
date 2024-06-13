@@ -3,4 +3,5 @@ export enum PageType {
   PROFILE = 'profile',
   PROFILES = 'profiles',
   CHATS = 'chats',
+  PROFILE_SETTINGS = 'profile-settings',
 }

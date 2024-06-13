@@ -5,8 +5,15 @@
   align-items: center;
   flex-direction: column;
   gap: 40px;
-  min-height: calc(100vh - 64px);
   text-align: center;
+
+  .main-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    height: 100vh;
+  }
 
   .cover-photo-section {
     cursor: pointer;
@@ -129,7 +136,7 @@
     }
   }
 
-  .name-with-nickname {
+  .name-with-username {
     position: absolute;
     top: 364px;
     height: 80px;
@@ -145,8 +152,14 @@
       font-size: 16px;
     }
 
-    .nickname {
+    .username {
+      margin-left: 5px;
+      font-weight: 500;
     }
+  }
+
+  .profile-info-with-feeds {
+    margin-top: 60px;
   }
 }
 

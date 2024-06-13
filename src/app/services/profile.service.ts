@@ -89,8 +89,6 @@ export class ProfileService {
         const profileSnap = await getDoc(profileRef);
         const profile = profileSnap.data() as Profile;
 
-        this.loadingProfile = false;
-
         this.profile = profile;
 
         if (!profile.displayName || !profile.genderId) {
