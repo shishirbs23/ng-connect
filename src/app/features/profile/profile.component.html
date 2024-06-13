@@ -14,18 +14,17 @@
       'background-image': 'url(' + profileService.profile.coverPhotoURL + ')'
     }"
   >
-    @if (profileService.isMyProfile) { @if
-    (!profileService.profile.coverPhotoURL) {
+    @if (profileService.isMyProfile) { @if (profileService.savingCoverPhoto ||
+    profileService.updatingCoverPhoto) {
+    <div class="loader">
+      <mat-spinner color="accent" color="h-35px w-35px"></mat-spinner>
+    </div>
+    } @else { @if (!profileService.profile.coverPhotoURL) {
     <div class="options">
       <app-photo-upload-options
         [profile]="profileService.profile"
         [option]="pictureOptions.COVER_PHOTO"
       ></app-photo-upload-options>
-    </div>
-    } @else { @if (profileService.savingCoverPhoto ||
-    profileService.updatingCoverPhoto) {
-    <div class="loader">
-      <mat-spinner color="accent" color="h-35px w-35px"></mat-spinner>
     </div>
     } @else {
     <div class="cover-photo-actions">
@@ -34,7 +33,6 @@
       ></app-photo-actions>
     </div>
     } } }
-
     <div
       class="profile-photo-section"
       [ngStyle]="{
@@ -44,8 +42,15 @@
     >
       @if (profileService.isMyProfile) { @if (profileService.savingProfilePhoto
       || profileService.updatingProfilePhoto) {
-      <mat-spinner color="accent" class="h-25px w-25px"></mat-spinner>
-      } @else {
+      <div class="loader">
+        <mat-spinner color="accent" class="h-25px w-25px"></mat-spinner>
+      </div>
+      } @else { @if (!profileService.profile.photoURL) {
+      <div class="flex justify-content-center align-items-center h-100">
+        No Profile Photo
+      </div>
+      }
+
       <div class="profile-photo-actions">
         <app-photo-actions
           [option]="pictureOptions.PROFILE_PHOTO"
@@ -217,7 +222,9 @@
         profileService.settingProfile
       "
     >
-      @if (profileService.settingProfile && !profileService.savingProfilePhoto )
+      @if (profileService.settingProfile && (!profileService.savingProfilePhoto
+      && !profileService.updatingProfilePhoto &&
+      !profileService.savingCoverPhoto && !profileService.updatingCoverPhoto) )
       {
       <mat-spinner class="h-25px w-25px"></mat-spinner>
       } @else {

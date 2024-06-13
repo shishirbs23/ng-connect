@@ -19,13 +19,6 @@
     background-repeat: no-repeat;
     background-position: center;
 
-    .loader {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-    }
-
     &::before {
       content: "";
       position: absolute;
@@ -134,4 +127,11 @@
       }
     }
   }
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

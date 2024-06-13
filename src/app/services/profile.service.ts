@@ -229,14 +229,14 @@ export class ProfileService {
     // Using for loader
     if (pictureOption === PictureOption.PROFILE_PHOTO) {
       this.savingProfilePhoto = true;
+      
+      if (isUpdate) {
+        this.updatingProfilePhoto = true;
+      }
     } else {
       this.savingCoverPhoto = true;
-    }
 
-    if (isUpdate) {
-      if (pictureOption === PictureOption.PROFILE_PHOTO) {
-        this.updatingProfilePhoto = true;
-      } else {
+      if (isUpdate) {
         this.updatingCoverPhoto = true;
       }
     }
@@ -282,6 +282,7 @@ export class ProfileService {
     } else {
       profile.coverPhotoURL = url;
       profile.coverPhotoName = file.name;
+
       this.savingCoverPhoto = false;
 
       if (isUpdate) {
