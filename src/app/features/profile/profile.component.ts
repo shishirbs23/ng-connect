@@ -73,11 +73,6 @@ export class ProfileComponent {
 
   route = inject(ActivatedRoute);
 
-  ngOnInit() {
-    const userId: string = this.appService.getRouteParamData(this.route, 'id');
-    this.profileService.getProfileFromDb(userId);
-  }
-
   viewProfilePhoto() {
     this.uiService.openDialog(
       ImageViewerComponent,
