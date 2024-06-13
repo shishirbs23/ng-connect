@@ -9,7 +9,7 @@ export enum RouteNames {
   PROFILE = 'profile',
   PROFILES = 'profiles',
   CHATS = 'chats',
-  ACCOUNT_SETTINGS = 'account-settings',
+  PROFILE_SETTINGS = 'profile-settings',
 }
 
 export const routes: Routes = [
@@ -69,10 +69,10 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: RouteNames.ACCOUNT_SETTINGS,
+    path: RouteNames.PROFILE_SETTINGS,
     loadComponent: () =>
-      import('./features/account-settings/account-settings.component').then(
-        (m) => m.AccountSettingsComponent
+      import('./features/profile-settings/profile-settings.component').then(
+        (m) => m.ProfileSettingsComponent
       ),
     canActivate: [authGuard],
   },
