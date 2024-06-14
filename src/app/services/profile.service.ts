@@ -34,11 +34,11 @@ import { UiService } from '../core/services/ui.service';
 // Models
 import { AuthFormField } from '../models/formField.model';
 import { Profile } from '../models/profile.model';
+import { ProfileInfo } from '../models/profile-info.model';
 
 // Enums
 import { Collection } from '../utils/enums/collection.enum';
 import { Entity } from '../utils/enums/entity.enum';
-import { SearchType } from '../utils/enums/search-type.enum';
 import { PictureOption } from '../utils/enums/picture-option.enum';
 
 @Injectable({
@@ -55,8 +55,10 @@ export class ProfileService {
   formService = inject(FormService);
 
   profile!: Profile;
+  profileInfo!: ProfileInfo;
   loadingProfile: boolean = true;
   settingProfile: boolean = false;
+  savingProfileInfo: boolean = false;
   savingProfilePhoto: boolean = false;
   updatingProfilePhoto: boolean = false;
   savingCoverPhoto: boolean = false;
@@ -98,7 +100,7 @@ export class ProfileService {
     });
   }
 
-  async getProfileFromDb(userId: string) {
+  async getProfileFromDb(userId: string, isProfilePage: boolean = false) {
     this.isMyProfile = userId === this.appService.userId;
 
     this.loadingProfile = true;
@@ -106,16 +108,20 @@ export class ProfileService {
     const profileRef = doc(this.appService._appDB, Collection.PROFILES, userId);
 
     const profileSnap = await getDoc(profileRef);
-    const profile = profileSnap.data() as Profile;
+
+    this.profile = profileSnap.data() as Profile;
+
+    isProfilePage && (await this.getProfileInfo());
 
     this.loadingProfile = false;
 
-    this.profile = profile;
+    console.log(this.profile);
 
-    console.log(profile);
-
-    if (this.isMyProfile && (!profile.displayName || !profile.genderId)) {
-      this.openProfileCompleteDialog(profile);
+    if (
+      this.isMyProfile &&
+      (!this.profile.displayName || !this.profile.genderId)
+    ) {
+      this.openProfileCompleteDialog(this.profile);
     }
   }
 
@@ -227,7 +233,7 @@ export class ProfileService {
     // Using for loader
     if (pictureOption === PictureOption.PROFILE_PHOTO) {
       this.savingProfilePhoto = true;
-      
+
       if (isUpdate) {
         this.updatingProfilePhoto = true;
       }
@@ -355,6 +361,89 @@ export class ProfileService {
     this.profiles = dataSnap.docs.map((doc) => doc.data()) as Profile[];
 
     this.loadingProfiles = false;
+  }
+
+  async getProfileInfo() {
+    const profileInfoRef = doc(
+      this.appService._appDB,
+      Collection.PROFILE_INFO,
+      this.appService.userId
+    );
+
+    const profileInfoSnap = await getDoc(profileInfoRef);
+
+    this.profileInfo = profileInfoSnap.data() as ProfileInfo;
+
+    let { bio, basicInfo, educationalHistory, professionalHistory, hobbies } =
+      this.profileInfo;
+
+    if (!bio) {
+      bio = '';
+    }
+
+    if (!basicInfo) {
+      basicInfo = {
+        address: {
+          longDescription: '',
+          city: '',
+          state: '',
+          country: '',
+        },
+        genderId: this.profile.genderId ?? 1,
+        birthday: this.profile.dob ?? '',
+        emailAddress: this.profile.email ?? '',
+        phoneNumber: this.profile.phoneNumber ?? '',
+      };
+    }
+
+    if (!educationalHistory) {
+      educationalHistory = {
+        schools: [],
+        colleges: [],
+        universities: [],
+      };
+    }
+
+    if (!professionalHistory) {
+      professionalHistory = [];
+    }
+
+    if (!hobbies) {
+      hobbies = [];
+    }
+
+    this.profileInfo = {
+      bio,
+      basicInfo,
+      educationalHistory,
+      professionalHistory,
+      hobbies,
+    };
+
+    console.log(this.profileInfo);
+  }
+
+  async setProfileInfo(infoData: ProfileInfo, fromSignUp: boolean = false) {
+    const profileRef = doc(
+      this.appService._appDB,
+      Collection.PROFILES,
+      this.appService.userId
+    );
+
+    this.savingProfileInfo = true;
+
+    await setDoc(profileRef, infoData, { merge: true })
+      .then((_) => {
+        this.profileInfo = infoData;
+        !fromSignUp && this.uiService.openSnackbar('Updated');
+      })
+      .catch((_) => {
+        this.uiService.openSnackbar('Error during update. Try after sometimes');
+      })
+      .finally(() => {
+        this.savingProfileInfo = false;
+        fromSignUp && this.uiService.closeDialog(null);
+      });
   }
 
   filterWithFriends() {

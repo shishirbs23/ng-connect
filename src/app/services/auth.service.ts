@@ -133,6 +133,7 @@ export class AuthService {
             genderId: signUpFormValue.genderId,
             dob: signUpFormValue.dob,
             privacyId: 1,
+            phoneNumber: null
           },
           true
         );

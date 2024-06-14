@@ -9,6 +9,7 @@ export interface Profile {
   coverPhotoURL: string | null;
   coverPhotoName: string | null;
   isEmailVerified: boolean | null;
+  phoneNumber: string | null;
   genderId: number | null;
   dob: string | null;
   privacyId: number;
