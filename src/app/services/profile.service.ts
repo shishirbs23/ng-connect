@@ -69,6 +69,7 @@ export class ProfileService {
   isEditable = {
     birthday: false,
     privacy: false,
+    bio: false,
   };
 
   profiles: Profile[] = [];

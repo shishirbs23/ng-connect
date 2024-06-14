@@ -6,7 +6,26 @@
         <mat-card-title>Bio</mat-card-title>
       </mat-card-header>
       <mat-card-content>
-        <p>This card indeterminates progress bar.</p>
+        @if (service.profileInfo.bio && !service.isEditable.bio) {
+        <div class="bio-text">
+          {{ service.profileInfo.bio }}
+        </div>
+        } @else { @if (service.isEditable.bio) {
+        <div class="bio-form" [formGroup]="profileInfoForm">
+          <textarea maxlength="100" formControlName="bio"></textarea>
+          <div class="length-indicator">
+            {{ profileInfoForm.value.bio?.length }}/100
+          </div>
+          <div class="actions">
+            <button mat-flat-button color="accent" (click)="toggleBioEditor()">Cancel</button>
+            <button mat-flat-button color="primary" [disabled]="!profileInfoForm.value.bio?.length">Save</button>
+          </div>
+        </div>
+        } @else {
+        <div class="add-bio" (click)="toggleBioEditor()">
+          Add a bio (100 characters)
+        </div>
+        } }
       </mat-card-content>
     </mat-card>
   </div>
