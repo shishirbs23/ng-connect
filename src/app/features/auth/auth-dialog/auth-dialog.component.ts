@@ -27,6 +27,7 @@ import { FormService } from '../../../core/services/form.service';
 
 // Models
 import { AuthUser } from '../../../models/auth-user.model';
+import { AppLoaderComponent } from '../../../core/components/app-loader/app-loader.component';
 
 @Component({
   selector: 'app-auth-dialog',
@@ -40,6 +41,7 @@ import { AuthUser } from '../../../models/auth-user.model';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     AppFormComponent,
+    AppLoaderComponent,
   ],
 })
 export class AuthDialogComponent {

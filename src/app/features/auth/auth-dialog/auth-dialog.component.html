@@ -1,11 +1,14 @@
-<h2 mat-dialog-title class="text-center mb-0px" style="background-color: #eaeaea">
+<h2
+  mat-dialog-title
+  class="text-center mb-0px"
+  style="background-color: #eaeaea"
+>
   {{ headerTitle }}
 </h2>
 <mat-dialog-content>
   @if (formService.isFormLoading) {
-  <div class="flex justify-content-center align-items-center gap-20px">
-    <span> Loading form ... </span>
-    <mat-spinner color="h-35px w-35px"></mat-spinner>
+  <div class="my-50px">
+    <app-loader label="Loading form" [height]="35" [width]="35"></app-loader>
   </div>
   } @else {
   <div class="h-100">
