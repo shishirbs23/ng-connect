@@ -17,6 +17,7 @@ import { AppHeaderComponent } from '../../core/components/app-header/app-header.
 import { AppDatepickerComponent } from '../../core/components/app-datepicker/app-datepicker.component';
 import { AppSelectComponent } from '../../core/components/app-select/app-select.component';
 import { ConfirmDeleteDialogComponent } from '../../core/components/confirm-delete-dialog/confirm-delete-dialog.component';
+import { CoverPhotoSectionComponent } from './cover-photo-section/cover-photo-section.component';
 import { ImageViewerComponent } from '../../core/components/image-viewer/image-viewer.component';
 import { ProfileCompleteDialogComponent } from './profile-complete-dialog/profile-complete-dialog.component';
 import { PhotoUploadOptionsComponent } from './photo-upload-options/photo-upload-options.component';
@@ -44,12 +45,13 @@ import { PictureOption } from '../../utils/enums/picture-option.enum';
   styleUrl: './profile.component.scss',
   imports: [
     CommonModule,
+    AppDatepickerComponent,
     AppHeaderComponent,
+    AppSelectComponent,
+    CoverPhotoSectionComponent,
+    PhotoActionsComponent,
     ProfileCompleteDialogComponent,
     PhotoUploadOptionsComponent,
-    PhotoActionsComponent,
-    AppDatepickerComponent,
-    AppSelectComponent,
     MatButtonModule,
     MatProgressSpinnerModule,
     MatIconModule,
