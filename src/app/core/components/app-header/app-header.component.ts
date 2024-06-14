@@ -12,7 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ImagePlaceholderComponent } from '../image-placeholder/image-placeholder.component';
 
 // Router
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 // Services
 import { AppService } from '../../services/app.service';
@@ -45,6 +45,7 @@ export class AppHeaderComponent {
   pageTypes = PageType;
 
   route = inject(ActivatedRoute);
+  router = inject(Router);
 
   appService = inject(AppService);
   authService = inject(AuthService);
@@ -52,6 +53,6 @@ export class AppHeaderComponent {
 
   ngOnInit() {
     const userId: string = this.appService.getRouteParamData(this.route, 'id');
-    userId && this.profileService.getProfileFromDb(userId);
+    userId && this.profileService.getProfileFromDb(userId, this.router.url === '/profile');
   }
 }
