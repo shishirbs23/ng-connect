@@ -20,6 +20,7 @@ import { AppSelectComponent } from '../../core/components/app-select/app-select.
 import { ConfirmDeleteDialogComponent } from '../../core/components/confirm-delete-dialog/confirm-delete-dialog.component';
 import { CoverPhotoSectionComponent } from './cover-photo-section/cover-photo-section.component';
 import { ImageViewerComponent } from '../../core/components/image-viewer/image-viewer.component';
+import { NameSectionComponent } from './name-section/name-section.component';
 import { ProfileCompleteDialogComponent } from './profile-complete-dialog/profile-complete-dialog.component';
 import { PhotoUploadOptionsComponent } from './photo-upload-options/photo-upload-options.component';
 import { PhotoActionsComponent } from './photo-actions/photo-actions.component';
@@ -51,6 +52,7 @@ import { PictureOption } from '../../utils/enums/picture-option.enum';
     AppLoaderComponent,
     AppSelectComponent,
     CoverPhotoSectionComponent,
+    NameSectionComponent,
     PhotoActionsComponent,
     ProfileCompleteDialogComponent,
     PhotoUploadOptionsComponent,
