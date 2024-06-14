@@ -18,7 +18,7 @@ import { UiService } from '../../../core/services/ui.service';
 import { PictureOption } from '../../../utils/enums/picture-option.enum';
 
 @Component({
-  selector: 'app-photo-actions',
+  selector: 'profile-photo-actions',
   standalone: true,
   imports: [MatIconModule, MatMenuModule, MatTooltipModule],
   templateUrl: './photo-actions.component.html',

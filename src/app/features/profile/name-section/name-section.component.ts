@@ -4,7 +4,7 @@ import { Component, inject } from '@angular/core';
 import { ProfileService } from '../../../services/profile.service';
 
 @Component({
-  selector: 'app-name-section',
+  selector: 'profile-name-section',
   standalone: true,
   imports: [],
   templateUrl: './name-section.component.html',

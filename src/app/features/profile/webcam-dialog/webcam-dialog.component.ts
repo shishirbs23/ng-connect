@@ -20,7 +20,7 @@ import { WebcamModule } from 'ngx-webcam';
 import { ImageCropperComponent } from 'ngx-image-cropper';
 
 @Component({
-  selector: 'app-webcam-dialog',
+  selector: 'profile-webcam-dialog',
   standalone: true,
   imports: [
     CommonModule,

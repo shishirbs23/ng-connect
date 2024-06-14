@@ -16,7 +16,7 @@ import { ProfileService } from '../../../services/profile.service';
 import { PictureOption } from '../../../utils/enums/picture-option.enum';
 
 @Component({
-  selector: 'app-cover-photo-section',
+  selector: 'profile-cover-photo-section',
   standalone: true,
   imports: [
     CommonModule,
