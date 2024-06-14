@@ -13,8 +13,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { getAuth } from 'firebase/auth';
 
 // Components
-import { AppHeaderComponent } from '../../core/components/app-header/app-header.component';
 import { AppDatepickerComponent } from '../../core/components/app-datepicker/app-datepicker.component';
+import { AppHeaderComponent } from '../../core/components/app-header/app-header.component';
+import { AppLoaderComponent } from '../../core/components/app-loader/app-loader.component';
 import { AppSelectComponent } from '../../core/components/app-select/app-select.component';
 import { ConfirmDeleteDialogComponent } from '../../core/components/confirm-delete-dialog/confirm-delete-dialog.component';
 import { CoverPhotoSectionComponent } from './cover-photo-section/cover-photo-section.component';
@@ -47,6 +48,7 @@ import { PictureOption } from '../../utils/enums/picture-option.enum';
     CommonModule,
     AppDatepickerComponent,
     AppHeaderComponent,
+    AppLoaderComponent,
     AppSelectComponent,
     CoverPhotoSectionComponent,
     PhotoActionsComponent,

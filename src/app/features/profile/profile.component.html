@@ -1,10 +1,7 @@
 <app-header headerText="Profile" [pageType]="pageTypes.PROFILE"></app-header>
 
 @if (profileService.loadingProfile) {
-<div class="main-loader">
-  <strong> Loading Profile ... </strong>
-  <mat-spinner color="h-35px w-35px"></mat-spinner>
-</div>
+<app-loader label="Loading Profile" [height]="35" [width]="35"></app-loader>
 } @else {
 <!-- Cover photo section with Profile photo -->
 <app-cover-photo-section></app-cover-photo-section>
