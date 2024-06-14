@@ -1,25 +1,23 @@
 <div
-    class="profile-photo-section"
-    [ngStyle]="{
-      'background-image': 'url(' + profileService.profile.photoURL + ')'
-    }"
-    [class.disabled]="profileService.updatingProfilePhoto"
-  >
-    @if (profileService.isMyProfile) { @if (profileService.savingProfilePhoto ||
-    profileService.updatingProfilePhoto) {
-    <div class="loader">
-      <mat-spinner color="accent" class="h-25px w-25px"></mat-spinner>
-    </div>
-    } @else { @if (!profileService.profile.photoURL) {
-    <div class="flex justify-content-center align-items-center h-100">
-      No Profile Photo
-    </div>
-    }
-
-    <div class="profile-photo-actions">
-      <app-photo-actions
-        [option]="pictureOptions.PROFILE_PHOTO"
-      ></app-photo-actions>
-    </div>
-    } }
+  class="profile-photo-section"
+  [ngStyle]="{
+    'background-image': 'url(' + profileService.profile.photoURL + ')'
+  }"
+  [class.disabled]="profileService.updatingProfilePhoto"
+>
+  @if (profileService.isMyProfile) { @if (profileService.savingProfilePhoto ||
+  profileService.updatingProfilePhoto) {
+  <app-loader color="accent" [height]="25" [width]="35"></app-loader>
+  } @else { @if (!profileService.profile.photoURL) {
+  <div class="flex justify-content-center align-items-center h-100">
+    No Profile Photo
   </div>
+  }
+
+  <div class="profile-photo-actions">
+    <app-photo-actions
+      [option]="pictureOptions.PROFILE_PHOTO"
+    ></app-photo-actions>
+  </div>
+  } }
+</div>
