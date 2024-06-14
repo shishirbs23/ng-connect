@@ -20,12 +20,11 @@
   }"
 >
   @if (profileService.loadingProfiles) {
-  <div class="flex justify-content-center align-items-center gap-20px">
-    <strong>
-      Loading {{ profileService.showFriends ? "Friends" : "Profiles" }} ...
-    </strong>
-    <mat-spinner color="h-35px w-35px"></mat-spinner>
-  </div>
+  <app-loader
+    label="Loading {{ profileService.showFriends ? 'Friends' : 'Profiles' }}"
+    [height]="35"
+    [width]="35"
+  ></app-loader>
   } @else { @if(profileService.profiles.length) {
   <div class="mt-90px">
     @for (profile of profileService.profiles; track profile) {
