@@ -6,25 +6,21 @@ export interface Address {
   country: string;
 }
 
-interface SchoolCollege {
-  fromClass: string;
-  toClass: string;
-  fromDate: string;
-  toDate: string;
+interface EducationDetail {
   institutionName: string;
-}
-
-interface University {
-  degreeName: string;
-  fromDate: string;
-  toDate: string;
-  institutionName: string;
+  startDate: string;
+  endDate: string;
+  isCurrent: boolean;
+  classes: string;
+  fieldOfStudy: string;
+  degree: string;
+  description: string;
 }
 
 interface Education {
-  schools: SchoolCollege[];
-  colleges: SchoolCollege[];
-  universities: University[];
+  schools: EducationDetail[];
+  colleges: EducationDetail[];
+  universities: EducationDetail[];
 }
 
 interface Profession {
