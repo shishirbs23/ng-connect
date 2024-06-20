@@ -6,7 +6,16 @@
     gap: 20px;
 
     mat-icon {
+      transition: 0.4s;
       cursor: pointer;
+      visibility: hidden;
+    }
+
+    &:hover {
+      mat-icon {
+        animation: fadeIn ease-in-out 1s;
+        visibility: visible;
+      }
     }
   }
 
@@ -62,4 +71,13 @@
 
 mat-card-title {
   font-size: 16px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

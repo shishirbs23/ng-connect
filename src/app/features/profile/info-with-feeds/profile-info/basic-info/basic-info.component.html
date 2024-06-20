@@ -1,36 +1,29 @@
 <div class="basic-info">
   <mat-card>
+    <mat-card-header>
+      <mat-card-title>Basic Info</mat-card-title>
+    </mat-card-header>
     <mat-card-content>
+      <!-- Address Section -->
       <div class="address-section">
-        <div class="header">
-          <div>Address</div>
-
-          @if (service.hasValidAddress(service.profile.address!)) {
-          <div>
-            <span class="fw-400 fs-12px mr-10px"> Long address </span>
-            <mat-slide-toggle
-              [(ngModel)]="isLongAddress"
-              [ngModelOptions]="{ standalone: true }"
-            ></mat-slide-toggle>
-          </div>
-          }
-        </div>
         <div class="body">
           @if (service.hasValidAddress(service.profile.address!) &&
           !service.isEditable.address) {
           <div class="address-text">
             @if (isLongAddress) {
-            <div>
-              From {{ service.profile.address?.longDescription }}
-            </div>
+              <div class="flex align-items-center gap-10px">
+                <mat-icon>home</mat-icon>
+                From {{ service.profile.address?.longDescription }}
+              </div>
             } @else {
-            <div>
-              {{ service.profile.address! | addressFormatter }}
-            </div>
+              <div class="flex align-items-center gap-10px">
+                <mat-icon>home</mat-icon>
+                {{ service.profile.address! | addressFormatter }}
+              </div>
             }
 
-            <div (click)="this.service.isEditable.address = true">
-              <mat-icon>edit</mat-icon>
+            <div (click)="this.service.isEditable.address = true" class="edit-icon">
+              <mat-icon matTooltip="Edit Address">edit</mat-icon>
             </div>
           </div>
           } @else { @if (service.isEditable.address) {
@@ -109,7 +102,26 @@
             Add your address ...
           </div>
           } }
+
+          <!-- <div class="mt-4px">
+            <span class="fw-400 fs-12px mr-10px"> Long address </span>
+            <mat-slide-toggle
+              [(ngModel)]="isLongAddress"
+              [ngModelOptions]="{ standalone: true }"
+            ></mat-slide-toggle>
+          </div> -->
         </div>
+      </div>
+
+      <!-- Gender Section -->
+      <div class="flex align-items-center mt-20px">
+        @if (service.profile.genderId == 1) {
+          <img src="/assets/icons/male.png" height="20" width="20" class="mr-10px"> 
+        } @else {
+          <img src="/assets/icons/female.png" height="20" width="20" class="mr-10px">
+        }
+        
+        {{ service.profile.genderId == 1 ? "Male" : "Female" }}
       </div>
     </mat-card-content>
   </mat-card>

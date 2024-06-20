@@ -16,6 +16,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // Services
 import { ProfileService } from '../../../../../services/profile.service';
@@ -34,6 +35,7 @@ import { AddressFormatterPipe } from '../../../../../core/pipes/address-formatte
     MatFormFieldModule,
     MatProgressSpinnerModule,
     MatSlideToggleModule,
+    MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
     AddressFormatterPipe,

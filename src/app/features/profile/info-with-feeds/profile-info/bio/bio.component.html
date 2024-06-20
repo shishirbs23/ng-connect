@@ -9,7 +9,7 @@
         {{ service.profile.bio }}
 
         <div (click)="this.service.isEditable.bio = true">
-          <mat-icon>edit</mat-icon>
+          <mat-icon matTooltip="Edit Bio">edit</mat-icon>
         </div>
       </div>
       } @else { @if (service.isEditable.bio) {
