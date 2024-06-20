@@ -112,7 +112,7 @@ export class ProfileService {
 
     this.profile = profileSnap.data() as Profile;
 
-    isProfilePage && (await this.getProfileInfo());
+    /* isProfilePage && (await this.getProfileInfo()); */
 
     this.loadingProfile = false;
 
@@ -171,7 +171,7 @@ export class ProfileService {
     );
   }
 
-  async setProfile(profileData: Profile, fromSignUp: boolean = false) {
+  async setProfile(profileData: Profile, fromSignUp: boolean = false, successMessage: string = 'Profile Updated') {
     const profileRef = doc(
       this.appService._appDB,
       Collection.PROFILES,
@@ -183,7 +183,7 @@ export class ProfileService {
     await setDoc(profileRef, profileData, { merge: true })
       .then((_) => {
         this.profile = profileData;
-        !fromSignUp && this.uiService.openSnackbar('Profile updated');
+        !fromSignUp && this.uiService.openSnackbar(successMessage);
       })
       .catch((_) => {
         this.uiService.openSnackbar(
@@ -420,11 +420,9 @@ export class ProfileService {
       professionalHistory,
       hobbies,
     };
-
-    console.log(this.profileInfo);
   }
 
-  async setProfileInfo(infoData: ProfileInfo, fromSignUp: boolean = false) {
+  /* async setProfileInfo(infoData: ProfileInfo, fromSignUp: boolean = false, successMessage: string = 'Profile Info Updated') {
     const profileRef = doc(
       this.appService._appDB,
       Collection.PROFILES,
@@ -436,7 +434,7 @@ export class ProfileService {
     await setDoc(profileRef, infoData, { merge: true })
       .then((_) => {
         this.profileInfo = infoData;
-        !fromSignUp && this.uiService.openSnackbar('Updated');
+        !fromSignUp && this.uiService.openSnackbar(successMessage);
       })
       .catch((_) => {
         this.uiService.openSnackbar('Error during update. Try after sometimes');
@@ -445,7 +443,7 @@ export class ProfileService {
         this.savingProfileInfo = false;
         fromSignUp && this.uiService.closeDialog(null);
       });
-  }
+  } */
 
   filterWithFriends() {
     this.showFriends = !this.showFriends;
