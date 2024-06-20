@@ -8,6 +8,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Components
 import { BioComponent } from './bio/bio.component';
+import { BasicInfoComponent } from './basic-info/basic-info.component';
+import { EducationComponent } from './education/education.component';
+import { HobbiesComponent } from './hobbies/hobbies.component';
+import { ProfessionComponent } from './profession/profession.component';
 
 // Forms
 import { ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +22,10 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     ReactiveFormsModule,
     BioComponent,
+    BasicInfoComponent,
+    EducationComponent,
+    HobbiesComponent,
+    ProfessionComponent,
     MatButtonModule,
     MatCardModule,
     MatIconModule,

@@ -130,10 +130,25 @@ export class AuthService {
             coverPhotoURL: null,
             coverPhotoName: null,
             isEmailVerified: result.user.emailVerified,
+            phoneNumber: null,
             genderId: signUpFormValue.genderId,
             dob: signUpFormValue.dob,
             privacyId: 1,
-            phoneNumber: null
+            bio: '',
+            address: {
+              longDescription: '',
+              country: '',
+              state: '',
+              division: '',
+              city: '',
+            },
+            educationalHistory: {
+              schools: [],
+              colleges: [],
+              universities: []
+            },
+            professionalHistory: [],
+            hobbies: []
           },
           true
         );

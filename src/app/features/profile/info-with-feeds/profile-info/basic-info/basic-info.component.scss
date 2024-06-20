@@ -1,0 +1,50 @@
+.basic-info {
+  .address-section {
+    .header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 500;
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .body {
+      margin-top: 20px;
+
+      .address-text {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+
+        mat-icon {
+          cursor: pointer;
+        }
+      }
+
+      .address-form {
+        margin-top: 20px;
+
+        .seq-form {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 20px;
+        }
+
+        .actions {
+          margin-top: 20px;
+          display: flex;
+          justify-content: flex-end;
+          gap: 10px;
+        }
+      }
+
+      .add-address {
+        font-style: italic;
+        color: grey;
+        margin-block: 10px;
+        cursor: pointer;
+      }
+    }
+  }
+}

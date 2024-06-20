@@ -33,7 +33,7 @@ import { UiService } from '../core/services/ui.service';
 
 // Models
 import { AuthFormField } from '../models/formField.model';
-import { Profile } from '../models/profile.model';
+import { Address, Profile } from '../models/profile.model';
 import { ProfileInfo } from '../models/profile-info.model';
 
 // Enums
@@ -70,6 +70,7 @@ export class ProfileService {
     birthday: false,
     privacy: false,
     bio: false,
+    address: false,
   };
 
   profiles: Profile[] = [];
@@ -101,7 +102,7 @@ export class ProfileService {
     });
   }
 
-  async getProfileFromDb(userId: string, isProfilePage: boolean = false) {
+  async getProfileFromDb(userId: string) {
     this.isMyProfile = userId === this.appService.userId;
 
     this.loadingProfile = true;
@@ -111,8 +112,6 @@ export class ProfileService {
     const profileSnap = await getDoc(profileRef);
 
     this.profile = profileSnap.data() as Profile;
-
-    /* isProfilePage && (await this.getProfileInfo()); */
 
     this.loadingProfile = false;
 
@@ -171,7 +170,11 @@ export class ProfileService {
     );
   }
 
-  async setProfile(profileData: Profile, fromSignUp: boolean = false, successMessage: string = 'Profile Updated') {
+  async setProfile(
+    profileData: Profile,
+    fromSignUp: boolean = false,
+    successMessage: string = 'Profile Updated'
+  ) {
     const profileRef = doc(
       this.appService._appDB,
       Collection.PROFILES,
@@ -448,5 +451,16 @@ export class ProfileService {
   filterWithFriends() {
     this.showFriends = !this.showFriends;
     this.getProfilesFriends(this.showFriends);
+  }
+
+  hasValidAddress(address: Address): boolean {
+    return !!(
+      address &&
+      (address.longDescription ||
+      address.country ||
+      address.state ||
+      address.division ||
+      address.city)
+    );
   }
 }

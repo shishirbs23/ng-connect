@@ -53,6 +53,6 @@ export class AppHeaderComponent {
 
   ngOnInit() {
     const userId: string = this.appService.getRouteParamData(this.route, 'id');
-    userId && this.profileService.getProfileFromDb(userId, this.router.url === '/profile');
+    userId && this.profileService.getProfileFromDb(userId);
   }
 }

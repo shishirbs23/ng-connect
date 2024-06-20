@@ -1,0 +1,116 @@
+<div class="basic-info">
+  <mat-card>
+    <mat-card-content>
+      <div class="address-section">
+        <div class="header">
+          <div>Address</div>
+
+          @if (service.hasValidAddress(service.profile.address!)) {
+          <div>
+            <span class="fw-400 fs-12px mr-10px"> Long address </span>
+            <mat-slide-toggle
+              [(ngModel)]="isLongAddress"
+              [ngModelOptions]="{ standalone: true }"
+            ></mat-slide-toggle>
+          </div>
+          }
+        </div>
+        <div class="body">
+          @if (service.hasValidAddress(service.profile.address!) &&
+          !service.isEditable.address) {
+          <div class="address-text">
+            @if (isLongAddress) {
+            <div>
+              From {{ service.profile.address?.longDescription }}
+            </div>
+            } @else {
+            <div>
+              {{ service.profile.address! | addressFormatter }}
+            </div>
+            }
+
+            <div (click)="this.service.isEditable.address = true">
+              <mat-icon>edit</mat-icon>
+            </div>
+          </div>
+          } @else { @if (service.isEditable.address) {
+          <div class="address-form" [formGroup]="profileInfoForm">
+            @if (isLongAddress) {
+            <div>
+              <mat-form-field
+                class="w-100"
+                appearance="outline"
+                floatLabel="always"
+              >
+                <mat-label>Long Address</mat-label>
+                <input matInput formControlName="longDescription" />
+              </mat-form-field>
+            </div>
+            } @else {
+            <div class="seq-form">
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Country</mat-label>
+                <input matInput formControlName="country" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>State</mat-label>
+                <input matInput formControlName="state" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Division</mat-label>
+                <input matInput formControlName="division" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>City</mat-label>
+                <input matInput formControlName="city" />
+              </mat-form-field>
+            </div>
+            }
+
+            <div class="actions">
+              <button
+                mat-flat-button
+                color="accent"
+                [disabled]="service.settingProfile"
+                (click)="service.isEditable.address = false"
+              >
+                Cancel
+              </button>
+              <button
+                mat-flat-button
+                color="primary"
+                [disabled]="
+                  (isLongAddress &&
+                    !profileInfoForm.value.longDescription?.length) ||
+                  (!isLongAddress &&
+                    !profileInfoForm.value.country?.length &&
+                    !profileInfoForm.value.state?.length &&
+                    !profileInfoForm.value.city?.length) ||
+                  service.settingProfile
+                "
+                (click)="saveAddress()"
+              >
+                @if (service.settingProfile) {
+                <div class="flex gap-10px align-items-center p-10px">
+                  <span>Saving</span>
+                  <mat-spinner class="h-15px w-15px"></mat-spinner>
+                </div>
+                } @else {
+                <span>Save</span>
+                }
+              </button>
+            </div>
+          </div>
+          } @else {
+          <div class="add-address" (click)="toggleAddressEditor()">
+            Add your address ...
+          </div>
+          } }
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

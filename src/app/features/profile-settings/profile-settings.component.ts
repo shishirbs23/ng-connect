@@ -65,7 +65,8 @@ export class ProfileSettingsComponent {
     this.profileService.isEditable = {
       birthday: false,
       privacy: false,
-      bio: false
+      bio: false,
+      address: false
     };
   }
 

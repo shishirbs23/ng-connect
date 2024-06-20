@@ -1,16 +1,9 @@
-interface Address {
+export interface Address {
   longDescription: string;
   city: string;
   state: string;
+  division: string;
   country: string;
-}
-
-interface BasicInfo {
-  address: Address;
-  genderId: number;
-  birthday: string;
-  emailAddress: string;
-  phoneNumber: string;
 }
 
 interface SchoolCollege {
@@ -40,6 +33,7 @@ interface Profession {
   toDate: string;
   companyName: string;
 }
+
 export interface Profile {
   uid: string;
   firstName: string | null;
@@ -56,7 +50,7 @@ export interface Profile {
   dob: string | null;
   privacyId: number;
   bio?: string;
-  basicInfo?: BasicInfo;
+  address?: Address;
   educationalHistory?: Education;
   professionalHistory?: Profession[];
   hobbies?: string[];
