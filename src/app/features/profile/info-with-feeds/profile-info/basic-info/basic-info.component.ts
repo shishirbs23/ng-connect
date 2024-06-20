@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 // Forms
 import {
@@ -18,7 +19,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+// Components
+import { AppDatepickerComponent } from '../../../../../core/components/app-datepicker/app-datepicker.component';
+
+// Models
+import { AuthFormField } from '../../../../../models/formField.model';
+
 // Services
+import { AppService } from '../../../../../core/services/app.service';
+import { FormService } from '../../../../../core/services/form.service';
 import { ProfileService } from '../../../../../services/profile.service';
 
 // Pipes
@@ -38,13 +47,20 @@ import { AddressFormatterPipe } from '../../../../../core/pipes/address-formatte
     MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
+    AppDatepickerComponent,
     AddressFormatterPipe,
+    DatePipe,
   ],
   templateUrl: './basic-info.component.html',
   styleUrl: './basic-info.component.scss',
 })
 export class BasicInfoComponent {
+  appService = inject(AppService);
   service = inject(ProfileService);
+  formService = inject(FormService);
+
+  field!: AuthFormField;
+
   profileInfoForm!: FormGroup;
   isLongAddress: boolean = false;
 
@@ -94,5 +110,26 @@ export class BasicInfoComponent {
     this.profileInfoForm.enable();
 
     this.service.isEditable.address = false;
+  }
+
+  prepareBirthdayForm() {
+    this.formService.prepareBirthdayForm(this.service.profile.dob!);
+    this.field = {
+      id: 1,
+      isRequired: false,
+      label: 'Birthday',
+      name: 'dob',
+    };
+    this.service.isEditable.birthday = true;
+  }
+
+  async saveBirthday() {
+    const dob = this.appService.formatMomentDate(
+      this.formService.form.value.dob
+    );
+    this.service.profile.dob = dob;
+    await this.service.setProfile(this.service.profile, false, 'Birthday Updated');
+    this.formService.reinitializeForm();
+    this.service.isEditable.birthday = false;
   }
 }

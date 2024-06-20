@@ -56,6 +56,33 @@
       }
     }
   }
+
+  .birthday-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 20px;
+
+    .edit-icon {
+      transition: 0.4s;
+      cursor: pointer;
+      visibility: hidden;
+    }
+
+    &:hover {
+      .edit-icon {
+        visibility: visible;
+        animation: fadeIn 1s;
+      }
+    }
+  }
+
+  .birthday-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
 }
 
 mat-card-title {
