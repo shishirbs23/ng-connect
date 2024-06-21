@@ -4,7 +4,10 @@
       <mat-card-title>
         <div>Education</div>
       </mat-card-title>
-      <div class="pointer" (click)="openEducationAddUpdateDialog()">
+      <div
+        class="pointer"
+        (click)="openEducationAddUpdateDialog(institutionTypes.SCHOOL, true)"
+      >
         <mat-icon matTooltip="Add Education Info">add</mat-icon>
       </div>
     </mat-card-header>

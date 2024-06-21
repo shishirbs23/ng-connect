@@ -8,6 +8,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // Components
 import { AppFormComponent } from '../../../core/components/app-form/app-form.component';
+import { AppLoaderComponent } from '../../../core/components/app-loader/app-loader.component';
 
 // Forms
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -27,7 +28,6 @@ import { FormService } from '../../../core/services/form.service';
 
 // Models
 import { AuthUser } from '../../../models/auth-user.model';
-import { AppLoaderComponent } from '../../../core/components/app-loader/app-loader.component';
 
 @Component({
   selector: 'app-auth-dialog',

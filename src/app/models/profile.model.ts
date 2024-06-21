@@ -12,6 +12,7 @@ interface EducationDetail {
   endDate: string;
   isCurrent: boolean;
   classes: string;
+  group: string;
   fieldOfStudy: string;
   degree: string;
   description: string;

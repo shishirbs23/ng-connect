@@ -23,7 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AppDatepickerComponent } from '../../../../../core/components/app-datepicker/app-datepicker.component';
 
 // Models
-import { AuthFormField } from '../../../../../models/formField.model';
+import { FormField } from '../../../../../models/formField.model';
 
 // Services
 import { AppService } from '../../../../../core/services/app.service';
@@ -59,7 +59,7 @@ export class BasicInfoComponent {
   service = inject(ProfileService);
   formService = inject(FormService);
 
-  field!: AuthFormField;
+  field!: FormField;
 
   profileInfoForm!: FormGroup;
   isLongAddress: boolean = false;

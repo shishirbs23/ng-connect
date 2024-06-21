@@ -1,10 +1,10 @@
-export interface AuthFormValue {
+export interface FormValue {
   id: number;
   label: string;
   name: string;
 }
 
-export interface AuthFormField {
+export interface FormField {
   id: number;
   isRequired: boolean;
   label: string;
@@ -13,5 +13,5 @@ export interface AuthFormField {
   name: string;
   type?: string;
   value?: string;
-  values?: AuthFormValue[];
+  values?: FormValue[];
 }

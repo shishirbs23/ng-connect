@@ -14,7 +14,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { AppService } from './app.service';
 
 // Models
-import { AuthFormField } from '../../models/formField.model';
+import { FormField } from '../../models/formField.model';
 
 // Enums & Constants
 import { FieldType } from '../../utils/enums/field-type.enum';
@@ -36,6 +36,7 @@ import { UniqueUsernameValidator } from '../validators/unique-username.validator
 // Contants
 import { Entity } from '../../utils/enums/entity.enum';
 import { FormType } from '../../utils/enums/form-type.enum';
+import { InstitutionType } from '../../utils/enums/institution-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -45,13 +46,14 @@ export class FormService {
   public formMessage: string = '';
   public formErrors: Record<string, string> = {};
   public isFormLoading!: boolean;
-  public formFields: AuthFormField[] = [];
+  public formFields: FormField[] = [];
 
   authMode = AuthMode;
 
   appService = inject(AppService);
 
   formEventSub: Subscription = new Subscription();
+  currentStudySub: Subscription = new Subscription();
 
   prepareAuthForm(formFields: any[], isSignUpForm: boolean) {
     formFields.map((field) => {
@@ -155,6 +157,113 @@ export class FormService {
     const control = new FormControl(value);
     this.form.addControl('privacyId', control);
     this.watchFormEvents();
+  }
+
+  prepareEducationForm(institutionType: string) {
+    this.form = new FormGroup({});
+
+    this.formFields = [
+      {
+        id: 1,
+        isRequired: true,
+        label: 'Institution Name',
+        name: 'institutionName',
+        type: FieldType.TEXT,
+      },
+      {
+        id: 2,
+        isRequired: true,
+        label: 'Start Date',
+        name: 'startDate',
+        type: FieldType.DATE,
+      },
+      {
+        id: 3,
+        isRequired: false,
+        label: 'End Date',
+        name: 'endDate',
+        type: FieldType.DATE,
+      },
+      {
+        id: 4,
+        isRequired: false,
+        label: 'Currently I am studying here.',
+        name: 'isCurrent',
+        type: FieldType.CHECKBOX,
+      },
+    ];
+
+    if (
+      institutionType === InstitutionType.SCHOOL ||
+      institutionType === InstitutionType.COLLEGE
+    ) {
+      this.formFields = [
+        ...this.formFields,
+        {
+          id: 5,
+          isRequired: true,
+          label: 'Classes',
+          name: 'classes',
+          type: FieldType.TEXT,
+        },
+        {
+          id: 6,
+          isRequired: true,
+          label: 'Group',
+          name: 'group',
+          type: FieldType.TEXT,
+        },
+      ];
+    } else if (institutionType === InstitutionType.UNIVERSITY) {
+      this.formFields = [
+        ...this.formFields,
+        {
+          id: 5,
+          isRequired: true,
+          label: 'Field of Study',
+          name: 'fieldOfStudy',
+          type: FieldType.TEXT,
+        },
+        {
+          id: 6,
+          isRequired: true,
+          label: 'Degree',
+          name: 'degree',
+          type: FieldType.TEXT,
+        },
+      ];
+    }
+
+    this.formFields.push({
+      id: 7,
+      isRequired: false,
+      label: 'Description',
+      name: 'description',
+      type: FieldType.TEXT,
+    });
+
+    this.watchFormEvents();
+
+    this.formFields.map((field) => {
+      let validators = [];
+
+      if (field.isRequired) {
+        validators.push(Validators.required);
+      }
+
+      const control = new FormControl('', validators);
+      this.form.addControl(field.name, control);
+    });
+
+    this.currentStudySub = this.form
+      .get('isCurrent')
+      ?.valueChanges.subscribe((isCurrentlyStudying) => {
+        if (isCurrentlyStudying) {
+          this.form.get('endDate')?.disable();
+        } else {
+          this.form.get('endDate')?.enable();
+        }
+      })!;
   }
 
   watchFormEvents() {
@@ -277,7 +386,7 @@ export class FormService {
       const docSnapData = docSnap.data();
 
       if (docSnapData) {
-        this.formFields = (docSnapData['fields'] ?? []) as AuthFormField[];
+        this.formFields = (docSnapData['fields'] ?? []) as FormField[];
 
         this.formFields.sort(
           (firstField, secondField) => firstField.id - secondField.id
@@ -299,5 +408,6 @@ export class FormService {
     this.form.enable();
     this.form.reset();
     this.formEventSub?.unsubscribe();
+    this.currentStudySub?.unsubscribe();
   }
 }

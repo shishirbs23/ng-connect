@@ -10,10 +10,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
+// Components
+import { AddUpdateEducationDialogComponent } from './add-update-education-dialog/add-update-education-dialog.component';
+
 // Services
+import { FormService } from '../../../../../core/services/form.service';
 import { ProfileService } from '../../../../../services/profile.service';
 import { UiService } from '../../../../../core/services/ui.service';
-import { AddUpdateEducationDialogComponent } from './add-update-education-dialog/add-update-education-dialog.component';
+
+// Enums
+import { InstitutionType } from '../../../../../utils/enums/institution-type.enum';
 
 @Component({
   selector: 'profile-education',
@@ -32,10 +38,23 @@ import { AddUpdateEducationDialogComponent } from './add-update-education-dialog
   styleUrl: './education.component.scss',
 })
 export class EducationComponent {
-  service = inject(ProfileService);
   uiService = inject(UiService);
 
-  openEducationAddUpdateDialog() {
-    this.uiService.openDialog(AddUpdateEducationDialogComponent);
+  institutionTypes = InstitutionType;
+
+  openEducationAddUpdateDialog(
+    institutionType: string,
+    isAdd: boolean,
+    educationDetails?: any
+  ) {
+    this.uiService.openDialog(
+      AddUpdateEducationDialogComponent,
+      {
+        institutionType: institutionType || null,
+        isAdd,
+        educationDetails,
+      },
+      '400px',
+    );
   }
 }

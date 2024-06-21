@@ -1,1 +1,11 @@
-<p>add-update-education-dialog works!</p>
+<h2 mat-dialog-title class="text-center">{{ headerTitle }}</h2>
+
+<mat-dialog-content>
+  <app-form
+    [formType]="formTypes.ADD_UPDATE_EDUCATION"
+    [headerTitle]="headerTitle"
+    [btnLabel]="btnLabel"
+    [isLoading]="profileService.savingEducationDetails"
+    (submitForm)="onEducationFormSubmit($event)"
+  ></app-form>
+</mat-dialog-content>

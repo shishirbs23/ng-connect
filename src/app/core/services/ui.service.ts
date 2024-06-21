@@ -23,7 +23,7 @@ export class UiService {
     this.dialogRef = this.dialog.open(component, {
       width,
       data,
-      /* disableClose: true, */
+      disableClose: true,
       height,
     });
   }

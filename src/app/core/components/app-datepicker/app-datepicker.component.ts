@@ -13,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormService } from '../../../core/services/form.service';
 
 // Enums
-import { AuthFormField } from '../../../models/formField.model';
+import { FormField } from '../../../models/formField.model';
 
 export const MY_FORMATS = {
   parse: {
@@ -42,7 +42,7 @@ export const MY_FORMATS = {
 })
 export class AppDatepickerComponent {
   formService = inject(FormService);
-  field = model<AuthFormField>({
+  field = model<FormField>({
     id: 0,
     isRequired: false,
     label: '',

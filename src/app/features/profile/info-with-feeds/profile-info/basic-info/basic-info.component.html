@@ -105,14 +105,6 @@
             Add your address ...
           </div>
           } }
-
-          <!-- <div class="mt-4px">
-            <span class="fw-400 fs-12px mr-10px"> Long address </span>
-            <mat-slide-toggle
-              [(ngModel)]="isLongAddress"
-              [ngModelOptions]="{ standalone: true }"
-            ></mat-slide-toggle>
-          </div> -->
         </div>
       </div>
 
@@ -153,12 +145,10 @@
         <form class="w-100 my-10px" [formGroup]="formService.form">
           <app-datepicker [field]="field"></app-datepicker>
         </form>
-        }
-
-        @if (!service.isEditable.birthday) {
-          <div class="edit-icon" (click)="prepareBirthdayForm()">
-            <mat-icon matTooltip="Edit Birthday">edit</mat-icon>
-          </div>
+        } @if (!service.isEditable.birthday) {
+        <div class="edit-icon" (click)="prepareBirthdayForm()">
+          <mat-icon matTooltip="Edit Birthday">edit</mat-icon>
+        </div>
         }
       </div>
 

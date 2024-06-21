@@ -12,6 +12,10 @@
   <div class="mt-30px">
     <app-datepicker [field]="field"></app-datepicker>
   </div>
+  } @case (fieldTypes.CHECKBOX) {
+  <div class="mt-10px">
+    <app-checkbox [field]="field"></app-checkbox>
+  </div>
   } @default {
   <app-input [field]="field"></app-input>
   } } } @if (formType() === formTypes.SIGNIN) {

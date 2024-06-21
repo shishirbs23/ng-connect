@@ -17,7 +17,7 @@ import { PhotoUploadOptionsComponent } from '../photo-upload-options/photo-uploa
 
 // Models
 import { Profile } from '../../../models/profile.model';
-import { AuthFormField } from '../../../models/formField.model';
+import { FormField } from '../../../models/formField.model';
 
 // Services
 import { AuthService } from '../../../services/auth.service';
@@ -54,7 +54,7 @@ export class ProfileCompleteDialogComponent {
   uiService = inject(UiService);
   profileService = inject(ProfileService);
 
-  field!: AuthFormField;
+  field!: FormField;
   uiID: number = 0;
   file: File | null = null;
 

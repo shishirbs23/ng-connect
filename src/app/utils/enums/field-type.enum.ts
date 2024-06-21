@@ -6,4 +6,5 @@ export enum FieldType {
   DATE = 'DateField',
   PICTURE = 'DateField',
   FILE = 'DateField',
+  CHECKBOX = 'CheckboxField',
 }

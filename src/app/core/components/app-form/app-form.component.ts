@@ -6,8 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Components
-import { AppInputComponent } from '../app-input/app-input.component';
+import { AppCheckboxComponent } from '../app-checkbox/app-checkbox.component';
 import { AppDatepickerComponent } from '../app-datepicker/app-datepicker.component';
+import { AppInputComponent } from '../app-input/app-input.component';
 import { AppSelectComponent } from '../app-select/app-select.component';
 
 // Services
@@ -28,6 +29,7 @@ import { FormType } from '../../../utils/enums/form-type.enum';
     MatButtonModule,
     MatDialogModule,
     MatProgressSpinnerModule,
+    AppCheckboxComponent,
     AppInputComponent,
     AppSelectComponent,
     AppDatepickerComponent,

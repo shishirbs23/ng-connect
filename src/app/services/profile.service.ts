@@ -32,7 +32,7 @@ import { FormService } from '../core/services/form.service';
 import { UiService } from '../core/services/ui.service';
 
 // Models
-import { AuthFormField } from '../models/formField.model';
+import { FormField } from '../models/formField.model';
 import { Address, Profile } from '../models/profile.model';
 import { ProfileInfo } from '../models/profile-info.model';
 
@@ -47,7 +47,7 @@ import { PictureOption } from '../utils/enums/picture-option.enum';
 export class ProfileService {
   auth = getAuth();
   storage = getStorage();
-  field!: AuthFormField;
+  field!: FormField;
 
   appService = inject(AppService);
   uiService = inject(UiService);
@@ -65,6 +65,7 @@ export class ProfileService {
   updatingCoverPhoto: boolean = false;
   deletingProfile: boolean = false;
   isMyProfile: boolean = false;
+  savingEducationDetails: boolean = false;
 
   isEditable = {
     birthday: false,
