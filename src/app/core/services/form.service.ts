@@ -4,6 +4,7 @@ import {
   FormGroup,
   StatusChangeEvent,
   Validators,
+  ValueChangeEvent,
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -53,7 +54,6 @@ export class FormService {
   appService = inject(AppService);
 
   formEventSub: Subscription = new Subscription();
-  currentStudySub: Subscription = new Subscription();
 
   prepareAuthForm(formFields: any[], isSignUpForm: boolean) {
     formFields.map((field) => {
@@ -254,16 +254,6 @@ export class FormService {
       const control = new FormControl('', validators);
       this.form.addControl(field.name, control);
     });
-
-    this.currentStudySub = this.form
-      .get('isCurrent')
-      ?.valueChanges.subscribe((isCurrentlyStudying) => {
-        if (isCurrentlyStudying) {
-          this.form.get('endDate')?.disable();
-        } else {
-          this.form.get('endDate')?.enable();
-        }
-      })!;
   }
 
   watchFormEvents() {
@@ -363,6 +353,21 @@ export class FormService {
           }
         }
       }
+
+      if (event instanceof ValueChangeEvent) {
+        if (event.value.hasOwnProperty('isCurrent')) {
+          if (event.value.isCurrent) {
+            this.form.get('endDate')?.disable({ emitEvent: false });
+          } else {
+            this.form.get('endDate')?.enable({ emitEvent: false });
+          }
+
+          this.form.get('endDate')?.markAsDirty();
+          this.form
+            .get('endDate')
+            ?.updateValueAndValidity({ emitEvent: false });
+        }
+      }
     });
   }
 
@@ -408,6 +413,5 @@ export class FormService {
     this.form.enable();
     this.form.reset();
     this.formEventSub?.unsubscribe();
-    this.currentStudySub?.unsubscribe();
   }
 }

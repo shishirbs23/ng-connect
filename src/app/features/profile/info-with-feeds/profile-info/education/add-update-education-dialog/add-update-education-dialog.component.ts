@@ -2,6 +2,7 @@ import { Component, Inject, inject } from '@angular/core';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +19,7 @@ import { ProfileService } from '../../../../../../services/profile.service';
 
 // Enums
 import { FormType } from '../../../../../../utils/enums/form-type.enum';
+import { InstitutionType } from '../../../../../../utils/enums/institution-type.enum';
 
 interface EducationDialogData {
   institutionType: string;
@@ -31,6 +33,7 @@ interface EducationDialogData {
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
+    MatChipsModule,
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
@@ -43,11 +46,27 @@ export class AddUpdateEducationDialogComponent {
   headerTitle: string = '';
   institutionType: string = '';
   btnLabel: string = '';
+  selectedTypeId: number = 1;
 
   formTypes = FormType;
 
   formService = inject(FormService);
   profileService = inject(ProfileService);
+
+  types = [
+    {
+      id: 1,
+      name: 'School',
+    },
+    {
+      id: 2,
+      name: 'College',
+    },
+    {
+      id: 3,
+      name: 'University',
+    },
+  ];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: EducationDialogData) {}
 
@@ -71,5 +90,21 @@ export class AddUpdateEducationDialogComponent {
     console.log(this.formService.form);
   }
 
-  onEducationFormSubmit(event: any) {}
+  selectType(type: any) {
+    this.formService.reinitializeForm();
+
+    this.selectedTypeId = type.id;
+
+    if (this.selectedTypeId == 1) {
+      this.formService.prepareEducationForm(InstitutionType.SCHOOL);
+    } else if (this.selectedTypeId == 2) {
+      this.formService.prepareEducationForm(InstitutionType.COLLEGE);
+    } else if (this.selectedTypeId == 3) {
+      this.formService.prepareEducationForm(InstitutionType.UNIVERSITY);
+    }
+  }
+
+  onEducationFormSubmit(event: any) {
+    console.log(event);
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, inject, model } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 // Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,6 +16,7 @@ import { InputTypePipe } from '../../pipes/input-type.pipe';
 
 // Enums
 import { FieldType } from '../../../utils/enums/field-type.enum';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-input',
@@ -27,6 +28,7 @@ import { FieldType } from '../../../utils/enums/field-type.enum';
     MatInputModule,
     ReactiveFormsModule,
     InputTypePipe,
+    JsonPipe,
   ],
 })
 export class AppInputComponent {
@@ -46,12 +48,17 @@ export class AppInputComponent {
   fieldTypes = FieldType;
   shouldShowEye!: boolean;
 
+  formControl!: FormControl;
+
   isVisible: boolean = false;
   visibleIconPath: string = 'assets/icons/visibility.svg';
   invisibleIconPath: string = 'assets/icons/visibility_off.svg';
 
   ngOnInit() {
     this.shouldShowEye = this.fieldTypes.PASSWORD === this.field().type;
+    this.formControl = this.formService.form.controls[
+      this.field().name
+    ] as FormControl;
   }
 
   toggleInput() {
