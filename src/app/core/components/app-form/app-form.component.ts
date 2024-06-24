@@ -1,4 +1,4 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, SimpleChanges, inject, input, output } from '@angular/core';
 
 // Angular Material
 import { MatDialogModule } from '@angular/material/dialog';
@@ -20,6 +20,7 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 // Enums
 import { FieldType } from '../../../utils/enums/field-type.enum';
 import { FormType } from '../../../utils/enums/form-type.enum';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-form',
@@ -42,11 +43,13 @@ export class AppFormComponent {
   headerTitle = input<string>();
   btnLabel = input<string>();
   isLoading = input<boolean>();
+  shouldResetControls = input<BehaviorSubject<boolean>>();
   formService = inject(FormService);
 
   submitForm = output<FormGroup>();
   prepareSignInForm = output<void>();
   prepareForgotPasswordForm = output<void>();
+  reinitControls = output<void>();
 
   formTypes = FormType;
   fieldTypes = FieldType;

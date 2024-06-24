@@ -1,5 +1,6 @@
-import { Component, inject, model } from '@angular/core';
+import { Component, inject, input, model } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 // Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,7 +17,6 @@ import { InputTypePipe } from '../../pipes/input-type.pipe';
 
 // Enums
 import { FieldType } from '../../../utils/enums/field-type.enum';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-input',
@@ -28,7 +28,6 @@ import { JsonPipe } from '@angular/common';
     MatInputModule,
     ReactiveFormsModule,
     InputTypePipe,
-    JsonPipe,
   ],
 })
 export class AppInputComponent {
@@ -43,6 +42,7 @@ export class AppInputComponent {
     value: '',
     values: [],
   });
+  shouldResetControls = input<BehaviorSubject<boolean>>();
 
   formService = inject(FormService);
   fieldTypes = FieldType;
@@ -54,15 +54,30 @@ export class AppInputComponent {
   visibleIconPath: string = 'assets/icons/visibility.svg';
   invisibleIconPath: string = 'assets/icons/visibility_off.svg';
 
+  subs: Subscription = new Subscription();
+
   ngOnInit() {
     this.shouldShowEye = this.fieldTypes.PASSWORD === this.field().type;
     this.formControl = this.formService.form.controls[
       this.field().name
     ] as FormControl;
+    this.subs = this.shouldResetControls()?.subscribe((value) => {
+      if (value) {
+        setTimeout(() => {
+          this.formControl = this.formService.form.controls[
+            this.field().name
+          ] as FormControl;
+        }, 0);
+      }
+    })!;
   }
 
   toggleInput() {
     this.isVisible = !this.isVisible;
     this.field().type = this.isVisible ? FieldType.TEXT : FieldType.PASSWORD;
+  }
+
+  ngOnDestroy() {
+    this.subs?.unsubscribe();
   }
 }

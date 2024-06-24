@@ -1,24 +1,27 @@
-<h2 mat-dialog-title class="text-center">{{ headerTitle }}</h2>
+<div mat-dialog-title class="text-center">{{ headerTitle }}</div>
 
 <mat-dialog-content>
-  <div class="flex justify-content-center">
-    <mat-chip-listbox>
-      @for (type of types; track type.id) {
-      <mat-chip-option
-        [selected]="type.id === selectedTypeId"
-        (click)="selectType(type)"
-      >
-        {{ type.name }}
-      </mat-chip-option>
-      }
-    </mat-chip-listbox>
+  <div class="options">
+    @for (type of types; track type.id) {
+    <div
+      class="chip"
+      [class.active]="type.id === selectedTypeId"
+      (click)="selectType(type)"
+      tabindex="-1"
+    >
+      {{ type.name }}
+    </div>
+    }
   </div>
+
+  <div class="mt-30px"></div>
 
   <app-form
     [formType]="formTypes.ADD_UPDATE_EDUCATION"
     [headerTitle]="headerTitle"
     [btnLabel]="btnLabel"
     [isLoading]="profileService.savingEducationDetails"
+    [shouldResetControls]="shouldResetControls"
     (submitForm)="onEducationFormSubmit($event)"
   ></app-form>
 </mat-dialog-content>

@@ -14,7 +14,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AddUpdateEducationDialogComponent } from './add-update-education-dialog/add-update-education-dialog.component';
 
 // Services
-import { FormService } from '../../../../../core/services/form.service';
 import { ProfileService } from '../../../../../services/profile.service';
 import { UiService } from '../../../../../core/services/ui.service';
 
@@ -38,6 +37,7 @@ import { InstitutionType } from '../../../../../utils/enums/institution-type.enu
   styleUrl: './education.component.scss',
 })
 export class EducationComponent {
+  profileService = inject(ProfileService);
   uiService = inject(UiService);
 
   institutionTypes = InstitutionType;

@@ -40,7 +40,6 @@ export class WebcamDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { profile: Profile; option: string }
   ) {
-    console.log(data.option);
   }
 
   ngOnInit() {

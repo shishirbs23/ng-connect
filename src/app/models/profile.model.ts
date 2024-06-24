@@ -6,25 +6,25 @@ export interface Address {
   country: string;
 }
 
-interface EducationDetail {
+export interface EducationDetails {
   institutionName: string;
   startDate: string;
-  endDate: string;
+  endDate: string |  null;
   isCurrent: boolean;
-  classes: string;
-  group: string;
-  fieldOfStudy: string;
-  degree: string;
+  classes?: string;
+  group?: string;
+  fieldOfStudy?: string;
+  degree?: string;
   description: string;
 }
 
-interface Education {
-  schools: EducationDetail[];
-  colleges: EducationDetail[];
-  universities: EducationDetail[];
+export interface Education {
+  schools: EducationDetails[];
+  colleges: EducationDetails[];
+  universities: EducationDetails[];
 }
 
-interface Profession {
+export interface Profession {
   designation: string;
   fromDate: string;
   toDate: string;

@@ -14,6 +14,22 @@ mat-card-title {
       gap: 20px;
     }
   }
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 10px;
+
+    .actions {
+      display: flex;
+
+      mat-icon {
+        cursor: pointer;
+        font-size: 18px;
+      }
+    }
+  }
 }
 
 @keyframes fadeIn {

@@ -12,9 +12,71 @@
       </div>
     </mat-card-header>
     <mat-card-content>
-      <div class="school-section"></div>
-      <div class="college-section"></div>
-      <div class="university-section"></div>
+      <div class="school-section">
+        @for (school of profileService.profile.educationalHistory?.schools;
+        track school) {
+        <div class="item">
+          <div>
+            <div>
+              {{ school.isCurrent ? "Studies" : "Studied" }}
+              <b>{{ school.group }}</b> at
+              <b>{{ school.institutionName }}</b>
+            </div>
+            <div>
+              <i>{{ school.description }}</i>
+            </div>
+          </div>
+          <div class="actions">
+            <mat-icon matTooltip="Edit School">edit</mat-icon>
+            <mat-icon matTooltip="Delete School">delete</mat-icon>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="college-section">
+        @for (college of profileService.profile.educationalHistory?.colleges;
+        track college) {
+        <div class="item">
+          <div>
+            <div>
+              {{ college.isCurrent ? "Studies" : "Studied" }}
+              <b>{{ college.group }}</b> at
+              <b>{{ college.institutionName }}</b>
+            </div>
+            <div>
+              <i>{{ college.description }}</i>
+            </div>
+          </div>
+          <div class="actions">
+            <mat-icon matTooltip="Edit College">edit</mat-icon>
+            <mat-icon matTooltip="Delete College">delete</mat-icon>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="university-section">
+        @for (university of
+        profileService.profile.educationalHistory?.universities; track
+        university) {
+        <div class="item">
+          <div>
+            <div>
+              {{ university.isCurrent ? "Studies" : "Studied" }}
+              <b>{{ university.degree }}</b> in
+              <b>{{ university.fieldOfStudy }}</b> at
+              <b>{{ university.institutionName }}</b>
+            </div>
+            <div>
+              <i>{{ university.description }}</i>
+            </div>
+          </div>
+          <div class="actions">
+            <mat-icon matTooltip="Edit University">edit</mat-icon>
+            <mat-icon matTooltip="Delete University">delete</mat-icon>
+          </div>
+        </div>
+        }
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

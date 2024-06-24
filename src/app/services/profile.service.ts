@@ -33,7 +33,7 @@ import { UiService } from '../core/services/ui.service';
 
 // Models
 import { FormField } from '../models/formField.model';
-import { Address, Profile } from '../models/profile.model';
+import { Address, EducationDetails, Profile } from '../models/profile.model';
 import { ProfileInfo } from '../models/profile-info.model';
 
 // Enums
@@ -114,9 +114,9 @@ export class ProfileService {
 
     this.profile = profileSnap.data() as Profile;
 
-    this.loadingProfile = false;
-
     console.log(this.profile);
+
+    this.loadingProfile = false;
 
     if (
       this.isMyProfile &&
@@ -458,10 +458,57 @@ export class ProfileService {
     return !!(
       address &&
       (address.longDescription ||
-      address.country ||
-      address.state ||
-      address.division ||
-      address.city)
+        address.country ||
+        address.state ||
+        address.division ||
+        address.city)
     );
+  }
+
+  async saveEducationalDetails(
+    educationalDetails: EducationDetails,
+    typeId: number
+  ) {
+    educationalDetails.startDate = this.appService.formatMomentDate(
+      educationalDetails.startDate
+    );
+
+    if (educationalDetails.isCurrent) {
+      educationalDetails.endDate = null;
+    } else {
+      educationalDetails.endDate = this.appService.formatMomentDate(
+        educationalDetails.endDate ?? ''
+      );
+    }
+
+    if (typeId == 1) {
+      this.profile.educationalHistory?.schools.push(educationalDetails);
+    } else if (typeId == 2) {
+      this.profile.educationalHistory?.colleges.push(educationalDetails);
+    } else if (typeId == 3) {
+      this.profile.educationalHistory?.universities.push(educationalDetails);
+    }
+
+    const profileRef = doc(
+      this.appService._appDB,
+      Collection.PROFILES,
+      this.appService.userId
+    );
+
+    this.savingEducationDetails = true;
+
+    await setDoc(profileRef, this.profile, { merge: true })
+      .then((_) => {
+        this.uiService.openSnackbar('Education added successfully...');
+      })
+      .catch((_) => {
+        this.uiService.openSnackbar(
+          'Error during adding education. Please try after sometimes'
+        );
+      })
+      .finally(() => {
+        this.savingEducationDetails = false;
+        this.uiService.closeDialog(null);
+      });
   }
 }

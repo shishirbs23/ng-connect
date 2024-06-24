@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import {
+  AbstractControl,
   FormControl,
   FormGroup,
   StatusChangeEvent,
@@ -22,6 +23,9 @@ import { FieldType } from '../../utils/enums/field-type.enum';
 import { AuthMode } from '../../utils/enums/auth-mode.enum';
 import { FormId } from '../../utils/constants/form-id';
 import { Collection } from '../../utils/enums/collection.enum';
+import { Entity } from '../../utils/enums/entity.enum';
+import { FormType } from '../../utils/enums/form-type.enum';
+import { InstitutionType } from '../../utils/enums/institution-type.enum';
 
 // Validators
 import { MinimumAgeValidator } from '../validators/minimum-age.validator';
@@ -33,11 +37,6 @@ import { PasswordStrengthValidator } from '../validators/password-strength.valid
 import { PasswordMatchValidator } from '../validators/password-match.validator';
 import { UniqueEmailValidator } from '../validators/unique-email.validator';
 import { UniqueUsernameValidator } from '../validators/unique-username.validator';
-
-// Contants
-import { Entity } from '../../utils/enums/entity.enum';
-import { FormType } from '../../utils/enums/form-type.enum';
-import { InstitutionType } from '../../utils/enums/institution-type.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -54,6 +53,7 @@ export class FormService {
   appService = inject(AppService);
 
   formEventSub: Subscription = new Subscription();
+  startDateSub: Subscription = new Subscription();
 
   prepareAuthForm(formFields: any[], isSignUpForm: boolean) {
     formFields.map((field) => {
@@ -251,7 +251,10 @@ export class FormService {
         validators.push(Validators.required);
       }
 
-      const control = new FormControl('', validators);
+      const control = new FormControl(
+        field.name == Entity.IS_CURRENT ? false : '',
+        validators
+      );
       this.form.addControl(field.name, control);
     });
   }
@@ -313,6 +316,10 @@ export class FormService {
                 errors.push(`<li>Contains extra spaces</li>`);
               }
 
+              if (prop.errors['minDate']) {
+                errors.push(`<li>Ending date is earlier</li>`);
+              }
+
               if (prop.errors['passwordStrength']) {
                 for (const message of prop.errors['passwordStrength']) {
                   errors.push(message);
@@ -359,7 +366,9 @@ export class FormService {
           if (event.value.isCurrent) {
             this.form.get('endDate')?.disable({ emitEvent: false });
           } else {
-            this.form.get('endDate')?.enable({ emitEvent: false });
+            if (this.form.enabled) {
+              this.form.get('endDate')?.enable({ emitEvent: false });
+            }
           }
 
           this.form.get('endDate')?.markAsDirty();
@@ -369,6 +378,16 @@ export class FormService {
         }
       }
     });
+  }
+
+  minDateValidator(minDate: Date) {
+    return (control: AbstractControl) => {
+      if (!control.value) {
+        return null;
+      }
+      const controlDate = new Date(control.value);
+      return controlDate >= minDate ? null : { minDate: true };
+    };
   }
 
   async getAuthFormFields(data: { mode: string }) {
@@ -413,5 +432,6 @@ export class FormService {
     this.form.enable();
     this.form.reset();
     this.formEventSub?.unsubscribe();
+    this.startDateSub?.unsubscribe();
   }
 }

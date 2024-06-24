@@ -12,7 +12,7 @@ import { Profile } from '../models/profile.model';
 
 // Enums
 import { Collection } from '../utils/enums/collection.enum';
-import { ENTITY } from '../utils/enums/entity.enum';
+import { Entity } from '../utils/enums/entity.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +31,7 @@ export class UserService {
       this.appService._appDB,
       Collection.PROFILES
     );
-    const profileQuery = query(profileCollection, orderBy(ENTITY.DISPLAY_NAME));
+    const profileQuery = query(profileCollection, orderBy(Entity.DISPLAY_NAME));
     const profileSnap = await getDocs(profileQuery);
 
     this.loadingProfiles = false;
@@ -41,7 +41,5 @@ export class UserService {
     profileSnap.forEach((profile) => {
       this.profiles.push(profile.data() as Profile);
     });
-
-    console.log(this.profiles);
   }
 }

@@ -8,4 +8,8 @@ export enum Entity {
   PASSWORD = 'password',
   CONFIRM_PASSWORD = 'confirmPassword',
   IS_DELETED = 'isDeleted',
+  IS_CURRENT = 'isCurrent',
+  START_DATE = 'startDate',
+  END_DATE = 'endDate',
+  DESCRIPTION = 'description',
 }

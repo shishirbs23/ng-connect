@@ -10,14 +10,20 @@
   </div>
   } @case (fieldTypes.DATE) {
   <div class="mt-30px">
-    <app-datepicker [field]="field"></app-datepicker>
+    <app-datepicker
+      [field]="field"
+      [shouldResetControls]="shouldResetControls()"
+    ></app-datepicker>
   </div>
   } @case (fieldTypes.CHECKBOX) {
   <div class="mt-10px">
     <app-checkbox [field]="field"></app-checkbox>
   </div>
   } @default {
-  <app-input [field]="field"></app-input>
+  <app-input
+    [field]="field"
+    [shouldResetControls]="shouldResetControls()"
+  ></app-input>
   } } } @if (formType() === formTypes.SIGNIN) {
   <div class="mt-15px text-center">
     <button type="button" mat-button (click)="prepareForgotPasswordForm.emit()">

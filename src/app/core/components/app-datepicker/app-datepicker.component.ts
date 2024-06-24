@@ -1,4 +1,5 @@
-import { Component, inject, model } from '@angular/core';
+import { Component, inject, input, model } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 // Angular Material
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 
 // Forms
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 // Services
 import { FormService } from '../../../core/services/form.service';
@@ -53,6 +54,29 @@ export class AppDatepickerComponent {
     value: '',
     values: [],
   });
+  shouldResetControls = input<BehaviorSubject<boolean>>();
   minDate = new Date(1900, 0, 1);
   maxDate = new Date();
+  formControl!: FormControl;
+
+  subs: Subscription = new Subscription();
+
+  ngOnInit() {
+    this.formControl = this.formService.form.controls[
+      this.field().name
+    ] as FormControl;
+    this.subs = this.shouldResetControls()?.subscribe((value) => {
+      if (value) {
+        setTimeout(() => {
+          this.formControl = this.formService.form.controls[
+            this.field().name
+          ] as FormControl;
+        }, 0);
+      }
+    })!;
+  }
+
+  ngOnDestroy() {
+    this.subs?.unsubscribe();
+  }
 }
