@@ -25,5 +25,11 @@
       background-color: #3f51bf;
       border-color: 1px solid #3f51bf;
     }
+
+    &.inactive {
+      cursor: text;
+      user-select: none;
+      pointer-events: none;
+    }
   }
 }

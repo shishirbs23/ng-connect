@@ -14,7 +14,7 @@
     <mat-card-content>
       <div class="school-section">
         @for (school of profileService.profile.educationalHistory?.schools;
-        track school) {
+        track school; let index = $index;) {
         <div class="item">
           <div>
             <div>
@@ -27,15 +27,25 @@
             </div>
           </div>
           <div class="actions">
-            <mat-icon matTooltip="Edit School">edit</mat-icon>
-            <mat-icon matTooltip="Delete School">delete</mat-icon>
+            <mat-icon
+              matTooltip="Edit School"
+              (click)="
+                editEducationalDetail(institutionTypes.SCHOOL, school, index)
+              "
+              >edit</mat-icon
+            >
+            <mat-icon
+              matTooltip="Delete School"
+              (click)="deleteEducationalDetail(institutionTypes.SCHOOL, index)"
+              >delete</mat-icon
+            >
           </div>
         </div>
         }
       </div>
       <div class="college-section">
         @for (college of profileService.profile.educationalHistory?.colleges;
-        track college) {
+        track college; let index = $index;) {
         <div class="item">
           <div>
             <div>
@@ -48,8 +58,18 @@
             </div>
           </div>
           <div class="actions">
-            <mat-icon matTooltip="Edit College">edit</mat-icon>
-            <mat-icon matTooltip="Delete College">delete</mat-icon>
+            <mat-icon
+              matTooltip="Edit College"
+              (click)="
+                editEducationalDetail(institutionTypes.COLLEGE, college, index)
+              "
+              >edit</mat-icon
+            >
+            <mat-icon
+              matTooltip="Delete College"
+              (click)="deleteEducationalDetail(institutionTypes.COLLEGE, index)"
+              >delete</mat-icon
+            >
           </div>
         </div>
         }
@@ -57,7 +77,7 @@
       <div class="university-section">
         @for (university of
         profileService.profile.educationalHistory?.universities; track
-        university) {
+        university; let index = $index;) {
         <div class="item">
           <div>
             <div>
@@ -71,8 +91,24 @@
             </div>
           </div>
           <div class="actions">
-            <mat-icon matTooltip="Edit University">edit</mat-icon>
-            <mat-icon matTooltip="Delete University">delete</mat-icon>
+            <mat-icon
+              matTooltip="Edit University"
+              (click)="
+                editEducationalDetail(
+                  institutionTypes.UNIVERSITY,
+                  university,
+                  index
+                )
+              "
+              >edit</mat-icon
+            >
+            <mat-icon
+              matTooltip="Delete University"
+              (click)="
+                deleteEducationalDetail(institutionTypes.UNIVERSITY, index)
+              "
+              >delete</mat-icon
+            >
           </div>
         </div>
         }

@@ -1,7 +1,7 @@
 import { Component, Inject, inject } from '@angular/core';
 
 // RxJS
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -34,6 +34,7 @@ interface EducationDialogData {
   institutionType: string;
   isAdd: boolean;
   educationDetails?: any;
+  index?: number;
 }
 
 @Component({
@@ -88,15 +89,12 @@ export class AddUpdateEducationDialogComponent {
     this.formService.startDateSub = this.formService.form
       .get(Entity.START_DATE)
       ?.valueChanges.subscribe((startDate) => {
-        console.log(startDate);
-
         if (startDate) {
           const minEndDate = new Date(startDate);
           minEndDate.setDate(minEndDate.getDate() + 1);
           this.formService.form
             .get(Entity.END_DATE)
             ?.setValidators([this.minDateValidator(minEndDate)]);
-          console.log(this.formService.form.get(Entity.END_DATE)?.hasValidator);
         } else {
           this.formService.form.get(Entity.END_DATE)?.clearValidators();
         }
@@ -124,7 +122,16 @@ export class AddUpdateEducationDialogComponent {
     }
 
     this.institutionType = this.data.institutionType;
-    this.formService.prepareEducationForm(this.institutionType);
+
+    if (this.data.isAdd) {
+      this.formService.prepareEducationForm(this.institutionType);
+    } else {
+      this.formService.prepareEducationForm(
+        this.institutionType,
+        false,
+        this.data.educationDetails
+      );
+    }
   }
 
   selectType(type: any) {
@@ -162,11 +169,11 @@ export class AddUpdateEducationDialogComponent {
       educationalDetails.degree = controls['degree'].value;
     }
 
-    console.log(educationalDetails);
-
     this.profileService.saveEducationalDetails(
       educationalDetails,
-      this.selectedTypeId
+      this.selectedTypeId,
+      this.data.isAdd,
+      this.data.index
     );
   }
 }

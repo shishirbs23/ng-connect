@@ -6,6 +6,7 @@
     <div
       class="chip"
       [class.active]="type.id === selectedTypeId"
+      [class.inactive]="!data.isAdd"
       (click)="selectType(type)"
       tabindex="-1"
     >

@@ -37,6 +37,7 @@ import { PasswordStrengthValidator } from '../validators/password-strength.valid
 import { PasswordMatchValidator } from '../validators/password-match.validator';
 import { UniqueEmailValidator } from '../validators/unique-email.validator';
 import { UniqueUsernameValidator } from '../validators/unique-username.validator';
+import { EducationDetails } from '../../models/profile.model';
 
 @Injectable({
   providedIn: 'root',
@@ -159,7 +160,7 @@ export class FormService {
     this.watchFormEvents();
   }
 
-  prepareEducationForm(institutionType: string) {
+  prepareEducationForm(institutionType: string, isAdd: boolean = false, educationalDetails?: EducationDetails) {
     this.form = new FormGroup({});
 
     this.formFields = [
@@ -208,8 +209,8 @@ export class FormService {
         },
         {
           id: 6,
-          isRequired: true,
-          label: 'Group',
+          isRequired: false,
+          label: 'Group/Level',
           name: 'group',
           type: FieldType.TEXT,
         },
@@ -257,6 +258,10 @@ export class FormService {
       );
       this.form.addControl(field.name, control);
     });
+
+    if (!isAdd) {
+      this.form.patchValue(educationalDetails!);
+    }
   }
 
   watchFormEvents() {

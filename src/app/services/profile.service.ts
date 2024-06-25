@@ -467,7 +467,9 @@ export class ProfileService {
 
   async saveEducationalDetails(
     educationalDetails: EducationDetails,
-    typeId: number
+    typeId: number,
+    isAdd: boolean,
+    index?: number
   ) {
     educationalDetails.startDate = this.appService.formatMomentDate(
       educationalDetails.startDate
@@ -482,11 +484,39 @@ export class ProfileService {
     }
 
     if (typeId == 1) {
-      this.profile.educationalHistory?.schools.push(educationalDetails);
+      if (isAdd) {
+        this.profile.educationalHistory?.schools.push(educationalDetails);
+      } else {
+        if (
+          this.profile.educationalHistory &&
+          (index != null || index != undefined)
+        ) {
+          this.profile.educationalHistory.schools[index] = educationalDetails;
+        }
+      }
     } else if (typeId == 2) {
-      this.profile.educationalHistory?.colleges.push(educationalDetails);
+      if (isAdd) {
+        this.profile.educationalHistory?.colleges.push(educationalDetails);
+      } else {
+        if (
+          this.profile.educationalHistory &&
+          (index != null || index != undefined)
+        ) {
+          this.profile.educationalHistory.colleges[index] = educationalDetails;
+        }
+      }
     } else if (typeId == 3) {
-      this.profile.educationalHistory?.universities.push(educationalDetails);
+      if (isAdd) {
+        this.profile.educationalHistory?.universities.push(educationalDetails);
+      } else {
+        if (
+          this.profile.educationalHistory &&
+          (index != null || index != undefined)
+        ) {
+          this.profile.educationalHistory.universities[index] =
+            educationalDetails;
+        }
+      }
     }
 
     const profileRef = doc(
@@ -499,11 +529,39 @@ export class ProfileService {
 
     await setDoc(profileRef, this.profile, { merge: true })
       .then((_) => {
-        this.uiService.openSnackbar('Education added successfully...');
+        this.uiService.openSnackbar(
+          `Education ${isAdd ? 'added' : 'updated'} successfully...`
+        );
       })
       .catch((_) => {
         this.uiService.openSnackbar(
-          'Error during adding education. Please try after sometimes'
+          `Error during ${
+            isAdd ? 'adding' : 'updating'
+          }  education. Please try after sometimes`
+        );
+      })
+      .finally(() => {
+        this.savingEducationDetails = false;
+        this.uiService.closeDialog(null);
+      });
+  }
+
+  async deleteEducationalDetails() {
+    const profileRef = doc(
+      this.appService._appDB,
+      Collection.PROFILES,
+      this.appService.userId
+    );
+
+    this.savingEducationDetails = true;
+
+    await setDoc(profileRef, this.profile, { merge: true })
+      .then((_) => {
+        this.uiService.openSnackbar('Education deleted successfully...');
+      })
+      .catch((_) => {
+        this.uiService.openSnackbar(
+          'Error during deleting education. Please try after sometimes'
         );
       })
       .finally(() => {
