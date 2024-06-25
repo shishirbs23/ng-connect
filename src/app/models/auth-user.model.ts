@@ -6,5 +6,5 @@ export interface AuthUser {
   confirmPassword: string;
   displayName: string;
   genderId: number;
-  dob: string;
+  dob: string | null;
 }

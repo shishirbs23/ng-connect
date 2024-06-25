@@ -3,9 +3,13 @@
   <div class="mt-20px"></div>
   <profile-basic-info></profile-basic-info>
   <div class="mt-20px"></div>
-  <profile-education></profile-education>
+  <profile-education-profession
+    [isEducation]="true"
+  ></profile-education-profession>
   <div class="mt-20px"></div>
-  <profile-profession></profile-profession>
+  <profile-education-profession
+    [isEducation]="false"
+  ></profile-education-profession>
   <div class="mt-20px"></div>
   <profile-hobbies></profile-hobbies>
 </div>

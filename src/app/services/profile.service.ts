@@ -33,7 +33,12 @@ import { UiService } from '../core/services/ui.service';
 
 // Models
 import { FormField } from '../models/formField.model';
-import { Address, EducationDetails, Profile } from '../models/profile.model';
+import {
+  Address,
+  EducationDetails,
+  WorkExperience,
+  Profile,
+} from '../models/profile.model';
 import { ProfileInfo } from '../models/profile-info.model';
 
 // Enums
@@ -65,7 +70,7 @@ export class ProfileService {
   updatingCoverPhoto: boolean = false;
   deletingProfile: boolean = false;
   isMyProfile: boolean = false;
-  savingEducationDetails: boolean = false;
+  savingEducationProfession: boolean = false;
 
   isEditable = {
     birthday: false,
@@ -113,6 +118,10 @@ export class ProfileService {
     const profileSnap = await getDoc(profileRef);
 
     this.profile = profileSnap.data() as Profile;
+
+    if (!this.profile.workExperiences) {
+      this.profile.workExperiences = [];
+    }
 
     console.log(this.profile);
 
@@ -472,10 +481,13 @@ export class ProfileService {
     index?: number
   ) {
     educationalDetails.startDate = this.appService.formatMomentDate(
-      educationalDetails.startDate
+      educationalDetails.startDate ?? ''
     );
 
-    if (educationalDetails.isCurrent) {
+    if (
+      educationalDetails.isCurrent ||
+      educationalDetails.endDate == 'Invalid date'
+    ) {
       educationalDetails.endDate = null;
     } else {
       educationalDetails.endDate = this.appService.formatMomentDate(
@@ -525,7 +537,7 @@ export class ProfileService {
       this.appService.userId
     );
 
-    this.savingEducationDetails = true;
+    this.savingEducationProfession = true;
 
     await setDoc(profileRef, this.profile, { merge: true })
       .then((_) => {
@@ -541,7 +553,7 @@ export class ProfileService {
         );
       })
       .finally(() => {
-        this.savingEducationDetails = false;
+        this.savingEducationProfession = false;
         this.uiService.closeDialog(null);
       });
   }
@@ -553,7 +565,7 @@ export class ProfileService {
       this.appService.userId
     );
 
-    this.savingEducationDetails = true;
+    this.savingEducationProfession = true;
 
     await setDoc(profileRef, this.profile, { merge: true })
       .then((_) => {
@@ -565,7 +577,88 @@ export class ProfileService {
         );
       })
       .finally(() => {
-        this.savingEducationDetails = false;
+        this.savingEducationProfession = false;
+        this.uiService.closeDialog(null);
+      });
+  }
+
+  async saveWorkExperience(
+    workExperience: WorkExperience,
+    isAdd: boolean,
+    index?: number
+  ) {
+    workExperience.startDate = this.appService.formatMomentDate(
+      workExperience.startDate ?? ''
+    );
+
+    if (workExperience.isCurrent || workExperience.endDate == 'Invalid date') {
+      workExperience.endDate = null;
+    } else {
+      workExperience.endDate = this.appService.formatMomentDate(
+        workExperience.endDate ?? ''
+      );
+    }
+
+    console.log(workExperience);
+
+    if (isAdd) {
+      this.profile.workExperiences?.push(workExperience);
+    } else {
+      if (
+        this.profile.workExperiences &&
+        (index != null || index != undefined)
+      ) {
+        this.profile.workExperiences[index] = workExperience;
+      }
+    }
+
+    const profileRef = doc(
+      this.appService._appDB,
+      Collection.PROFILES,
+      this.appService.userId
+    );
+
+    this.savingEducationProfession = true;
+
+    await setDoc(profileRef, this.profile, { merge: true })
+      .then((_) => {
+        this.uiService.openSnackbar(
+          `Work experience ${isAdd ? 'added' : 'updated'} successfully...`
+        );
+      })
+      .catch((_) => {
+        this.uiService.openSnackbar(
+          `Error during ${
+            isAdd ? 'adding' : 'updating'
+          }  work experience. Please try after sometimes`
+        );
+      })
+      .finally(() => {
+        this.savingEducationProfession = false;
+        this.uiService.closeDialog(null);
+      });
+  }
+
+  async deleteWorkExperience() {
+    const profileRef = doc(
+      this.appService._appDB,
+      Collection.PROFILES,
+      this.appService.userId
+    );
+
+    this.savingEducationProfession = true;
+
+    await setDoc(profileRef, this.profile, { merge: true })
+      .then((_) => {
+        this.uiService.openSnackbar('Work experience deleted successfully...');
+      })
+      .catch((_) => {
+        this.uiService.openSnackbar(
+          'Error during deleting work experience. Please try after sometimes'
+        );
+      })
+      .finally(() => {
+        this.savingEducationProfession = false;
         this.uiService.closeDialog(null);
       });
   }

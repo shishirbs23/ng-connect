@@ -28,17 +28,23 @@ import { ProfileService } from '../../../../../../services/profile.service';
 import { FormType } from '../../../../../../utils/enums/form-type.enum';
 import { InstitutionType } from '../../../../../../utils/enums/institution-type.enum';
 import { Entity } from '../../../../../../utils/enums/entity.enum';
-import { EducationDetails } from '../../../../../../models/profile.model';
 
-interface EducationDialogData {
-  institutionType: string;
+// Models
+import {
+  EducationDetails,
+  WorkExperience,
+} from '../../../../../../models/profile.model';
+
+interface EducationProfessionDialogData {
+  isEducation: boolean;
+  institutionType?: string;
   isAdd: boolean;
-  educationDetails?: any;
+  details?: EducationDetails | WorkExperience;
   index?: number;
 }
 
 @Component({
-  selector: 'profile-add-update-education-dialog',
+  selector: 'add-update-education-profession-dialog',
   standalone: true,
   imports: [
     ReactiveFormsModule,
@@ -49,10 +55,10 @@ interface EducationDialogData {
     MatInputModule,
     AppFormComponent,
   ],
-  templateUrl: './add-update-education-dialog.component.html',
-  styleUrl: './add-update-education-dialog.component.scss',
+  templateUrl: './add-update-education-profession-dialog.component.html',
+  styleUrl: './add-update-education-profession-dialog.component.scss',
 })
-export class AddUpdateEducationDialogComponent {
+export class AddUpdateEducationProfessionDialogComponent {
   headerTitle: string = '';
   institutionType: string = '';
   btnLabel: string = '';
@@ -81,7 +87,7 @@ export class AddUpdateEducationDialogComponent {
     },
   ];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: EducationDialogData) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: EducationProfessionDialogData) {}
 
   ngOnInit() {
     this.prepareUI();
@@ -113,24 +119,36 @@ export class AddUpdateEducationDialogComponent {
   }
 
   prepareUI() {
-    if (this.data.isAdd) {
-      this.headerTitle = 'Add Education Details';
-      this.btnLabel = 'Add';
-    } else {
-      this.headerTitle = 'Edit Education Details';
-      this.btnLabel = 'Update';
-    }
+    this.btnLabel = this.data.isAdd ? 'Add' : 'Update';
 
-    this.institutionType = this.data.institutionType;
+    if (this.data.isEducation) {
+      this.headerTitle = this.data.isAdd
+        ? 'Add Education Details'
+        : 'Edit Education Details';
 
-    if (this.data.isAdd) {
-      this.formService.prepareEducationForm(this.institutionType);
+      this.institutionType = this.data.institutionType ?? "";
+
+      if (this.data.isAdd) {
+        this.formService.prepareEducationForm(this.institutionType);
+      } else {
+        this.formService.prepareEducationForm(
+          this.institutionType,
+          false,
+          (this.data.details as EducationDetails)
+        );
+      }
     } else {
-      this.formService.prepareEducationForm(
-        this.institutionType,
-        false,
-        this.data.educationDetails
-      );
+      this.headerTitle = this.data.isAdd
+        ? 'Add Work Experience'
+        : 'Edit Work Experience';
+
+      if (this.data.isAdd) {
+        this.formService.prepareProfessionForm();
+      } else {
+        if (this.data.details) {
+          this.formService.prepareProfessionForm(false, this.data.details);
+        }
+      }
     }
   }
 
@@ -153,27 +171,51 @@ export class AddUpdateEducationDialogComponent {
   onEducationFormSubmit(group: FormGroup) {
     const controls = group.controls;
 
-    const educationalDetails: EducationDetails = {
-      institutionName: controls['institutionName'].value,
-      startDate: controls['startDate'].value,
-      endDate: controls['endDate'].value,
-      isCurrent: controls['isCurrent'].value,
-      description: controls['description'].value,
-    };
+    let educationalDetails: EducationDetails;
+    let workExperience: WorkExperience;
 
-    if (this.selectedTypeId == 1 || this.selectedTypeId == 2) {
-      educationalDetails.classes = controls['classes'].value;
-      educationalDetails.group = controls['group'].value;
+    if (this.data.isEducation) {
+      educationalDetails = {
+        institutionName: controls['institutionName'].value,
+        startDate: controls['startDate'].value,
+        endDate: controls['endDate'].value,
+        isCurrent: controls['isCurrent'].value,
+        description: controls['description'].value,
+      };
+
+      if (this.selectedTypeId == 1 || this.selectedTypeId == 2) {
+        educationalDetails.classes = controls['classes'].value;
+        educationalDetails.group = controls['group'].value;
+      } else {
+        educationalDetails.fieldOfStudy = controls['fieldOfStudy'].value;
+        educationalDetails.degree = controls['degree'].value;
+      }
+
+      this.profileService.saveEducationalDetails(
+        educationalDetails,
+        this.selectedTypeId,
+        this.data.isAdd,
+        this.data.index
+      );
     } else {
-      educationalDetails.fieldOfStudy = controls['fieldOfStudy'].value;
-      educationalDetails.degree = controls['degree'].value;
-    }
+      workExperience = {
+        companyName: controls['companyName'].value,
+        designation: controls['designation'].value,
+        startDate: controls['startDate'].value,
+        endDate: controls['endDate'].value,
+        isCurrent: controls['isCurrent'].value,
+        description: controls['description'].value,
+      };
 
-    this.profileService.saveEducationalDetails(
-      educationalDetails,
-      this.selectedTypeId,
-      this.data.isAdd,
-      this.data.index
-    );
+      this.profileService.saveWorkExperience(
+        workExperience,
+        this.data.isAdd,
+        this.data.index
+      );
+
+      console.log(workExperience);
+      console.log(this.data.isAdd);
+      console.log(this.data.index);
+    }
   }
 }

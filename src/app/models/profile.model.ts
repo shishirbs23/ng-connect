@@ -8,8 +8,8 @@ export interface Address {
 
 export interface EducationDetails {
   institutionName: string;
-  startDate: string;
-  endDate: string |  null;
+  startDate: string | null;
+  endDate: string | null;
   isCurrent: boolean;
   classes?: string;
   group?: string;
@@ -24,11 +24,13 @@ export interface Education {
   universities: EducationDetails[];
 }
 
-export interface Profession {
-  designation: string;
-  fromDate: string;
-  toDate: string;
+export interface WorkExperience {
   companyName: string;
+  designation: string;
+  startDate: string | null;
+  endDate: string | null;
+  isCurrent: boolean;
+  description: string;
 }
 
 export interface Profile {
@@ -49,6 +51,6 @@ export interface Profile {
   bio?: string;
   address?: Address;
   educationalHistory?: Education;
-  professionalHistory?: Profession[];
+  workExperiences?: WorkExperience[];
   hobbies?: string[];
 }

@@ -107,7 +107,7 @@ export class AuthService {
   }
 
   signUp(signUpFormValue: AuthUser) {
-    signUpFormValue.dob = this.appService.formatMomentDate(signUpFormValue.dob);
+    signUpFormValue.dob = this.appService.formatMomentDate(signUpFormValue.dob ?? "");
 
     this.isAuthLoading = true;
 
@@ -145,10 +145,10 @@ export class AuthService {
             educationalHistory: {
               schools: [],
               colleges: [],
-              universities: []
+              universities: [],
             },
-            professionalHistory: [],
-            hobbies: []
+            workExperiences: [],
+            hobbies: [],
           },
           true
         );
@@ -188,6 +188,7 @@ export class AuthService {
       collection(this.appService._appDB, Collection.PROFILES),
       where('email', '==', passwordResetEmail)
     );
+
     const userSnap = await getDocs(userQuery);
 
     if (userSnap.empty) {

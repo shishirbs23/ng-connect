@@ -17,6 +17,7 @@ import { AppService } from './app.service';
 
 // Models
 import { FormField } from '../../models/formField.model';
+import { EducationDetails, WorkExperience } from '../../models/profile.model';
 
 // Enums & Constants
 import { FieldType } from '../../utils/enums/field-type.enum';
@@ -37,7 +38,6 @@ import { PasswordStrengthValidator } from '../validators/password-strength.valid
 import { PasswordMatchValidator } from '../validators/password-match.validator';
 import { UniqueEmailValidator } from '../validators/unique-email.validator';
 import { UniqueUsernameValidator } from '../validators/unique-username.validator';
-import { EducationDetails } from '../../models/profile.model';
 
 @Injectable({
   providedIn: 'root',
@@ -160,7 +160,11 @@ export class FormService {
     this.watchFormEvents();
   }
 
-  prepareEducationForm(institutionType: string, isAdd: boolean = false, educationalDetails?: EducationDetails) {
+  prepareEducationForm(
+    institutionType: string,
+    isAdd: boolean = true,
+    educationalDetails?: EducationDetails
+  ) {
     this.form = new FormGroup({});
 
     this.formFields = [
@@ -259,8 +263,80 @@ export class FormService {
       this.form.addControl(field.name, control);
     });
 
-    if (!isAdd) {
-      this.form.patchValue(educationalDetails!);
+    if (!isAdd && educationalDetails) {
+      this.form.patchValue(educationalDetails);
+    }
+  }
+
+  prepareProfessionForm(
+    isAdd: boolean = true,
+    details?: EducationDetails | WorkExperience
+  ) {
+    this.form = new FormGroup({});
+
+    this.formFields = [
+      {
+        id: 1,
+        isRequired: true,
+        label: 'Company Name',
+        name: 'companyName',
+        type: FieldType.TEXT,
+      },
+      {
+        id: 2,
+        isRequired: true,
+        label: 'Designation',
+        name: 'designation',
+        type: FieldType.TEXT,
+      },
+      {
+        id: 3,
+        isRequired: true,
+        label: 'Start Date',
+        name: 'startDate',
+        type: FieldType.DATE,
+      },
+      {
+        id: 4,
+        isRequired: false,
+        label: 'End Date',
+        name: 'endDate',
+        type: FieldType.DATE,
+      },
+      {
+        id: 5,
+        isRequired: false,
+        label: 'Currently I am working here.',
+        name: 'isCurrent',
+        type: FieldType.CHECKBOX,
+      },
+      {
+        id: 6,
+        isRequired: false,
+        label: 'Description',
+        name: 'description',
+        type: FieldType.TEXT,
+      },
+    ];
+
+    this.watchFormEvents();
+
+    this.formFields.map((field) => {
+      let validators = [];
+
+      if (field.isRequired) {
+        validators.push(Validators.required);
+      }
+
+      const control = new FormControl(
+        field.name == Entity.IS_CURRENT ? false : '',
+        validators
+      );
+      this.form.addControl(field.name, control);
+    });
+
+    if (!isAdd && details) {
+      this.form.patchValue(details);
     }
   }
 

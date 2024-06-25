@@ -2,19 +2,23 @@
   <mat-card>
     <mat-card-header class="title-section">
       <mat-card-title>
-        <div>Education</div>
+        <div>{{ isEducation() ? "Education" : "Work Experience" }}</div>
       </mat-card-title>
       <div
         class="pointer"
         (click)="openEducationAddUpdateDialog(institutionTypes.SCHOOL, true)"
       >
-        <mat-icon matTooltip="Add Education Info">add</mat-icon>
+        <mat-icon
+          [matTooltip]="isEducation() ? 'Add Education' : 'Add Work Experience'"
+          >add</mat-icon
+        >
       </div>
     </mat-card-header>
     <mat-card-content>
-      <div class="school-section">
+      @if (isEducation()) {
+      <div>
         @for (school of profileService.profile.educationalHistory?.schools;
-        track school; let index = $index;) {
+        track school.startDate; let index = $index;) {
         <div class="item">
           <div>
             <div>
@@ -43,9 +47,9 @@
         </div>
         }
       </div>
-      <div class="college-section">
+      <div>
         @for (college of profileService.profile.educationalHistory?.colleges;
-        track college; let index = $index;) {
+        track college.startDate; let index = $index;) {
         <div class="item">
           <div>
             <div>
@@ -74,10 +78,10 @@
         </div>
         }
       </div>
-      <div class="university-section">
+      <div>
         @for (university of
         profileService.profile.educationalHistory?.universities; track
-        university; let index = $index;) {
+        university.startDate; let index = $index;) {
         <div class="item">
           <div>
             <div>
@@ -113,6 +117,37 @@
         </div>
         }
       </div>
+      } @else {
+      <div>
+        @for (data of profileService.profile.workExperiences; track
+        data.startDate; let index = $index;) {
+        <div class="item">
+          <div>
+            <div>
+              {{ data.isCurrent ? "" : "Former" }}
+              <b>{{ data.designation }}</b> at
+              <b>{{ data.companyName }}</b>
+            </div>
+            <div>
+              {{ data.description }}
+            </div>
+          </div>
+          <div class="actions">
+            <mat-icon
+              matTooltip="Edit Experience"
+              (click)="editWorkExperience(data, index)"
+              >edit</mat-icon
+            >
+            <mat-icon
+              matTooltip="Delete Experience"
+              (click)="deleteWorkExperience(index)"
+              >delete</mat-icon
+            >
+          </div>
+        </div>
+        }
+      </div>
+      }
     </mat-card-content>
   </mat-card>
 </div>
