@@ -212,10 +212,6 @@ export class AddUpdateEducationProfessionDialogComponent {
         this.data.isAdd,
         this.data.index
       );
-
-      console.log(workExperience);
-      console.log(this.data.isAdd);
-      console.log(this.data.index);
     }
   }
 }

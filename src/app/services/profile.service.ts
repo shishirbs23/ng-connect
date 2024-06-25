@@ -599,8 +599,6 @@ export class ProfileService {
       );
     }
 
-    console.log(workExperience);
-
     if (isAdd) {
       this.profile.workExperiences?.push(workExperience);
     } else {
