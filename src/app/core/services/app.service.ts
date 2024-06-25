@@ -26,6 +26,11 @@ export class AppService {
   }
 
   formatMomentDate(dateValue: string) {
-    return moment(dateValue).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+    if (!dateValue) {
+      return null;
+    }
+
+    const date = moment(dateValue).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+    return date === 'Invalid date' ? null : date;
   }
 }
