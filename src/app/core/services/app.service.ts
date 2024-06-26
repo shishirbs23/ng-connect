@@ -33,4 +33,8 @@ export class AppService {
     const date = moment(dateValue).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
     return date === 'Invalid date' ? null : date;
   }
+
+  returnCopy(data: any) {
+    return JSON.parse(JSON.stringify(data));
+  }
 }
