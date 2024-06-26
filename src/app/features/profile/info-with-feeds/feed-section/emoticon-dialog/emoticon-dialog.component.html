@@ -1,0 +1,9 @@
+<div class="content-wrapper">
+  <div class="feelings-wrapper">
+    @for (item of feelings; track $index) {
+    <button class="menu-btn" mat-button [mat-dialog-close]="item">
+      {{ item }}
+    </button>
+    }
+  </div>
+</div>

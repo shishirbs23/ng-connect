@@ -1,0 +1,74 @@
+.feed-card {
+  .content {
+    textarea {
+      width: 100%;
+      background-color: #eaeaea;
+      border: 1px solid #eaeaea;
+      border-radius: 5px;
+      padding: 12px;
+      color: #444;
+      resize: none;
+      line-height: 25px;
+      font-family: Roboto, sans-serif;
+      letter-spacing: 1px;
+      overflow: hidden;
+      box-sizing: border-box;
+
+      &::placeholder {
+        font-family: Roboto, sans-serif;
+        font-weight: 500;
+        font-size: 15px;
+      }
+
+      &:hover,
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .feeling-section {
+      cursor: pointer;
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 300px;
+
+      .label {
+        margin-left: 6px;
+        color: #13259b;
+      }
+
+      .value {
+      }
+
+      mat-icon {
+        visibility: hidden;
+        transition: 0.6s;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      &:hover {
+        mat-icon {
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 16px;
+
+    .post-options {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+
+      button {
+        font-weight: 400;
+      }
+    }
+  }
+}

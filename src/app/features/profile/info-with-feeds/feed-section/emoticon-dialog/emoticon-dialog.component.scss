@@ -1,0 +1,13 @@
+::ng-deep .mat-mdc-dialog-surface {
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.feelings-wrapper {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+
+  button {
+    width: 150px;
+  }
+}
