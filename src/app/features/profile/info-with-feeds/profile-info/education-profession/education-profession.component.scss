@@ -7,11 +7,18 @@ mat-card-title {
     display: flex;
     justify-content: space-between;
     gap: 20px;
+    padding: 16px;
 
     mat-card-title {
       display: flex;
       justify-content: space-between;
       gap: 20px;
+    }
+
+    .pointer {
+      mat-icon {
+        font-size: 22px;
+      }
     }
   }
 
@@ -26,7 +33,7 @@ mat-card-title {
 
       mat-icon {
         cursor: pointer;
-        font-size: 18px;
+        font-size: 16px;
         transition: 0.4s;
       }
     }

@@ -77,6 +77,7 @@ export class ProfileService {
     privacy: false,
     bio: false,
     address: false,
+    hobbies: false,
   };
 
   profiles: Profile[] = [];
@@ -183,7 +184,8 @@ export class ProfileService {
   async setProfile(
     profileData: Profile,
     fromSignUp: boolean = false,
-    successMessage: string = 'Profile Updated'
+    successMessage: string = 'Profile Updated',
+    fromHobbies: boolean = false
   ) {
     const profileRef = doc(
       this.appService._appDB,
@@ -200,7 +202,9 @@ export class ProfileService {
       })
       .catch((_) => {
         this.uiService.openSnackbar(
-          'Error during updating profile. Try after sometimes'
+          `Error during updating ${
+            fromHobbies ? 'hobbies' : 'profile'
+          }. Try after sometimes.`
         );
       })
       .finally(() => {

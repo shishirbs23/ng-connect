@@ -87,7 +87,9 @@ export class AddUpdateEducationProfessionDialogComponent {
     },
   ];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: EducationProfessionDialogData) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: EducationProfessionDialogData
+  ) {}
 
   ngOnInit() {
     this.prepareUI();
@@ -126,7 +128,7 @@ export class AddUpdateEducationProfessionDialogComponent {
         ? 'Add Education Details'
         : 'Edit Education Details';
 
-      this.institutionType = this.data.institutionType ?? "";
+      this.institutionType = this.data.institutionType ?? '';
 
       if (this.data.isAdd) {
         this.formService.prepareEducationForm(this.institutionType);
@@ -134,7 +136,7 @@ export class AddUpdateEducationProfessionDialogComponent {
         this.formService.prepareEducationForm(
           this.institutionType,
           false,
-          (this.data.details as EducationDetails)
+          this.data.details as EducationDetails
         );
       }
     } else {

@@ -66,7 +66,8 @@ export class ProfileSettingsComponent {
       birthday: false,
       privacy: false,
       bio: false,
-      address: false
+      address: false,
+      hobbies: false,
     };
   }
 

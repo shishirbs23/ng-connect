@@ -95,9 +95,10 @@ export class EducationProfessionComponent {
     this.uiService.openDialog(
       AddUpdateEducationProfessionDialogComponent,
       {
+        isEducation: true,
         institutionType: institutionType || null,
         isAdd: false,
-        educationDetails,
+        details: educationDetails,
         index,
       },
       '400px'
