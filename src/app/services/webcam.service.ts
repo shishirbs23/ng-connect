@@ -99,7 +99,7 @@ export class WebcamService {
         ? profile.photoURL
         : profile.coverPhotoURL) || null;
 
-    await this.profileService.uploadFile(
+    await this.profileService.uploadProfileCoverPhoto(
       this.imageFile,
       profile,
       option,

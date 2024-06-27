@@ -84,6 +84,9 @@ export class ProfileService {
   loadingProfiles: boolean = true;
   showFriends: boolean = false;
 
+  photosCount: number = 0;
+  uploadedPhotos: any[] = [];
+
   getCurrentProfile() {
     this.loadingProfile = true;
 
@@ -220,20 +223,70 @@ export class ProfileService {
     isUpdate?: boolean
   ) {
     const input = event.target as HTMLInputElement;
-    const fileCount = input.files?.length ?? 0;
+
+    if (input.files?.length) {
+      const file: File = input.files[0];
+      this.uploadProfileCoverPhoto(
+        file,
+        profile,
+        pictureOption,
+        isUpdate ?? false
+      );
+    }
+  }
+
+  async onUploadFeedPhotos(event: Event, isUpdate?: boolean) {
+    console.log('upload photos');
+
+    const input = event.target as HTMLInputElement;
+    const fileList = input.files ?? [];
+    const fileCount = fileList.length ?? 0;
+
+    this.photosCount = fileCount;
+
+    console.log(this.photosCount);
 
     if (fileCount > 10) {
       this.uiService.openSnackbar("You can't upload more than 10 photos");
       return;
     }
+
+    for (let i = 0; i < fileList.length; i++) {
+      const file = fileList[i];
+
+      if (!this.fileService.isFileImage(file)) {
+        this.uiService.openSnackbar(
+          'Please upload a valid image file',
+          true,
+          2000
+        );
+        continue;
+      }
+
+      const isoDateValue = new Date().toISOString();
+
+      // Create the file path
+      let filePath = `uploads/${this.profile.uid}/feeds/${isoDateValue}:${file.name}`;
+
+      // Get the file reference
+      let fileRef = ref(this.storage, filePath);
+
+      // Upload image to Cloud
+      await uploadBytes(fileRef, file);
+
+      // Get download URL
+      const url = await getDownloadURL(fileRef);
+
+      this.uploadedPhotos.push({
+        name: `${isoDateValue}:${file.name}`,
+        url,
+      });
+
+      console.log(this.uploadedPhotos);
+    }
   }
 
-  onUploadFeedPhotos(event: Event, isUpdate?: boolean) {
-    const input = event.target as HTMLInputElement;
-    console.log(input.files);
-  }
-
-  async uploadFile(
+  async uploadProfileCoverPhoto(
     file: File,
     profile: Profile,
     pictureOption: string,
@@ -270,7 +323,9 @@ export class ProfileService {
     }
 
     // Create the file path
-    let filePath = `uploads/${profile.uid}/${file.name}`;
+    let filePath = `uploads/${profile.uid}/${new Date().toISOString()}:${
+      file.name
+    }`;
 
     // Get the file reference
     let fileRef = ref(this.storage, filePath);

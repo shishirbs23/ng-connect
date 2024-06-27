@@ -6,6 +6,21 @@
       (input)="adjustTextareaHeight($event)"
     ></textarea>
 
+    @if (profileService.uploadedPhotos.length) { 
+      <div class="uploaded-photos">
+        @for (idx of [].constructor(profileService.photosCount); track $index) {
+         <!--  <div
+            class="uploaded-photo"
+            [ngStyle]="{ 'background-image': 'url(' + photo.url + ')'}">
+
+          </div> -->
+          <div>
+            {{idx}}
+          </div>
+        } 
+      </div>
+    }
+
     <!-- Feeling -->
     @if (feed().feeling) {
     <div class="feeling-section">

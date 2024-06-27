@@ -26,6 +26,21 @@
       }
     }
 
+    .uploaded-photos {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+
+      .uploaded-photo {
+        margin-top: 5px;
+        height: 100px;
+        /* width: 200px; */
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+      }
+    }
+    
     .feeling-section {
       cursor: pointer;
       margin-top: 10px;

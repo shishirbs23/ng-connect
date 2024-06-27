@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
@@ -28,6 +29,7 @@ import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
   selector: 'profile-feed-section',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     MatButtonModule,
     MatCardModule,
