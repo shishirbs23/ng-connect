@@ -3,11 +3,17 @@
   justify-content: center !important;
 }
 
-.feelings-wrapper {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-
-  button {
-    width: 150px;
+.content-wrapper {
+  width: 100%;
+  padding: 16px;
+ 
+  .feelings-wrapper {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  
+    button {
+      width: 150px;
+    }
   }
 }
+

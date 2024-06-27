@@ -35,10 +35,7 @@
 
       .label {
         margin-left: 6px;
-        color: #13259b;
-      }
-
-      .value {
+        color: #0866ff;
       }
 
       mat-icon {
@@ -70,5 +67,23 @@
         font-weight: 400;
       }
     }
+
+    .privacy-form {
+      .value {
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        mat-icon {
+          font-size: 20px;
+        }
+      }
+    }
   }
+}
+
+.icon {
+  font-size: 20px;
 }

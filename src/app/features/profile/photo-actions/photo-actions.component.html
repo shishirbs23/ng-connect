@@ -25,12 +25,14 @@
       hidden="true"
       id="photo-action-input"
       accept="image/*"
-      (change)="profileService.onPictureChange(
-        $event,
-        profileService.profile,
-        option(),
-        true
-      )"
+      (change)="
+        profileService.onPictureChange(
+          $event,
+          profileService.profile,
+          option(),
+          true
+        )
+      "
     />
     <button mat-menu-item (click)="openWebcamDialog()">Take a photo</button>
   </mat-menu>

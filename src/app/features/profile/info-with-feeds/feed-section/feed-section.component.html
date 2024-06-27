@@ -33,7 +33,17 @@
       <button mat-button (click)="openEmoticonDialog()">
         <mat-icon>mood</mat-icon> Feeling
       </button>
-      <button mat-button><mat-icon>image</mat-icon> Photos</button>
+      <button mat-button (click)="selectPhotos()">
+        <mat-icon>image</mat-icon> Photos
+      </button>
+      <input
+        type="file"
+        multiple="true"
+        id="multiple-file-input"
+        hidden="true"
+        accept="image/*"
+        (change)="profileService.onUploadFeedPhotos($event)"
+      />
       <button
         mat-button
         (click)="isLocationInputOpened = !isLocationInputOpened"
@@ -41,8 +51,29 @@
         <mat-icon>location_on</mat-icon> Check In
       </button>
     </div>
-    <div>
-      {{ profileService.profile.privacyId | privacyType }}
+    <div class="privacy-form">
+      <button class="value" mat-button [matMenuTriggerFor]="privacyMenu">
+        <mat-icon>
+          {{
+            feed().privacyId == 1
+              ? "public"
+              : feed().privacyId == 2
+              ? "group"
+              : "lock"
+          }}
+        </mat-icon>
+        {{ feed().privacyId | privacyType }}
+      </button>
+      <mat-menu class="options" #privacyMenu="matMenu">
+        @for (option of privacyOptions; track option.id) {
+        <button mat-menu-item (click)="feed().privacyId = option.id">
+          <mat-icon class="icon"> {{ option.icon }} </mat-icon>
+          <span [class.fw-600]="feed().privacyId === option.id">
+            {{ option.label }}
+          </span>
+        </button>
+        }
+      </mat-menu>
     </div>
     <button mat-flat-button color="accent">Post</button>
   </mat-card-actions>

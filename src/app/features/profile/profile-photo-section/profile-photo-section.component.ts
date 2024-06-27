@@ -28,6 +28,5 @@ import { PictureOption } from '../../../utils/enums/picture-option.enum';
 })
 export class ProfilePhotoSectionComponent {
   profileService = inject(ProfileService);
-
   pictureOptions = PictureOption;
 }

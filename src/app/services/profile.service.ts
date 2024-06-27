@@ -220,11 +220,17 @@ export class ProfileService {
     isUpdate?: boolean
   ) {
     const input = event.target as HTMLInputElement;
+    const fileCount = input.files?.length ?? 0;
 
-    if (input.files?.length) {
-      const file: File = input.files[0];
-      this.uploadFile(file, profile, pictureOption, isUpdate ?? false);
+    if (fileCount > 10) {
+      this.uiService.openSnackbar("You can't upload more than 10 photos");
+      return;
     }
+  }
+
+  onUploadFeedPhotos(event: Event, isUpdate?: boolean) {
+    const input = event.target as HTMLInputElement;
+    console.log(input.files);
   }
 
   async uploadFile(

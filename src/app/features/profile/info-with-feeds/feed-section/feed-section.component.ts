@@ -8,8 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 
 // Components
+import { AppSelectComponent } from '../../../../core/components/app-select/app-select.component';
 import { EmoticonDialogComponent } from './emoticon-dialog/emoticon-dialog.component';
 
 // Services
@@ -33,7 +35,9 @@ import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
     MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,
-    PrivacyTypePipe
+    MatMenuModule,
+    AppSelectComponent,
+    PrivacyTypePipe,
   ],
   templateUrl: './feed-section.component.html',
   styleUrl: './feed-section.component.scss',
@@ -109,6 +113,24 @@ export class FeedSectionComponent {
     'Stressed 😫',
   ];
 
+  privacyOptions = [
+    {
+      id: 1,
+      label: 'Public',
+      icon: 'public',
+    },
+    {
+      id: 2,
+      label: 'Friends',
+      icon: 'group',
+    },
+    {
+      id: 3,
+      label: 'Only Me',
+      icon: 'lock',
+    },
+  ];
+
   removeFeeling() {
     this.feed().feeling = '';
   }
@@ -132,18 +154,18 @@ export class FeedSectionComponent {
   }
 
   openEmoticonDialog() {
-    this.uiService.openDialog(
-      EmoticonDialogComponent,
-      {},
-      '40vw',
-      '400px',
-      false
-    );
+    this.uiService.openDialog(EmoticonDialogComponent, {}, '785px');
 
     this.uiService.dialogRef.afterClosed().subscribe((feeling: string) => {
       if (feeling) {
         this.feed().feeling = feeling;
       }
     });
+  }
+
+  selectPhotos() {
+    (
+      document.querySelector('#multiple-file-input') as HTMLInputElement
+    )?.click();
   }
 }
