@@ -15,14 +15,14 @@ import { ProfileService } from '../../../services/profile.service';
 // Pipes
 import { DatePipe } from '@angular/common';
 import { ProfileInfoComponent } from './profile-info/profile-info.component';
-import { FeedSectionComponent } from './feed-section/feed-section.component';
+import { FeedFormComponent } from './feed-form/feed-form.component';
 
 @Component({
   selector: 'profile-info-with-feeds',
   standalone: true,
   imports: [
     ProfileInfoComponent,
-    FeedSectionComponent,
+    FeedFormComponent,
     AppDatepickerComponent,
     MatButtonModule,
     MatIconModule,

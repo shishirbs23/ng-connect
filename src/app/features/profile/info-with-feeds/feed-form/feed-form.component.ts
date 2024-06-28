@@ -26,7 +26,7 @@ import { UiService } from '../../../../core/services/ui.service';
 import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
 
 @Component({
-  selector: 'profile-feed-section',
+  selector: 'profile-feed-form',
   standalone: true,
   imports: [
     CommonModule,
@@ -43,10 +43,10 @@ import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
     AppSelectComponent,
     PrivacyTypePipe,
   ],
-  templateUrl: './feed-section.component.html',
-  styleUrl: './feed-section.component.scss',
+  templateUrl: './feed-form.component.html',
+  styleUrl: './feed-form.component.scss',
 })
-export class FeedSectionComponent {
+export class FeedFormComponent {
   profileService = inject(ProfileService);
   uiService = inject(UiService);
 
