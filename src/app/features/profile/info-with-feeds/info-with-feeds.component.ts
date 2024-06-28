@@ -7,6 +7,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // Components
 import { AppDatepickerComponent } from '../../../core/components/app-datepicker/app-datepicker.component';
+import { ProfileInfoComponent } from './profile-info/profile-info.component';
+import { FeedFormComponent } from './feed-form/feed-form.component';
+import { FeedListComponent } from './feed-list/feed-list.component';
 
 // Services
 import { AuthService } from '../../../services/auth.service';
@@ -14,8 +17,6 @@ import { ProfileService } from '../../../services/profile.service';
 
 // Pipes
 import { DatePipe } from '@angular/common';
-import { ProfileInfoComponent } from './profile-info/profile-info.component';
-import { FeedFormComponent } from './feed-form/feed-form.component';
 
 @Component({
   selector: 'profile-info-with-feeds',
@@ -23,6 +24,7 @@ import { FeedFormComponent } from './feed-form/feed-form.component';
   imports: [
     ProfileInfoComponent,
     FeedFormComponent,
+    FeedListComponent,
     AppDatepickerComponent,
     MatButtonModule,
     MatIconModule,
