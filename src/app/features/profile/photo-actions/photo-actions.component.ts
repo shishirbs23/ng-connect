@@ -42,17 +42,12 @@ export class PhotoActionsComponent {
   }
 
   viewPhoto() {
-    this.uiService.openDialog(
-      ImageViewerComponent,
-      {
-        url:
-          this.option() == this.options.PROFILE_PHOTO
-            ? this.profileService.profile.photoURL
-            : this.profileService.profile.coverPhotoURL,
-      },
-      '600px',
-      '500px'
-    );
+    this.uiService.openDialog(ImageViewerComponent, {
+      url:
+        this.option() == this.options.PROFILE_PHOTO
+          ? this.profileService.profile.photoURL
+          : this.profileService.profile.coverPhotoURL,
+    });
   }
 
   openWebcamDialog() {

@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, model } from '@angular/core';
 
 // Firebase
 import {
@@ -40,6 +40,7 @@ import {
   Profile,
 } from '../models/profile.model';
 import { ProfileInfo } from '../models/profile-info.model';
+import { ProfileFeed } from '../models/profile-feed.model';
 
 // Enums
 import { Collection } from '../utils/enums/collection.enum';
@@ -84,6 +85,18 @@ export class ProfileService {
   loadingProfiles: boolean = true;
   showFriends: boolean = false;
 
+  feed: ProfileFeed = {
+    id: 0,
+    feeling: '',
+    photos: [],
+    checkIn: '',
+    description: '',
+    privacyId: 1,
+    createdAt: '',
+    updatedAt: '',
+  };
+  savingFeed: boolean = false;
+  uploadingPhotos: boolean = false;
   photosCount: number = 0;
   uploadedPhotos: any[] = [];
 
@@ -201,6 +214,7 @@ export class ProfileService {
     await setDoc(profileRef, profileData, { merge: true })
       .then((_) => {
         this.profile = profileData;
+        this.feed.privacyId = this.profile.privacyId;
         !fromSignUp && this.uiService.openSnackbar(successMessage);
       })
       .catch((_) => {
@@ -236,15 +250,13 @@ export class ProfileService {
   }
 
   async onUploadFeedPhotos(event: Event, isUpdate?: boolean) {
-    console.log('upload photos');
+    this.uploadingPhotos = true;
 
     const input = event.target as HTMLInputElement;
     const fileList = input.files ?? [];
     const fileCount = fileList.length ?? 0;
 
-    this.photosCount = fileCount;
-
-    console.log(this.photosCount);
+    this.photosCount += fileCount;
 
     if (fileCount > 10) {
       this.uiService.openSnackbar("You can't upload more than 10 photos");
@@ -281,9 +293,85 @@ export class ProfileService {
         name: `${isoDateValue}:${file.name}`,
         url,
       });
-
-      console.log(this.uploadedPhotos);
     }
+
+    this.uploadingPhotos = false;
+  }
+
+  async removeFeedPhoto(index: number) {
+    const removedPhoto = this.uploadedPhotos[index];
+
+    /* Remove Locally */
+    --this.photosCount;
+    this.uploadedPhotos.splice(index, 1);
+
+    /* Remove from Storage */
+    const filePath: string = `uploads/${this.profile.uid}/feeds/${removedPhoto.name}`;
+    const fileRef: StorageReference = ref(this.storage, filePath);
+    await deleteObject(fileRef);
+  }
+
+  async publishFeed(isUpdate: boolean = false) {
+    if (
+      !this.feed.description &&
+      !this.feed.feeling &&
+      !this.uploadedPhotos.length &&
+      !this.feed.checkIn
+    ) {
+      this.uiService.openSnackbar('Feed is empty!', true);
+      return;
+    }
+
+    this.savingFeed = true;
+
+    this.feed = {
+      ...this.feed,
+      id: Date.now(),
+      photos: this.uploadedPhotos,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    const profileRef = doc(
+      this.appService._appDB,
+      Collection.PROFILES,
+      this.appService.userId
+    );
+
+    if (!this.profile.feeds) {
+      this.profile.feeds = [];
+    }
+
+    this.profile.feeds.unshift(this.feed);
+
+    await setDoc(profileRef, this.profile, { merge: true })
+      .then((_) => {
+        this.uiService.openSnackbar(
+          `Feed ${isUpdate ? 'updated' : 'posted'} successfully...`
+        );
+      })
+      .catch((_) => {
+        this.uiService.openSnackbar(
+          `Error during ${
+            isUpdate ? 'updating' : 'posting'
+          } feed. Try after sometimes.`
+        );
+      })
+      .finally(() => {
+        this.savingFeed = false;
+        this.uploadedPhotos = [];
+        this.photosCount = 0;
+        this.feed = {
+          id: 0,
+          feeling: '',
+          photos: [],
+          checkIn: '',
+          description: '',
+          privacyId: this.profile.privacyId,
+          createdAt: '',
+          updatedAt: '',
+        };
+      });
   }
 
   async uploadProfileCoverPhoto(
@@ -322,10 +410,10 @@ export class ProfileService {
       }
     }
 
+    const dateValue: string = new Date().toISOString();
+
     // Create the file path
-    let filePath = `uploads/${profile.uid}/${new Date().toISOString()}:${
-      file.name
-    }`;
+    let filePath = `uploads/${profile.uid}/${dateValue}:${file.name}`;
 
     // Get the file reference
     let fileRef = ref(this.storage, filePath);
@@ -341,18 +429,18 @@ export class ProfileService {
       ? await this.setProfile({
           ...profile,
           photoURL: url,
-          photoName: file.name,
+          photoName: `${dateValue}:${file.name}`,
         })
       : await this.setProfile({
           ...profile,
           coverPhotoURL: url,
-          coverPhotoName: file.name,
+          coverPhotoName: `${dateValue}:${file.name}`,
         });
 
     // Setting Image data to show on UI
     if (pictureOption === PictureOption.PROFILE_PHOTO) {
       profile.photoURL = url;
-      profile.photoName = file.name;
+      profile.photoName = `${dateValue}:${file.name}`;
       this.savingProfilePhoto = false;
 
       if (isUpdate) {
@@ -364,7 +452,7 @@ export class ProfileService {
       }
     } else {
       profile.coverPhotoURL = url;
-      profile.coverPhotoName = file.name;
+      profile.coverPhotoName = `${dateValue}:${file.name}`;
 
       this.savingCoverPhoto = false;
 
@@ -393,7 +481,7 @@ export class ProfileService {
 
     const filePath: string = `uploads/${userId}/${imageFileName}`;
     const fileRef: StorageReference = ref(this.storage, filePath);
-    await deleteObject(fileRef);
+    deleteObject(fileRef);
 
     this.savingProfilePhoto = false;
   }

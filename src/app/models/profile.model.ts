@@ -1,3 +1,5 @@
+import { ProfileFeed } from "./profile-feed.model";
+
 export interface Address {
   longDescription: string;
   city: string;
@@ -53,4 +55,5 @@ export interface Profile {
   educationalHistory?: Education;
   workExperiences?: WorkExperience[];
   hobbies?: string[];
+  feeds: ProfileFeed[];
 }

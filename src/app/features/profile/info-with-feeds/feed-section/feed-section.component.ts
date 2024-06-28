@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, model } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 // Angular Material
@@ -10,17 +10,17 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // Components
 import { AppSelectComponent } from '../../../../core/components/app-select/app-select.component';
 import { EmoticonDialogComponent } from './emoticon-dialog/emoticon-dialog.component';
+import { ImageViewerComponent } from '../../../../core/components/image-viewer/image-viewer.component';
 
 // Services
 import { ProfileService } from '../../../../services/profile.service';
 import { UiService } from '../../../../core/services/ui.service';
-
-// Models
-import { ProfileFeed } from '../../../../models/profile-feed.model';
 
 // Pipes
 import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
@@ -38,6 +38,8 @@ import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
     MatFormFieldModule,
     MatInputModule,
     MatMenuModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
     AppSelectComponent,
     PrivacyTypePipe,
   ],
@@ -50,17 +52,6 @@ export class FeedSectionComponent {
 
   enteredLocation: string = '';
   isLocationInputOpened: boolean = false;
-
-  feed = model<ProfileFeed>({
-    id: '',
-    feeling: '',
-    photos: [],
-    checkIn: '',
-    description: '',
-    privacyId: this.profileService.profile.privacyId,
-    createdAt: '',
-    updatedAt: '',
-  });
 
   feelings: string[] = [
     'Happy 😃',
@@ -134,17 +125,17 @@ export class FeedSectionComponent {
   ];
 
   removeFeeling() {
-    this.feed().feeling = '';
+    this.profileService.feed.feeling = '';
   }
 
   removeCheckIn() {
-    this.feed().checkIn = '';
+    this.profileService.feed.checkIn = '';
     this.enteredLocation = '';
   }
 
   onKeyDown(event: any) {
     if (event.keyCode === 13) {
-      this.feed().checkIn = event.target.value;
+      this.profileService.feed.checkIn = event.target.value;
       this.isLocationInputOpened = false;
     }
   }
@@ -160,7 +151,7 @@ export class FeedSectionComponent {
 
     this.uiService.dialogRef.afterClosed().subscribe((feeling: string) => {
       if (feeling) {
-        this.feed().feeling = feeling;
+        this.profileService.feed.feeling = feeling;
       }
     });
   }
@@ -169,5 +160,19 @@ export class FeedSectionComponent {
     (
       document.querySelector('#multiple-file-input') as HTMLInputElement
     )?.click();
+  }
+
+  viewFeedImage(url: string) {
+    this.uiService.openDialog(ImageViewerComponent, {
+      url,
+    });
+  }
+
+  removeFeedImage(index: number) {
+    this.profileService.removeFeedPhoto(index);
+  }
+
+  publishFeed() {
+    this.profileService.publishFeed();
   }
 }

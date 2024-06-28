@@ -1,5 +1,5 @@
 export interface ProfileFeed {
-  id: string;
+  id: number;
   feeling: string;
   photos: {
     photoName: string;

@@ -107,7 +107,9 @@ export class AuthService {
   }
 
   signUp(signUpFormValue: AuthUser) {
-    signUpFormValue.dob = this.appService.formatMomentDate(signUpFormValue.dob ?? "");
+    signUpFormValue.dob = this.appService.formatMomentDate(
+      signUpFormValue.dob ?? ''
+    );
 
     this.isAuthLoading = true;
 
@@ -149,6 +151,7 @@ export class AuthService {
             },
             workExperiences: [],
             hobbies: [],
+            feeds: [],
           },
           true
         );

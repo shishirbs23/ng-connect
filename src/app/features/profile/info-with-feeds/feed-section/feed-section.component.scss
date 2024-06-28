@@ -30,23 +30,72 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 15px;
+      margin-block: 20px;
 
       .uploaded-photo {
         margin-top: 5px;
         height: 100px;
-        /* width: 200px; */
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
+        cursor: pointer;
+        position: relative;
+        border-radius: 6px;
+
+        .shadow {
+          cursor: pointer;
+          background: rgba(29, 29, 29, 0.8392156862745098);
+          border-radius: 5px;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          overflow: hidden;
+          width: 0;
+          height: 100%;
+          transition: 0.5s ease;
+          opacity: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+
+          mat-icon {
+            color: #fff;
+            font-size: 20px;
+          }
+        }
+
+        &:hover {
+          .shadow {
+            width: 100%;
+            opacity: 1;
+          }
+        }
+      }
+
+      .placeholder {
+        border-radius: 6px;
+        height: 100px;
+        background-color: #eaeaea;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
-    
+
     .feeling-section {
+      font-weight: 500;
       cursor: pointer;
       margin-top: 10px;
       display: flex;
       justify-content: space-between;
-      width: 300px;
+      width: 100%;
+
+      &.inactive {
+        pointer-events: none;
+      }
 
       .label {
         margin-left: 6px;
@@ -69,9 +118,11 @@
   }
 
   .actions {
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
     padding-inline: 16px;
+    background-color: #eaeaea;
 
     .post-options {
       display: flex;
