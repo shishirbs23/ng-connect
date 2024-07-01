@@ -2,8 +2,8 @@ export interface ProfileFeed {
   id: number;
   feeling: string;
   photos: {
-    photoName: string;
-    photoUrl: string;
+    name: string;
+    url: string;
   }[];
   checkIn: string;
   description: string;

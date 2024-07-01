@@ -262,7 +262,8 @@ export class ProfileService {
 
     this.photosCount += fileCount;
 
-    if (fileCount > 10) {
+    if (this.photosCount > 10) {
+      this.photosCount = 10;
       this.uiService.openSnackbar("You can't upload more than 10 photos");
       return;
     }
@@ -354,13 +355,13 @@ export class ProfileService {
       .then((_) => {
         this.profile = profile;
         this.uiService.openSnackbar(
-          `Feed ${isUpdate ? 'updated' : 'posted'} successfully...`
+          `Feed ${isUpdate ? 'updated' : 'published'} successfully...`
         );
       })
       .catch((_) => {
         this.uiService.openSnackbar(
           `Error during ${
-            isUpdate ? 'updating' : 'posting'
+            isUpdate ? 'updating' : 'publishing'
           } feed. Try after sometimes.`
         );
       })

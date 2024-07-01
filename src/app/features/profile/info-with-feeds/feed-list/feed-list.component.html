@@ -24,10 +24,13 @@
       <span>
         at <span class="blue">{{ feed.checkIn }}</span>
       </span>
+      } @if ((!feed.feeling && !feed.checkIn && !feed.description) &&
+      feed.photos.length > 0) { uploaded
+      <span class="blue">{{ feed.photos.length }} photos</span>
       }
     </mat-card-title>
-    <mat-card-subtitle class="fs-13px flex align-items-center gap-10px">
-      <div>
+    <mat-card-subtitle class="fs-13px flex gap-10px">
+      <div class="mt-5px">
         {{ feed.createdAt | timeDiffText }}
       </div>
       <div class="h-28px" [matMenuTriggerFor]="privacyMenu">
@@ -59,7 +62,7 @@
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <p>
+    <div>
       {{
         feed.isExpanded ? feed.description : feed.description.substring(0, 500)
       }}
@@ -69,7 +72,26 @@
         <b> See more... </b>
       </span>
       }
-    </p>
+    </div>
+
+    @if (feed.photos.length) {
+    <div class="uploaded-photos">
+      @for (photo of feed.photos; track photo) {
+      <div
+        class="uploaded-photo"
+        [ngStyle]="{
+          'background-image': 'url(' + photo.url + ')'
+        }"
+      >
+        <div class="shadow">
+          <mat-icon matTooltip="View" (click)="viewFeedImage(photo.url)"
+            >visibility</mat-icon
+          >
+        </div>
+      </div>
+      }
+    </div>
+    }
   </mat-card-content>
   <mat-card-actions>
     <button mat-button>LIKE</button>

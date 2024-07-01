@@ -1,8 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
+// Components
+import { ImageViewerComponent } from '../../../../core/components/image-viewer/image-viewer.component';
+
 // Service
 import { ProfileService } from '../../../../services/profile.service';
+import { UiService } from '../../../../core/services/ui.service';
 
 // Angular Material
 import { MatCardModule } from '@angular/material/card';
@@ -38,6 +42,7 @@ import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
 })
 export class FeedListComponent {
   profileService = inject(ProfileService);
+  uiService = inject(UiService);
 
   privacyOptions = [
     {
@@ -62,6 +67,12 @@ export class FeedListComponent {
 
     feeds.forEach((feed) => {
       feed.isExpanded = false;
+    });
+  }
+
+  viewFeedImage(url: string) {
+    this.uiService.openDialog(ImageViewerComponent, {
+      url,
     });
   }
 }
