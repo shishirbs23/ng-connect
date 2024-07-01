@@ -10,4 +10,5 @@ export interface ProfileFeed {
   privacyId: number;
   createdAt: string;
   updatedAt: string;
+  isExpanded: boolean;
 }

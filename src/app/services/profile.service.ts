@@ -94,6 +94,7 @@ export class ProfileService {
     privacyId: 1,
     createdAt: '',
     updatedAt: '',
+    isExpanded: false,
   };
   savingFeed: boolean = false;
   uploadingPhotos: boolean = false;
@@ -341,14 +342,17 @@ export class ProfileService {
       this.appService.userId
     );
 
-    if (!this.profile.feeds) {
-      this.profile.feeds = [];
+    const profile: Profile = this.appService.returnCopy(this.profile);
+
+    if (!profile.feeds) {
+      profile.feeds = [];
     }
 
-    this.profile.feeds.unshift(this.feed);
+    profile.feeds.unshift(this.feed);
 
-    await setDoc(profileRef, this.profile, { merge: true })
+    await setDoc(profileRef, profile, { merge: true })
       .then((_) => {
+        this.profile = profile;
         this.uiService.openSnackbar(
           `Feed ${isUpdate ? 'updated' : 'posted'} successfully...`
         );
@@ -373,7 +377,36 @@ export class ProfileService {
           privacyId: this.profile.privacyId,
           createdAt: '',
           updatedAt: '',
+          isExpanded: false,
         };
+      });
+  }
+
+  async updateFeedPrivacy(index: number, privacyId: number) {
+    this.updatingFeedIndex = index;
+
+    const profileRef = doc(
+      this.appService._appDB,
+      Collection.PROFILES,
+      this.appService.userId
+    );
+
+    this.updatingPrivacy = true;
+
+    const profile: Profile = this.appService.returnCopy(this.profile);
+
+    profile.feeds[index].privacyId = privacyId;
+
+    await setDoc(profileRef, profile, { merge: true })
+      .then((_) => {
+        this.profile = profile;
+        this.uiService.openSnackbar('Privacy updated');
+      })
+      .catch((_) => {
+        this.uiService.openSnackbar('Error during updating privacy');
+      })
+      .finally(() => {
+        this.updatingPrivacy = false;
       });
   }
 
@@ -814,34 +847,6 @@ export class ProfileService {
       .finally(() => {
         this.savingEducationProfession = false;
         this.uiService.closeDialog(null);
-      });
-  }
-
-  async updateFeedPrivacy(index: number, privacyId: number) {
-    this.updatingFeedIndex = index;
-
-    const profileRef = doc(
-      this.appService._appDB,
-      Collection.PROFILES,
-      this.appService.userId
-    );
-
-    this.updatingPrivacy = true;
-
-    const profile: Profile = this.appService.returnCopy(this.profile);
-
-    profile.feeds[index].privacyId = privacyId;
-
-    await setDoc(profileRef, profile, { merge: true })
-      .then((_) => {
-        this.profile = profile;
-        this.uiService.openSnackbar('Privacy updated');
-      })
-      .catch((_) => {
-        this.uiService.openSnackbar('Error during updating privacy');
-      })
-      .finally(() => {
-        this.updatingPrivacy = false;
       });
   }
 }

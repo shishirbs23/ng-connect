@@ -7,4 +7,20 @@
     width: 30px;
     margin-bottom: 10px;
   }
+
+  mat-card-content {
+    .see-more-btn {
+      margin-left: 4px;
+      cursor: pointer;
+      transition: 0.4s;
+
+      &:hover {
+        color: #1029af;
+      }
+    }
+  }
+}
+
+.blue {
+  color: #1029af;
 }

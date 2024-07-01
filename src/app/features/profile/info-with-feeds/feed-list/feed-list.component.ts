@@ -15,26 +15,26 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 // Pipes
 import { TimeDifferenceTextPipe } from '../../../../core/pipes/time-difference-text.pipe';
 import { PrivacyIconPipe } from '../../../../core/pipes/privacy-icon.pipe';
-import { PrivacyTypePipe } from "../../../../core/pipes/privacy-type.pipe";
+import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
 
 @Component({
-    selector: 'profile-feed-list',
-    standalone: true,
-    templateUrl: './feed-list.component.html',
-    styleUrl: './feed-list.component.scss',
-    imports: [
-        CommonModule,
-        MatCardModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTooltipModule,
-        MatMenuModule,
-        MatProgressSpinnerModule,
-        DatePipe,
-        TimeDifferenceTextPipe,
-        PrivacyIconPipe,
-        PrivacyTypePipe
-    ]
+  selector: 'profile-feed-list',
+  standalone: true,
+  templateUrl: './feed-list.component.html',
+  styleUrl: './feed-list.component.scss',
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    DatePipe,
+    TimeDifferenceTextPipe,
+    PrivacyIconPipe,
+    PrivacyTypePipe,
+  ],
 })
 export class FeedListComponent {
   profileService = inject(ProfileService);
@@ -56,4 +56,12 @@ export class FeedListComponent {
       icon: 'lock',
     },
   ];
+
+  constructor() {
+    let { feeds } = this.profileService.profile;
+
+    feeds.forEach((feed) => {
+      feed.isExpanded = false;
+    });
+  }
 }

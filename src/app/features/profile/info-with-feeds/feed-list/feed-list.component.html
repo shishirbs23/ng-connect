@@ -10,20 +10,35 @@
         'background-image': 'url(' + profileService.profile.photoURL + ')'
       }"
     ></div>
-    <mat-card-title class="fs-18px">
-      {{ profileService.profile.firstName }}
-      {{ profileService.profile.lastName }}
+    <mat-card-title class="fs-14px">
+      <span class="blue">
+        {{ profileService.profile.firstName }}
+        {{ profileService.profile.lastName }}
+      </span>
+
+      @if (feed.feeling) {
+      <span>
+        is feeling <span class="blue">{{ feed.feeling }}</span>
+      </span>
+      } @if (feed.checkIn) {
+      <span>
+        at <span class="blue">{{ feed.checkIn }}</span>
+      </span>
+      }
     </mat-card-title>
     <mat-card-subtitle class="fs-13px flex align-items-center gap-10px">
       <div>
         {{ feed.createdAt | timeDiffText }}
       </div>
-      <div class="mt-4px h-28px" [matMenuTriggerFor]="privacyMenu">
+      <div class="h-28px" [matMenuTriggerFor]="privacyMenu">
         @if (profileService.updatingPrivacy && (profileService.updatingFeedIndex
         === index)) {
         <mat-spinner class="mt-3px ml-5px h-18px w-18px"></mat-spinner>
         } @else {
-        <mat-icon class="mt-2px off-black fs-18px pointer" matTooltip="{{ feed.privacyId | privacyType }}">
+        <mat-icon
+          class="mt-4px off-black fs-18px pointer"
+          matTooltip="{{ feed.privacyId | privacyType }}"
+        >
           {{ feed.privacyId | privacyIcon }}
         </mat-icon>
         }
@@ -45,7 +60,15 @@
   </mat-card-header>
   <mat-card-content>
     <p>
-      {{ feed.description }}
+      {{
+        feed.isExpanded ? feed.description : feed.description.substring(0, 500)
+      }}
+
+      @if (!feed.isExpanded && feed.description.length > 500) {
+      <span class="see-more-btn" (click)="feed.isExpanded = !feed.isExpanded">
+        <b> See more... </b>
+      </span>
+      }
     </p>
   </mat-card-content>
   <mat-card-actions>
