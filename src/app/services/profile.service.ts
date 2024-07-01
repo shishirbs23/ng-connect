@@ -258,46 +258,52 @@ export class ProfileService {
 
     const input = event.target as HTMLInputElement;
     const fileList = input.files ?? [];
-    const fileCount = fileList.length ?? 0;
-
-    this.photosCount += fileCount;
-
-    if (this.photosCount > 10) {
-      this.photosCount = 10;
-      this.uiService.openSnackbar("You can't upload more than 10 photos");
-      return;
-    }
 
     for (let i = 0; i < fileList.length; i++) {
       const file = fileList[i];
 
-      if (!this.fileService.isFileImage(file)) {
+      if (this.fileService.isFileImage(file)) {
+        ++this.photosCount;
+      } else {
         this.uiService.openSnackbar(
           'Please upload a valid image file',
           true,
           2000
         );
-        continue;
       }
+    }
 
-      const isoDateValue = new Date().toISOString();
+    if (this.photosCount > 10) {
+      this.photosCount = 10;
+      this.uiService.openSnackbar("You can't upload more than 10 photos");
+      this.uploadingPhotos = false;
+    }
 
-      // Create the file path
-      let filePath = `uploads/${this.profile.uid}/feeds/${isoDateValue}:${file.name}`;
+    for (let i = 0; i < fileList.length; i++) {
+      const file = fileList[i];
 
-      // Get the file reference
-      let fileRef = ref(this.storage, filePath);
+      if (this.fileService.isFileImage(file)) {
+        if (this.uploadedPhotos.length < 10) {
+          const isoDateValue = new Date().toISOString();
 
-      // Upload image to Cloud
-      await uploadBytes(fileRef, file);
+          // Create the file path
+          let filePath = `uploads/${this.profile.uid}/feeds/${isoDateValue}:${file.name}`;
 
-      // Get download URL
-      const url = await getDownloadURL(fileRef);
+          // Get the file reference
+          let fileRef = ref(this.storage, filePath);
 
-      this.uploadedPhotos.push({
-        name: `${isoDateValue}:${file.name}`,
-        url,
-      });
+          // Upload image to Cloud
+          await uploadBytes(fileRef, file);
+
+          // Get download URL
+          const url = await getDownloadURL(fileRef);
+
+          this.uploadedPhotos.push({
+            name: `${isoDateValue}:${file.name}`,
+            url,
+          });
+        }
+      }
     }
 
     this.uploadingPhotos = false;
