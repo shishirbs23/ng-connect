@@ -26,7 +26,10 @@
       </span>
       } @if ((!feed.feeling && !feed.checkIn && !feed.description) &&
       feed.photos.length > 0) { uploaded
-      <span class="blue">{{ feed.photos.length }} photos</span>
+      <span class="blue"
+        >{{ feed.photos.length }}
+        {{ feed.photos.length == 1 ? "photo" : "photos" }}</span
+      >
       }
     </mat-card-title>
     <mat-card-subtitle class="fs-13px flex gap-10px">
@@ -76,19 +79,29 @@
 
     @if (feed.photos.length) {
     <div class="uploaded-photos">
-      @for (photo of feed.photos; track photo) {
       <div
         class="uploaded-photo"
         [ngStyle]="{
-          'background-image': 'url(' + photo.url + ')'
+          'background-image': 'url(' + feed.photos[0].url + ')'
         }"
-      >
-        <div class="shadow">
-          <mat-icon matTooltip="View" (click)="viewFeedImage(photo.url)"
-            >visibility</mat-icon
-          >
-        </div>
-      </div>
+      ></div>
+
+      @if (feed.photos.length >= 2) {
+      <div
+        class="uploaded-photo"
+        [ngStyle]="{
+          'background-image': 'url(' + feed.photos[1].url + ')'
+        }"
+      ></div>
+      } @if (feed.photos.length == 3) {
+      <div
+        class="uploaded-photo"
+        [ngStyle]="{
+          'background-image': 'url(' + feed.photos[2].url + ')'
+        }"
+      ></div>
+      } @else if (feed.photos.length >= 3) {
+      <div class="uploaded-photo counter">+{{ feed.photos.length - 2 }}</div>
       }
     </div>
     }

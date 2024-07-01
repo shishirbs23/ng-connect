@@ -27,7 +27,7 @@
 
       .uploaded-photo {
         margin-top: 5px;
-        height: 300px;
+        height: 150px;
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
@@ -35,36 +35,13 @@
         position: relative;
         border-radius: 6px;
 
-        .shadow {
-          cursor: pointer;
-          background: rgba(29, 29, 29, 0.8392156862745098);
-          border-radius: 5px;
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          overflow: hidden;
-          width: 0;
-          height: 100%;
-          transition: 0.5s ease;
-          opacity: 0;
+        &.counter {
+          background-color: #444;
           display: flex;
           justify-content: center;
           align-items: center;
-          gap: 10px;
-
-          mat-icon {
-            color: #fff;
-            font-size: 20px;
-          }
-        }
-
-        &:hover {
-          .shadow {
-            width: 100%;
-            opacity: 1;
-          }
+          font-size: 40px;
+          color: #fff;
         }
       }
 
