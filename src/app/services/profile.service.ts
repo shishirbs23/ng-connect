@@ -100,6 +100,9 @@ export class ProfileService {
   photosCount: number = 0;
   uploadedPhotos: any[] = [];
 
+  updatingPrivacy: boolean = false;
+  updatingFeedIndex: number = 0;
+
   getCurrentProfile() {
     this.loadingProfile = true;
 
@@ -811,6 +814,34 @@ export class ProfileService {
       .finally(() => {
         this.savingEducationProfession = false;
         this.uiService.closeDialog(null);
+      });
+  }
+
+  async updateFeedPrivacy(index: number, privacyId: number) {
+    this.updatingFeedIndex = index;
+
+    const profileRef = doc(
+      this.appService._appDB,
+      Collection.PROFILES,
+      this.appService.userId
+    );
+
+    this.updatingPrivacy = true;
+
+    const profile: Profile = this.appService.returnCopy(this.profile);
+
+    profile.feeds[index].privacyId = privacyId;
+
+    await setDoc(profileRef, profile, { merge: true })
+      .then((_) => {
+        this.profile = profile;
+        this.uiService.openSnackbar('Privacy updated');
+      })
+      .catch((_) => {
+        this.uiService.openSnackbar('Error during updating privacy');
+      })
+      .finally(() => {
+        this.updatingPrivacy = false;
       });
   }
 }
