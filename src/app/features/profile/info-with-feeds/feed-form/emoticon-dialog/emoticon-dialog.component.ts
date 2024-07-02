@@ -80,9 +80,10 @@ export class EmoticonDialogComponent {
   filteredFeelings = this.appService.returnCopy(this.feelings);
 
   searchFeelings(event: any) {
-    console.log(event.target.value);
-    this.filteredFeelings = this.feelings.filter(
-      (feeling) => feeling.toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase())
+    this.filteredFeelings = this.feelings.filter((feeling) =>
+      feeling
+        .toLocaleLowerCase()
+        .includes(event.target.value.toLocaleLowerCase())
     );
   }
 }

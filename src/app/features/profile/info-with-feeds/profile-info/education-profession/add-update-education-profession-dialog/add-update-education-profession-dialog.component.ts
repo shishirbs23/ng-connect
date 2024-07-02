@@ -90,7 +90,6 @@ export class AddUpdateEducationProfessionDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: EducationProfessionDialogData
   ) {
-    console.log(data);
     if (!this.data.isAdd) {
       switch(this.data.institutionType) {
         case InstitutionType.SCHOOL: {
