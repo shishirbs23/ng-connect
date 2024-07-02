@@ -89,7 +89,27 @@ export class AddUpdateEducationProfessionDialogComponent {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: EducationProfessionDialogData
-  ) {}
+  ) {
+    console.log(data);
+    if (!this.data.isAdd) {
+      switch(this.data.institutionType) {
+        case InstitutionType.SCHOOL: {
+          this.selectedTypeId = 1;
+          break;
+        }
+
+        case InstitutionType.COLLEGE: {
+          this.selectedTypeId = 2;
+          break;
+        }
+
+        case InstitutionType.UNIVERSITY: {
+          this.selectedTypeId = 3;
+          break;
+        }
+      }
+    }
+  }
 
   ngOnInit() {
     this.prepareUI();
