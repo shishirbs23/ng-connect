@@ -21,6 +21,9 @@ import { TimeDifferenceTextPipe } from '../../../../core/pipes/time-difference-t
 import { PrivacyIconPipe } from '../../../../core/pipes/privacy-icon.pipe';
 import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
 
+// Models
+import { ProfileFeed } from '../../../../models/profile-feed.model';
+
 interface Image {
   image: string;
   order: number;
@@ -70,14 +73,6 @@ export class FeedListComponent {
     },
   ];
 
-  constructor() {
-    let { feeds } = this.profileService.profile;
-
-    feeds.forEach((feed) => {
-      feed.isExpanded = false;
-    });
-  }
-
   openImageSlider(
     photos: {
       name: string;
@@ -107,5 +102,35 @@ export class FeedListComponent {
   closeSlider() {
     this.images = [];
     this.isOpenSlider = false;
+  }
+
+  isLiked(feed: ProfileFeed) {
+    return !!feed.likes.users.find(
+      (user) => user.userId === this.profileService.profile.uid
+    );
+  }
+
+  likeUnlikeFeed(index: number) {
+    let { count, users } = this.profileService.profile.feeds[index].likes;
+    const { firstName, lastName, uid } = this.profileService.profile;
+    const foundIndex: number = users.findIndex((user) => user.userId === uid);
+
+    if (foundIndex >= 0) {
+      users.splice(foundIndex, 1);
+      --count;
+    } else {
+      users.push({
+        userId: uid,
+        name: `${firstName} ${lastName}`,
+      });
+      ++count;
+    }
+
+    this.profileService.profile.feeds[index].likes = {
+      count,
+      users,
+    };
+
+    this.profileService.saveProfile();
   }
 }

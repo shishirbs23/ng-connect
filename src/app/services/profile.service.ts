@@ -91,6 +91,11 @@ export class ProfileService {
     photos: [],
     checkIn: '',
     description: '',
+    likes: {
+      count: 0,
+      users: [],
+    },
+    comments: [],
     privacyId: 1,
     createdAt: '',
     updatedAt: '',
@@ -381,6 +386,11 @@ export class ProfileService {
           photos: [],
           checkIn: '',
           description: '',
+          likes: {
+            count: 0,
+            users: [],
+          },
+          comments: [],
           privacyId: this.profile.privacyId,
           createdAt: '',
           updatedAt: '',
@@ -855,5 +865,15 @@ export class ProfileService {
         this.savingEducationProfession = false;
         this.uiService.closeDialog(null);
       });
+  }
+
+  async saveProfile() {
+    const profileRef = doc(
+      this.appService._appDB,
+      Collection.PROFILES,
+      this.appService.userId
+    );
+
+    await setDoc(profileRef, this.profile, { merge: true });
   }
 }

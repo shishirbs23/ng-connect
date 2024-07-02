@@ -33,7 +33,7 @@
       }
     </mat-card-title>
     <mat-card-subtitle class="fs-13px flex gap-10px">
-      <div class="mt-5px">
+      <div class="mt-6px">
         {{ feed.createdAt | timeDiffText }}
       </div>
       <div class="h-28px" [matMenuTriggerFor]="privacyMenu">
@@ -114,9 +114,19 @@
     </div>
     }
   </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>LIKE</button>
-    <button mat-button>SHARE</button>
+  <mat-card-actions class="gap-20px">
+    <div class="flex" (click)="likeUnlikeFeed(index)">
+      <mat-icon [class.liked]="isLiked(feed)" matTooltip="Like">thumb_up</mat-icon>
+
+      @if (feed.likes.count > 0) {
+        <span class="fw-600 relative bottom-2px">
+          {{ feed.likes.count }}
+        </span>
+      }
+    </div>
+    <div class="relative top-2px">
+      <mat-icon class="comment" matTooltip="Comment">mode_comment</mat-icon>
+    </div>
   </mat-card-actions>
 </mat-card>
 } @if (isOpenSlider && images.length) {
