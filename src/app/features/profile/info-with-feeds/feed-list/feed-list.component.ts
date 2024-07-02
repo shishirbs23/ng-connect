@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 
 // Components
-import { ImageViewerComponent } from '../../../../core/components/image-viewer/image-viewer.component';
+import { ImageSliderComponent } from '../../../../core/components/image-slider/image-slider.component';
 
 // Service
 import { ProfileService } from '../../../../services/profile.service';
@@ -21,6 +21,10 @@ import { TimeDifferenceTextPipe } from '../../../../core/pipes/time-difference-t
 import { PrivacyIconPipe } from '../../../../core/pipes/privacy-icon.pipe';
 import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
 
+interface Image {
+  image: string;
+  order: number;
+}
 @Component({
   selector: 'profile-feed-list',
   standalone: true,
@@ -34,6 +38,7 @@ import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
     MatTooltipModule,
     MatMenuModule,
     MatProgressSpinnerModule,
+    ImageSliderComponent,
     DatePipe,
     TimeDifferenceTextPipe,
     PrivacyIconPipe,
@@ -43,6 +48,9 @@ import { PrivacyTypePipe } from '../../../../core/pipes/privacy-type.pipe';
 export class FeedListComponent {
   profileService = inject(ProfileService);
   uiService = inject(UiService);
+
+  images: Image[] = [];
+  isOpenSlider: boolean = false;
 
   privacyOptions = [
     {
@@ -70,9 +78,34 @@ export class FeedListComponent {
     });
   }
 
-  viewFeedImage(url: string) {
-    this.uiService.openDialog(ImageViewerComponent, {
-      url,
-    });
+  openImageSlider(
+    photos: {
+      name: string;
+      url: string;
+    }[],
+    index: number
+  ) {
+    this.images = [];
+
+    for (let i = index; i < photos.length; i++) {
+      this.images.push({
+        image: photos[i].url,
+        order: this.images.length + 1,
+      });
+    }
+
+    for (let i = 0; i < index; i++) {
+      this.images.push({
+        image: photos[i].url,
+        order: this.images.length + 1,
+      });
+    }
+
+    this.isOpenSlider = true;
+  }
+
+  closeSlider() {
+    this.images = [];
+    this.isOpenSlider = false;
   }
 }

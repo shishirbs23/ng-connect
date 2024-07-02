@@ -84,6 +84,7 @@
         [ngStyle]="{
           'background-image': 'url(' + feed.photos[0].url + ')'
         }"
+        (click)="openImageSlider(feed.photos, 0)"
       ></div>
 
       @if (feed.photos.length >= 2) {
@@ -92,6 +93,7 @@
         [ngStyle]="{
           'background-image': 'url(' + feed.photos[1].url + ')'
         }"
+        (click)="openImageSlider(feed.photos, 1)"
       ></div>
       } @if (feed.photos.length == 3) {
       <div
@@ -99,9 +101,15 @@
         [ngStyle]="{
           'background-image': 'url(' + feed.photos[2].url + ')'
         }"
+        (click)="openImageSlider(feed.photos, 2)"
       ></div>
       } @else if (feed.photos.length >= 3) {
-      <div class="uploaded-photo counter">+{{ feed.photos.length - 2 }}</div>
+      <div
+        class="uploaded-photo counter"
+        (click)="openImageSlider(feed.photos, 2)"
+      >
+        +{{ feed.photos.length - 2 }}
+      </div>
       }
     </div>
     }
@@ -111,5 +119,9 @@
     <button mat-button>SHARE</button>
   </mat-card-actions>
 </mat-card>
-
+} @if (isOpenSlider && images.length) {
+<app-image-slider
+  [images]="images"
+  (onCloseSlider)="closeSlider()"
+></app-image-slider>
 }
